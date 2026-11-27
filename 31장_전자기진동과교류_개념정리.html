@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>31장 전자기 진동과 교류</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>31장 전자기 진동과 교류</h1>
+
+<h2>1. LC 진동</h2>
+
+<h3>에너지가 오가는 진동</h3>
+
+<p>RC, RL 회로에서는 전하·전류·전위차가 시간 상수 $\tau$로 지수적으로 늘거나 줄었다. 남은 두 소자 조합인 LC 회로에서는 이 양들이 지수적으로 줄지 않고 <mark>사인 함수 꼴로 진동</mark>한다. 축전기의 전기장과 인덕터의 자기장이 이렇게 번갈아 커졌다 작아지는 현상이 <mark>전자기 진동(electromagnetic oscillation)</mark>.</p>
+
+<p>축전기에 저장된 전기 에너지와 인덕터에 저장된 자기 에너지는 그 순간의 전하 $q$, 전류 $i$로 정해진다.</p>
+
+$$ U_E = \frac{q^2}{2C}, \qquad U_B = \frac{Li^2}{2} $$
+
+<ul class="sym">
+<li>$U_E$: 축전기의 전기 에너지 (J), $U_B$: 인덕터의 자기 에너지 (J)</li>
+<li>$q$: 축전기 전하 (C), $i$: 인덕터 전류 (A)</li>
+<li>$C$: 전기용량 (F), $L$: 인덕턴스 (H)</li>
+</ul>
+
+<p>저항이 없는 LC 회로의 한 주기는 8단계로 나뉜다. 충전된 축전기가 방전하며 전류를 만들고, 전류가 최대일 때 에너지는 모두 자기장에 있다. 인덕터는 전류의 변화를 방해하기에 전류가 곧바로 멈추지 않고 축전기를 반대 극성으로 충전한다. 이후 같은 과정이 반대 방향으로 반복된다.</p>
+
+<table>
+<thead><tr><th>단계</th><th>축전기</th><th>전류</th><th>에너지</th></tr></thead>
+<tbody>
+<tr><td>(a)</td><td>최대 전하</td><td>0</td><td>모두 $U_E$</td></tr>
+<tr><td>(b)</td><td>방전 중</td><td>증가</td><td>$U_E \to U_B$</td></tr>
+<tr><td>(c)</td><td>완전 방전</td><td>최대</td><td>모두 $U_B$</td></tr>
+<tr><td>(d)</td><td>(a)와 반대 극성으로 충전 중</td><td>감소</td><td>$U_B \to U_E$</td></tr>
+<tr><td>(e)</td><td>(a)와 반대 극성의 최대 전하</td><td>0</td><td>모두 $U_E$</td></tr>
+<tr><td>(f)</td><td>방전 중</td><td>(b)와 반대 방향으로 증가</td><td>$U_E \to U_B$</td></tr>
+<tr><td>(g)</td><td>완전 방전</td><td>최대 (반대 방향)</td><td>모두 $U_B$</td></tr>
+<tr><td>(h)</td><td>(a)와 같은 극성으로 충전 중</td><td>감소</td><td>$U_B \to U_E$</td></tr>
+</tbody>
+</table>
+
+<p>(h) 다음은 다시 (a)이므로 (a)~(h)가 한 주기 $T$. 축전기 전위차 $q/C$와 인덕터 전류 $i$가 모두 주기 $T$로 진동한다.</p>
+
+<h3>역학 진동과의 대응</h3>
+
+<p>마찰 없는 블록–용수철 계도 두 가지 에너지를 주고받으며 진동한다. 두 계의 에너지 식을 나란히 놓으면 같은 꼴이다.</p>
+
+<table>
+<thead><tr><th>블록–용수철</th><th>에너지</th><th>LC 회로</th><th>에너지</th></tr></thead>
+<tbody>
+<tr><td>용수철</td><td>퍼텐셜 $\tfrac12 kx^2$</td><td>축전기</td><td>전기 $\tfrac12 (1/C)q^2$</td></tr>
+<tr><td>블록</td><td>운동 $\tfrac12 mv^2$</td><td>인덕터</td><td>자기 $\tfrac12 Li^2$</td></tr>
+<tr><td colspan="2">$v = dx/dt$</td><td colspan="2">$i = dq/dt$</td></tr>
+</tbody>
+</table>
+
+<p>즉 <mark>$q \leftrightarrow x$, $i \leftrightarrow v$, $1/C \leftrightarrow k$, $L \leftrightarrow m$</mark>. 축전기는 수학적으로 용수철, 인덕터는 블록 역할.</p>
+
+<p>블록–용수철 계의 총에너지 $U = U_b + U_s = \tfrac12 mv^2 + \tfrac12 kx^2$($U_b$: 블록의 운동 에너지, $U_s$: 용수철의 퍼텐셜 에너지)는 마찰이 없으면 일정하기에 $dU/dt = 0$.</p>
+
+$$ \frac{dU}{dt} = mv\frac{dv}{dt} + kx\frac{dx}{dt} = 0 \;\Rightarrow\; m\frac{d^2x}{dt^2} + kx = 0, \qquad \omega = \sqrt{\frac{k}{m}} $$
+
+<p>대응 관계에 따라 $k \to 1/C$, $m \to L$로 바꾸면 LC 회로의 각진동수를 얻는다. 아래에서 미분방정식으로 직접 확인한다.</p>
+
+<h3>미분방정식과 해</h3>
+
+<p>LC 회로의 총에너지는 매 순간</p>
+
+$$ U = U_B + U_E = \frac{Li^2}{2} + \frac{q^2}{2C} $$
+
+<p>저항이 없으면 열에너지로 빠져나가는 에너지가 없기에 <mark>$U$는 시간에 대해 일정</mark>, 즉 $dU/dt = 0$.</p>
+
+<details><summary>미분방정식 유도</summary><div>
+<p>$U$를 시간으로 미분하면</p>
+$$ \frac{dU}{dt} = Li\frac{di}{dt} + \frac{q}{C}\frac{dq}{dt} = 0 $$
+<p>$i = dq/dt$, $di/dt = d^2q/dt^2$를 대입하고 공통인수 $i$로 나누면</p>
+$$ L\frac{d^2q}{dt^2} + \frac{1}{C}q = 0 $$
+<p>블록–용수철의 $m\,d^2x/dt^2 + kx = 0$과 같은 꼴.</p>
+</div></details>
+
+$$ L\frac{d^2q}{dt^2} + \frac{1}{C}q = 0 $$
+
+<p class="cond">조건: <mark>저항이 없는</mark> LC 회로</p>
+
+<p>이 미분방정식의 해는 진동하는 전하이고, 시간으로 한 번 미분하면 전류.</p>
+
+$$ q = Q\cos(\omega t + \phi), \qquad i = \frac{dq}{dt} = -\omega Q \sin(\omega t + \phi) $$
+
+<ul class="sym">
+<li>$Q$: 전하 진폭 (C), $\phi$: 위상 상수 (rad)</li>
+<li>$\omega$: 전자기 진동의 각진동수 (rad/s), $t$: 시간 (s)</li>
+</ul>
+
+<p>해를 미분방정식에 넣으면 $-L\omega^2 Q\cos(\omega t+\phi) + \tfrac{1}{C}Q\cos(\omega t+\phi) = 0$이고, 모든 $t$에서 성립하려면 $\omega^2 = 1/LC$여야 한다.</p>
+
+$$ \omega = \frac{1}{\sqrt{LC}}, \qquad f = \frac{\omega}{2\pi}, \qquad T = \frac{1}{f} = 2\pi\sqrt{LC} $$
+
+<ul class="sym">
+<li>$\omega$: 고유 각진동수 (rad/s), $f$: 진동수 (Hz), $T$: 주기 (s)</li>
+</ul>
+
+<p>전류의 진폭은 <mark>$I = \omega Q$</mark>. $q$는 cos, $i$는 −sin이므로 <mark>전하가 최대일 때 전류는 0</mark>이고, 전류가 최대일 때 전하는 0.</p>
+
+<p>루프 법칙을 적용하면 $L\,di/dt + q/C = 0$이기에 <mark>매 순간 인덕터의 기전력 크기는 축전기 전위차와 같다</mark>. 합이 일정한 것은 전위차가 아니라 에너지 $U_E + U_B$.</p>
+
+<h3>전기 에너지와 자기 에너지의 진동</h3>
+
+<p>$q$, $i$를 에너지 식에 넣고 $\omega^2 = 1/LC$를 쓰면</p>
+
+$$ U_E = \frac{Q^2}{2C}\cos^2(\omega t + \phi), \qquad U_B = \frac12 L\omega^2Q^2\sin^2(\omega t + \phi) = \frac{Q^2}{2C}\sin^2(\omega t + \phi) $$
+
+<ul>
+<li><mark>$U_E$와 $U_B$의 최댓값은 둘 다 $Q^2/2C$</mark>.</li>
+<li>$\cos^2 + \sin^2 = 1$이므로 매 순간 <mark>$U_E + U_B = Q^2/2C$로 일정</mark>.</li>
+<li>$U_E$가 최대일 때 $U_B = 0$이고, 반대도 마찬가지.</li>
+</ul>
+
+<p>$\cos^2$, $\sin^2$의 주기가 $T/2$이므로 각 에너지는 한 주기에 두 번 최대가 된다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300" role="img" aria-label="LC 회로의 전기 에너지와 자기 에너지">
+  <line x1="60" y1="240" x2="410" y2="240" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line x1="60" y1="240" x2="60" y2="40" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line x1="60" y1="60" x2="400" y2="60" stroke="#999" stroke-dasharray="4 4"/>
+  <text x="14" y="65" font-size="14" fill="#5c5c5c">Q²/2C</text>
+  <text x="52" y="262" font-size="14" fill="#5c5c5c">0</text>
+  <text x="218" y="262" font-size="14" fill="#5c5c5c">T/2</text>
+  <text x="392" y="262" font-size="14" fill="#5c5c5c">T</text>
+  <polyline id="lc-ue" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+  <polyline id="lc-ub" fill="none" stroke="#888" stroke-width="2.5" stroke-dasharray="7 5"/>
+  <text x="415" y="66" font-size="15" fill="#1a1a1a">U<tspan baseline-shift="sub" font-size="75%">E</tspan></text>
+  <text x="415" y="236" font-size="15" fill="#888">U<tspan baseline-shift="sub" font-size="75%">B</tspan></text>
+  <line id="lc-mark" x1="0" y1="45" x2="0" y2="240" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="470" y1="240" x2="610" y2="240" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line x1="470" y1="60" x2="610" y2="60" stroke="#999" stroke-dasharray="4 4"/>
+  <rect id="lc-bE" x="485" width="44" fill="#1a1a1a"/>
+  <rect id="lc-bB" x="552" width="44" fill="#aaa"/>
+  <text x="497" y="262" font-size="15">U<tspan baseline-shift="sub" font-size="75%">E</tspan></text>
+  <text x="564" y="262" font-size="15">U<tspan baseline-shift="sub" font-size="75%">B</tspan></text>
+  <text id="lc-txt" x="320" y="292" font-size="15" text-anchor="middle" fill="#1a1a1a"></text>
+</svg>
+<figcaption>φ = 0일 때 U<sub>E</sub>(실선)와 U<sub>B</sub>(점선). 오른쪽 막대는 표시한 순간의 두 에너지이고, 막대 높이의 합은 항상 Q²/2C.</figcaption>
+<div class="controls"><label>시각 t/T <input type="range" id="lc-t" min="0" max="1" step="0.005" value="0.1"></label><span id="lc-tv"></span></div>
+</figure>
+
+<script>
+(() => {
+  const X0 = 60, W = 340, Y0 = 240, H = 180;
+  let pE = '', pB = '';
+  for (let k = 0; k <= 240; k++) {
+    const u = k / 240, x = X0 + W * u, c = Math.cos(2 * Math.PI * u) ** 2;
+    pE += `${x.toFixed(1)},${(Y0 - H * c).toFixed(1)} `;
+    pB += `${x.toFixed(1)},${(Y0 - H * (1 - c)).toFixed(1)} `;
+  }
+  document.getElementById('lc-ue').setAttribute('points', pE);
+  document.getElementById('lc-ub').setAttribute('points', pB);
+  const s = document.getElementById('lc-t');
+  const mk = document.getElementById('lc-mark');
+  const bE = document.getElementById('lc-bE'), bB = document.getElementById('lc-bB');
+  const txt = document.getElementById('lc-txt'), tv = document.getElementById('lc-tv');
+  function draw() {
+    const u = +s.value, c = Math.cos(2 * Math.PI * u), sn = Math.sin(2 * Math.PI * u);
+    const x = X0 + W * u;
+    mk.setAttribute('x1', x); mk.setAttribute('x2', x);
+    const ue = c * c, ub = sn * sn;
+    bE.setAttribute('y', Y0 - H * ue); bE.setAttribute('height', H * ue);
+    bB.setAttribute('y', Y0 - H * ub); bB.setAttribute('height', H * ub);
+    txt.textContent = `q = ${c.toFixed(2)} Q,   i = ${(-sn).toFixed(2)} ωQ,   U_E : U_B = ${(ue * 100).toFixed(0)}% : ${(ub * 100).toFixed(0)}%`;
+    tv.textContent = u.toFixed(3);
+  }
+  s.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h2>2. RLC 회로의 감쇠 진동</h2>
+
+<h3>에너지 손실과 미분방정식</h3>
+
+<p>저항, 인덕턴스, 전기용량을 모두 가진 회로가 <mark>RLC 회로</mark>. 저항은 전자기 에너지를 저장하지 않으므로 총에너지는 여전히 $U = Li^2/2 + q^2/2C$이지만, 저항에서 에너지가 열에너지로 바뀌기에 <mark>$U$가 시간에 따라 감소</mark>. 그 결과 전하·전류·전위차의 진폭이 계속 줄어드는데, 이런 진동이 <mark>감쇠(damped) 진동</mark>.</p>
+
+<p>열에너지로 바뀌는 비율은 저항의 소모 전력 $P = i^2R$이므로</p>
+
+$$ \frac{dU}{dt} = -i^2R $$
+
+<p>음의 부호는 $U$가 줄어든다는 뜻.</p>
+
+<details><summary>미분방정식 유도</summary><div>
+<p>$U$를 미분한 결과와 위 식을 같게 놓으면</p>
+$$ Li\frac{di}{dt} + \frac{q}{C}\frac{dq}{dt} = -i^2R $$
+<p>$dq/dt = i$, $di/dt = d^2q/dt^2$를 대입하고 $i$로 나누면 아래 식.</p>
+</div></details>
+
+$$ L\frac{d^2q}{dt^2} + R\frac{dq}{dt} + \frac{1}{C}q = 0 $$
+
+<ul class="sym">
+<li>$R$: 저항 (Ω), 나머지 문자는 LC 회로와 같다.</li>
+</ul>
+
+<h3>감쇠 진동의 해</h3>
+
+$$ q = Qe^{-Rt/2L}\cos(\omega' t + \phi), \qquad \omega' = \sqrt{\omega^2 - \left(\frac{R}{2L}\right)^2}, \qquad \omega = \frac{1}{\sqrt{LC}} $$
+
+<p class="cond">조건: <mark>$R/2L \lt \omega$</mark>, 즉 저항이 충분히 작음</p>
+
+<ul class="sym">
+<li>$\omega'$: 감쇠 진동의 각진동수 (rad/s), $\omega$: 저항이 없을 때의 고유 각진동수 (rad/s)</li>
+<li>$Q$: 처음 전하 진폭 (C)</li>
+</ul>
+
+<details><summary>해 구하기</summary><div>
+<p>지수함수는 미분해도 꼴이 유지되므로 $q = e^{\lambda t}$로 놓고 대입한다.</p>
+$$ L\lambda^2 + R\lambda + \frac1C = 0 \;\Rightarrow\; \lambda = -\frac{R}{2L} \pm i\sqrt{\frac{1}{LC} - \left(\frac{R}{2L}\right)^2} = -\frac{R}{2L} \pm i\omega' $$
+<p>$R/2L \lt \omega$이면 근호 안이 양수라 $\lambda$가 복소수. $e^{-Rt/2L}e^{\pm i\omega' t}$ 두 해를 실수가 되게 섞으면 $Qe^{-Rt/2L}\cos(\omega' t + \phi)$.</p>
+</div></details>
+
+<p>즉 <mark>진폭 $Qe^{-Rt/2L}$이 지수적으로 줄어드는 사인 진동</mark>. $\omega'$ 식의 근호 안에서 양수를 빼므로 <mark>감쇠 진동의 각진동수 $\omega'$은 항상 $\omega$보다 작다</mark>. $R \to 0$이면 $\omega' \to \omega$이고 진폭이 일정해져 LC 진동으로 돌아간다.</p>
+
+<p>축전기의 전기 에너지는</p>
+
+$$ U_E = \frac{q^2}{2C} = \frac{Q^2}{2C}e^{-Rt/L}\cos^2(\omega' t + \phi) $$
+
+<p>에너지는 전하의 제곱에 비례하므로 진폭이 $e^{-Rt/L}$로, 전하 진폭($e^{-Rt/2L}$)보다 두 배 빠른 지수로 줄어든다. 전하가 저항을 지나 앞뒤로 오갈 때마다 전자기 에너지가 열로 소모되어 진동을 감쇠시킨다.</p>
+
+<figure>
+<svg viewBox="0 0 640 280" role="img" aria-label="감쇠 진동의 전하">
+  <line x1="60" y1="140" x2="610" y2="140" stroke="#1a1a1a" stroke-width="1.2"/>
+  <line x1="60" y1="30" x2="60" y2="250" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="68" y="34" font-size="15">q</text>
+  <text x="614" y="160" font-size="15">t</text>
+  <text x="42" y="244" font-size="14" fill="#5c5c5c" text-anchor="end">−Q</text>
+  <text x="42" y="64" font-size="14" fill="#5c5c5c" text-anchor="end">Q</text>
+  <polyline id="dm-ref" fill="none" stroke="#c8c8c8" stroke-width="1.2"/>
+  <polyline id="dm-up" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <polyline id="dm-dn" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <polyline id="dm-q" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+  <text id="dm-txt" x="330" y="272" font-size="15" text-anchor="middle"></text>
+</svg>
+<figcaption>굵은 선: q(t), 점선: 진폭 Qe<sup>−Rt/2L</sup>, 회색 가는 선: R = 0인 LC 진동. 가로축은 LC 주기 T로 4주기.</figcaption>
+<div class="controls"><label>감쇠 세기 (R/2L)/ω <input type="range" id="dm-r" min="0" max="0.6" step="0.01" value="0.1"></label><span id="dm-rv"></span></div>
+</figure>
+
+<script>
+(() => {
+  const X0 = 60, W = 540, Y0 = 140, A = 100, N = 400, P = 4;
+  const r = document.getElementById('dm-r'), rv = document.getElementById('dm-rv');
+  const set = (id, f) => {
+    let p = '';
+    for (let k = 0; k <= N; k++) { const u = k / N; p += `${(X0 + W * u).toFixed(1)},${(Y0 - A * f(u * P)).toFixed(1)} `; }
+    document.getElementById(id).setAttribute('points', p);
+  };
+  set('dm-ref', t => Math.cos(2 * Math.PI * t));
+  function draw() {
+    const g = +r.value, w = 2 * Math.PI, gam = g * w, wp = w * Math.sqrt(1 - g * g);
+    set('dm-q', t => Math.exp(-gam * t) * Math.cos(wp * t));
+    set('dm-up', t => Math.exp(-gam * t));
+    set('dm-dn', t => -Math.exp(-gam * t));
+    document.getElementById('dm-txt').textContent = `ω′/ω = ${Math.sqrt(1 - g * g).toFixed(3)}`;
+    rv.textContent = g.toFixed(2);
+  }
+  r.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h2>3. 교류와 세 가지 기본 회로의 강제 진동</h2>
+
+<h3>교류를 쓰는 이유</h3>
+
+<p>교류(alternating current, ac)는 방향이 주기적으로 바뀌는 전류이고, 직류(direct current, dc)는 방향이 바뀌지 않는 전류. 교류가 바뀌면 도선을 둘러싼 자기장도 바뀌므로 패러데이 유도 법칙을 쓸 수 있다. 그래서 <mark>변압기로 교류 전위차를 원하는 만큼 높이거나(승압) 낮출(강압) 수 있다</mark>. 또 교류는 발전기·전동기 같은 회전 기계에 직류보다 잘 맞는다.</p>
+
+<h3>교류 발전기와 강제 진동</h3>
+
+<p>교류 발전기의 단순한 모형은 외부 자기장 $\vec B$ 안에서 억지로 회전하는 도체 고리. 고리를 지나는 자기선속이 바뀌어 사인 꼴로 진동하는 기전력이 유도된다. 고리 양 끝은 슬립 링과 금속 브러시를 거쳐 바깥 회로에 연결된다.</p>
+
+$$ \mathcal{E} = \mathcal{E}_m \sin\omega_d t $$
+
+<ul class="sym">
+<li>$\mathcal{E}_m$: 기전력 진폭 (V)</li>
+<li>$\omega_d$: <mark>구동 각진동수</mark>(driving angular frequency) = 고리의 회전 각속력 (rad/s)</li>
+<li>$\omega_d t$: 기전력의 위상</li>
+</ul>
+
+<p>고리가 닫힌 회로의 일부이면 이 기전력이 같은 각진동수 $\omega_d$로 교류를 흘린다.</p>
+
+$$ i = I\sin(\omega_d t - \phi) $$
+
+<ul class="sym">
+<li>$I$: 전류 진폭 (A), $\phi$: 위상 상수 (rad)</li>
+</ul>
+
+<p>전류가 기전력과 같은 위상이 아닐 수 있기에 $\phi$를 넣는다. $\sin(\omega_d t - \phi)$는 $\sin\omega_d t$를 시간축 뒤로 민 그래프이므로 ($y = x^2$와 $y=(x-x_0)^2$의 관계와 같다) <mark>$\phi \gt 0$이면 전류가 기전력보다 뒤처진다</mark>.</p>
+
+<p>LC 회로나 $R$이 충분히 작은 RLC 회로는 한번 시작되면 고유 각진동수 $\omega = 1/\sqrt{LC}$로 진동한다. 이것이 <mark>자유 진동(free oscillation)</mark>. 외부 교류 기전력을 연결해 일으킨 진동은 <mark>강제 진동(forced 또는 driven oscillation)</mark>이고, 회로의 고유 각진동수 $\omega$가 무엇이든 <mark>강제 진동은 항상 구동 각진동수 $\omega_d$로 일어난다</mark>.</p>
+
+<h3>페이저</h3>
+
+<p>사인 꼴로 변하는 양은 원점을 중심으로 도는 화살표, 즉 <mark>페이저(phasor)</mark>로 나타내면 위상 관계가 한눈에 보인다.</p>
+
+<ul>
+<li><strong>각속력:</strong> 전류·전위차 페이저는 모두 $v$, $i$의 각진동수 $\omega_d$로 반시계 방향 회전.</li>
+<li><strong>길이:</strong> 교류량의 <mark>진폭</mark>($V$, $I$).</li>
+<li><strong>사영:</strong> 페이저를 세로축에 내린 사영이 시각 $t$에서의 <mark>순간값</mark>($v$, $i$).</li>
+<li><strong>회전각:</strong> 시각 $t$에서 교류량의 위상($\omega_d t$ 등).</li>
+</ul>
+
+<p>두 양의 위상차는 두 페이저 사이의 각으로 보인다. 앞쪽(반시계 방향으로 더 돈 쪽) 페이저가 더 이른 시각에 최대가 된다.</p>
+
+<h3>저항 부하</h3>
+
+<p>저항 $R$만 교류 발전기에 연결하면, 루프 법칙에 따라 저항 양단 전위차의 진폭 $V_R$이 기전력 진폭 $\mathcal{E}_m$과 같고 $v_R = V_R\sin\omega_d t$. 저항의 정의 $R = V/i$에서</p>
+
+$$ i_R = \frac{v_R}{R} = \frac{V_R}{R}\sin\omega_d t = I_R\sin(\omega_d t - \phi) $$
+
+<p>과 비교하면 <mark>저항에서는 $\phi = 0$</mark>이고</p>
+
+$$ V_R = I_R R $$
+
+<ul class="sym">
+<li>$V_R$, $I_R$: 저항의 전위차 진폭 (V)과 전류 진폭 (A)</li>
+</ul>
+
+<p>즉 <mark>저항의 전류와 전위차는 동위상</mark>: 같은 시각에 최대가 되고, 두 페이저는 겹쳐서 함께 돈다.</p>
+
+<h3>축전기 부하</h3>
+
+<p>축전기 $C$만 연결하면 루프 법칙에서 $v_C = V_C\sin\omega_d t$. 전기용량의 정의에서 $q_C = Cv_C = CV_C\sin\omega_d t$이고, 이를 미분하면 전류.</p>
+
+$$ i_C = \frac{dq_C}{dt} = \omega_d CV_C\cos\omega_d t = \frac{V_C}{X_C}\sin(\omega_d t + 90^\circ) $$
+
+<p>마지막 등호는 $\cos\theta = \sin(\theta + 90^\circ)$와 아래 $X_C$의 정의를 쓴 것.</p>
+
+$$ X_C = \frac{1}{\omega_d C}, \qquad V_C = I_C X_C $$
+
+<ul class="sym">
+<li>$X_C$: <mark>용량 리액턴스(capacitive reactance)</mark> (Ω)</li>
+<li>$V_C$, $I_C$: 축전기의 전위차 진폭 (V)과 전류 진폭 (A)</li>
+</ul>
+
+<p>$X_C$는 저항처럼 진폭의 비를 정하지만 <mark>전기용량뿐 아니라 구동 각진동수에도 의존</mark>: $\omega_d$가 클수록 작다. $i_C = I_C\sin(\omega_d t - \phi)$와 비교하면 $\phi = -90^\circ$, 즉 <mark>축전기에서는 전류가 전위차보다 90° 앞선다</mark>. 전류가 더 이른 시각에 최대가 된다는 뜻.</p>
+
+<h3>인덕터 부하</h3>
+
+<p>인덕터 $L$만 연결하면 루프 법칙에서 $v_L = V_L\sin\omega_d t$. 인덕터 양단 전위차는 $v_L = L\,di_L/dt$이므로 $di_L/dt = (V_L/L)\sin\omega_d t$이고, 적분하면</p>
+
+$$ i_L = \int di_L = -\frac{V_L}{\omega_d L}\cos\omega_d t = \frac{V_L}{X_L}\sin(\omega_d t - 90^\circ) $$
+
+<p>여기서 $-\cos\theta = \sin(\theta - 90^\circ)$를 썼다.</p>
+
+$$ X_L = \omega_d L, \qquad V_L = I_L X_L $$
+
+<ul class="sym">
+<li>$X_L$: <mark>유도 리액턴스(inductive reactance)</mark> (Ω)</li>
+<li>$V_L$, $I_L$: 인덕터의 전위차 진폭 (V)과 전류 진폭 (A)</li>
+</ul>
+
+<p>$X_L$은 인덕턴스뿐 아니라 구동 각진동수에도 의존하며, $\omega_d$가 클수록 크다. 비교하면 $\phi = +90^\circ$, 즉 <mark>인덕터에서는 전류가 전위차보다 90° 뒤진다</mark>.</p>
+
+<h3>세 소자 비교</h3>
+
+<table>
+<thead><tr><th>소자</th><th>저항 또는 리액턴스</th><th>전류의 위상</th><th>위상 상수 $\phi$</th><th>진폭 관계</th></tr></thead>
+<tbody>
+<tr><td>저항 $R$</td><td>$R$</td><td>$v_R$과 동위상</td><td>$0^\circ$</td><td>$V_R = I_R R$</td></tr>
+<tr><td>축전기 $C$</td><td>$X_C = 1/\omega_d C$</td><td>$v_C$보다 90° 앞섬</td><td>$-90^\circ$ ($-\pi/2$ rad)</td><td>$V_C = I_C X_C$</td></tr>
+<tr><td>인덕터 $L$</td><td>$X_L = \omega_d L$</td><td>$v_L$보다 90° 뒤짐</td><td>$+90^\circ$ ($+\pi/2$ rad)</td><td>$V_L = I_L X_L$</td></tr>
+</tbody>
+</table>
+
+<figure>
+<svg viewBox="0 0 640 250" role="img" aria-label="세 소자의 전위차와 전류">
+  <g id="ld-g"></g>
+</svg>
+<figcaption>실선: 전위차 v, 점선: 전류 i (한 주기). 축전기는 전류가 먼저, 인덕터는 전류가 나중에 최대가 된다.</figcaption>
+</figure>
+
+<script>
+(() => {
+  const g = document.getElementById('ld-g'), NS = 'http://www.w3.org/2000/svg';
+  const panels = [
+    { x: 20, name: '저항  φ = 0', note: '동위상', sh: 0 },
+    { x: 230, name: '축전기  φ = −90°', note: '전류가 90° 앞섬', sh: Math.PI / 2 },
+    { x: 440, name: '인덕터  φ = +90°', note: '전류가 90° 뒤짐', sh: -Math.PI / 2 }
+  ];
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt) e.textContent = txt; g.appendChild(e); };
+  for (const p of panels) {
+    const W = 180, Y = 125;
+    el('line', { x1: p.x, y1: Y, x2: p.x + W, y2: Y, stroke: '#1a1a1a', 'stroke-width': 1 });
+    el('line', { x1: p.x, y1: 50, x2: p.x, y2: 200, stroke: '#1a1a1a', 'stroke-width': 1 });
+    let pv = '', pi = '';
+    for (let k = 0; k <= 120; k++) {
+      const u = k / 120, th = 2 * Math.PI * u, x = (p.x + W * u).toFixed(1);
+      pv += `${x},${(Y - 60 * Math.sin(th)).toFixed(1)} `;
+      pi += `${x},${(Y - 40 * Math.sin(th + p.sh)).toFixed(1)} `;
+    }
+    el('polyline', { points: pv, fill: 'none', stroke: '#1a1a1a', 'stroke-width': 2.2 });
+    el('polyline', { points: pi, fill: 'none', stroke: '#777', 'stroke-width': 2.2, 'stroke-dasharray': '6 4' });
+    el('text', { x: p.x + W / 2, y: 32, 'font-size': 15, 'text-anchor': 'middle' }, p.name);
+    el('text', { x: p.x + W / 2, y: 228, 'font-size': 14, 'text-anchor': 'middle', fill: '#5c5c5c' }, p.note);
+  }
+})();
+</script>
+
+<h2>4. 직렬 RLC 회로</h2>
+
+<h3>페이저 합과 임피던스</h3>
+
+<p>저항 $R$, 축전기 $C$, 인덕터 $L$을 교류 발전기 $\mathcal{E} = \mathcal{E}_m\sin\omega_d t$에 직렬로 연결한 회로가 <strong>직렬 RLC 회로</strong>. 직렬이므로 <mark>세 소자에는 같은 전류 $i = I\sin(\omega_d t - \phi)$가 흐른다</mark>. 목표는 전류 진폭 $I$와 위상 상수 $\phi$가 $\omega_d$에 따라 어떻게 바뀌는지 구하는 것이고, 앞 절의 페이저를 쓰면 간단해진다.</p>
+
+<p>공통 전류 페이저 $I$를 기준으로 각 전위차 페이저의 방향이 정해진다.</p>
+
+<ul>
+<li>저항: 동위상이므로 $V_R$은 $I$와 같은 방향.</li>
+<li>축전기: 전류가 90° 앞서므로 $V_C$는 $I$보다 90° 뒤(회전각이 90° 작음).</li>
+<li>인덕터: 전류가 90° 뒤지므로 $V_L$은 $I$보다 90° 앞(회전각이 90° 큼).</li>
+</ul>
+
+<p>루프 법칙에서 매 순간 $\mathcal{E} = v_R + v_C + v_L$. 사영의 합이 사영이 되려면 <mark>기전력 페이저 $\mathcal{E}_m$은 세 전위차 페이저의 벡터합</mark>이어야 한다. $V_L$과 $V_C$는 서로 반대 방향이라 합이 $V_L - V_C$이고, 이것이 $V_R$과 직각이므로 피타고라스 정리에서</p>
+
+$$ \mathcal{E}_m^2 = V_R^2 + (V_L - V_C)^2 $$
+
+<p>$V_R = IR$, $V_C = IX_C$, $V_L = IX_L$을 대입해 $I$에 대해 풀면</p>
+
+$$ I = \frac{\mathcal{E}_m}{\sqrt{R^2 + (X_L - X_C)^2}} = \frac{\mathcal{E}_m}{\sqrt{R^2 + (\omega_d L - 1/\omega_d C)^2}} $$
+
+<p>분모가 구동 각진동수 $\omega_d$에서 회로의 <mark>임피던스(impedance)</mark> $Z$.</p>
+
+$$ Z = \sqrt{R^2 + (X_L - X_C)^2}, \qquad I = \frac{\mathcal{E}_m}{Z} $$
+
+<ul class="sym">
+<li>$Z$: 임피던스 (Ω), $X_L = \omega_d L$, $X_C = 1/\omega_d C$ (Ω)</li>
+<li>$I$: 전류 진폭 (A), $\mathcal{E}_m$: 기전력 진폭 (V)</li>
+</ul>
+
+<h3>위상 상수</h3>
+
+<p>$\phi$는 페이저 그림에서 전류 페이저 $I$와 기전력 페이저 $\mathcal{E}_m$ 사이의 각. 직각삼각형에서</p>
+
+$$ \tan\phi = \frac{V_L - V_C}{V_R} = \frac{X_L - X_C}{R} $$
+
+<ul class="sym">
+<li>$\phi$: 기전력에 대한 전류의 위상 상수 (rad)</li>
+</ul>
+
+<table>
+<thead><tr><th>조건</th><th>회로의 성격</th><th>$\phi$</th><th>전류</th></tr></thead>
+<tbody>
+<tr><td>$X_L \gt X_C$</td><td>유도성이 강함</td><td>$\phi \gt 0$</td><td>기전력보다 뒤짐</td></tr>
+<tr><td>$X_L \lt X_C$</td><td>용량성이 강함</td><td>$\phi \lt 0$</td><td>기전력보다 앞섬</td></tr>
+<tr><td>$X_L = X_C$</td><td>공명</td><td>$\phi = 0$</td><td>기전력과 동위상</td></tr>
+</tbody>
+</table>
+
+<h3>공명</h3>
+
+<p>$I = \mathcal{E}_m/Z$이므로 $Z$가 가장 작을 때, 즉 $X_L = X_C$일 때 <mark>전류 진폭이 최대</mark>. $\omega_d L = 1/\omega_d C$에서</p>
+
+$$ \omega_d = \omega = \frac{1}{\sqrt{LC}} $$
+
+<p class="cond">조건: <mark>공명(resonance)</mark>, 즉 구동 각진동수가 고유 각진동수와 같음</p>
+
+<p>공명에서는 $Z = R$이라 $I_{\max} = \mathcal{E}_m/R$이고 $\phi = 0$이어서 <mark>전류가 기전력과 동위상</mark>. $\omega_d$가 $\omega$보다 작으면 $X_C$가 커서 용량성, 크면 $X_L$이 커서 유도성 회로가 된다. $R$이 커지면 공명 곡선의 봉우리 높이 $\mathcal{E}_m/R$이 낮아지고 봉우리가 넓어진다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300" role="img" aria-label="직렬 RLC 회로의 페이저와 공명 곡선">
+  <line x1="40" y1="150" x2="290" y2="150" stroke="#bbb" stroke-width="1"/>
+  <line x1="130" y1="30" x2="130" y2="270" stroke="#bbb" stroke-width="1"/>
+  <line id="rl-vl" stroke="#888" stroke-width="2.5"/>
+  <line id="rl-vc" stroke="#888" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <line id="rl-vr" stroke="#1a1a1a" stroke-width="2.5"/>
+  <line id="rl-dash" stroke="#999" stroke-width="1" stroke-dasharray="3 3"/>
+  <line id="rl-em" stroke="#1a1a1a" stroke-width="4"/>
+  <text id="rl-tvl" font-size="15" fill="#5c5c5c">V<tspan baseline-shift="sub" font-size="75%">L</tspan></text>
+  <text id="rl-tvc" font-size="15" fill="#5c5c5c">V<tspan baseline-shift="sub" font-size="75%">C</tspan></text>
+  <text id="rl-tvr" font-size="15">V<tspan baseline-shift="sub" font-size="75%">R</tspan></text>
+  <text id="rl-tem" font-size="15" font-weight="600">ℰ<tspan baseline-shift="sub" font-size="75%">m</tspan></text>
+  <text x="250" y="168" font-size="14" fill="#5c5c5c">I 방향</text>
+
+  <line x1="350" y1="250" x2="620" y2="250" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line x1="350" y1="250" x2="350" y2="40" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line id="rl-res" y1="40" y2="250" stroke="#aaa" stroke-dasharray="3 4"/>
+  <text x="326" y="50" font-size="15">I</text>
+  <text x="560" y="276" font-size="15">ω<tspan baseline-shift="sub" font-size="75%">d</tspan> / ω</text>
+  <text id="rl-one" y="270" font-size="14" fill="#5c5c5c" text-anchor="middle">1</text>
+  <text x="380" y="64" font-size="14" fill="#5c5c5c">용량성</text>
+  <text x="560" y="64" font-size="14" fill="#5c5c5c">유도성</text>
+  <polyline id="rl-curve" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle id="rl-dot" r="6" fill="#1a1a1a"/>
+  <text id="rl-txt" x="320" y="296" font-size="15" text-anchor="middle"></text>
+</svg>
+<figcaption>왼쪽: 전류 페이저를 가로축에 맞춰 놓은 전위차 페이저(실선 V<sub>R</sub>, 회색 V<sub>L</sub>, 회색 점선 V<sub>C</sub>, 굵은 선 ℰ<sub>m</sub>). 오른쪽: 전류 진폭과 구동 각진동수(점은 현재 ω<sub>d</sub>).</figcaption>
+<div class="controls">
+<label>ω<sub>d</sub>/ω <input type="range" id="rl-w" min="0.3" max="2.5" step="0.01" value="1.4"></label><span id="rl-wv"></span>
+<label>R/(ωL) <input type="range" id="rl-r" min="0.2" max="1.5" step="0.05" value="0.4"></label><span id="rl-rv"></span>
+</div>
+</figure>
+
+<script>
+(() => {
+  const w = document.getElementById('rl-w'), r = document.getElementById('rl-r');
+  const $ = id => document.getElementById(id);
+  const X0 = 350, XW = 260, xmin = 0.2, xmax = 2.5, Y0 = 250, YH = 200, Imax = 5;
+  const px = x => X0 + XW * (x - xmin) / (xmax - xmin);
+  const py = I => Y0 - YH * Math.min(I, Imax) / Imax;
+  const amp = (x, R) => 1 / Math.sqrt(R * R + (x - 1 / x) ** 2);
+  $('rl-res').setAttribute('x1', px(1)); $('rl-res').setAttribute('x2', px(1));
+  $('rl-one').setAttribute('x', px(1));
+  const line = (id, x1, y1, x2, y2) => { const e = $(id); e.setAttribute('x1', x1); e.setAttribute('y1', y1); e.setAttribute('x2', x2); e.setAttribute('y2', y2); };
+  const put = (id, x, y) => { $(id).setAttribute('x', x); $(id).setAttribute('y', y); };
+  function draw() {
+    const x = +w.value, R = +r.value;
+    let p = '';
+    for (let k = 0; k <= 300; k++) { const xx = xmin + (xmax - xmin) * k / 300; p += `${px(xx).toFixed(1)},${py(amp(xx, R)).toFixed(1)} `; }
+    $('rl-curve').setAttribute('points', p);
+    const I = amp(x, R);
+    $('rl-dot').setAttribute('cx', px(x)); $('rl-dot').setAttribute('cy', py(I));
+    const VR = I * R, VL = I * x, VC = I / x;
+    const s = 110 / Math.max(1, VL, VC, VR);
+    const ox = 130, oy = 150;
+    line('rl-vr', ox, oy, ox + s * VR, oy);
+    line('rl-vl', ox, oy, ox, oy - s * VL);
+    line('rl-vc', ox, oy, ox, oy + s * VC);
+    const ex = ox + s * VR, ey = oy - s * (VL - VC);
+    line('rl-em', ox, oy, ex, ey);
+    line('rl-dash', ox + s * VR, oy, ex, ey);
+    put('rl-tvr', ox + s * VR - 10, oy + 20);
+    put('rl-tvl', ox - 32, oy - s * VL + 6);
+    put('rl-tvc', ox - 32, oy + s * VC + 6);
+    put('rl-tem', ex + 8, ey + (ey < oy ? -4 : 16));
+    const phi = Math.atan((x - 1 / x) / R) * 180 / Math.PI;
+    const kind = Math.abs(x - 1) < 0.005 ? '공명' : (x > 1 ? '유도성: 전류가 뒤짐' : '용량성: 전류가 앞섬');
+    $('rl-txt').textContent = `φ = ${phi >= 0 ? '+' : ''}${phi.toFixed(0)}°   (${kind}),   Z/R = ${(1 / (I * R)).toFixed(2)}`;
+    $('rl-wv').textContent = x.toFixed(2); $('rl-rv').textContent = R.toFixed(2);
+  }
+  w.addEventListener('input', draw); r.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h2>5. 교류 회로의 전력</h2>
+
+<h3>순간 전력과 평균 전력</h3>
+
+<p>직렬 RLC 회로의 에너지원은 교류 발전기. 공급된 에너지 일부는 축전기의 전기장에, 일부는 인덕터의 자기장에 저장되고, 일부는 저항에서 열에너지로 소모된다. 저항에서 에너지가 소모되는 순간 비율은</p>
+
+$$ P = i^2R = [I\sin(\omega_d t - \phi)]^2R = I^2R\sin^2(\omega_d t - \phi) $$
+
+<p>한 주기에 걸친 $\sin\theta$의 평균은 0이지만 <mark>$\sin^2\theta$의 평균은 $1/2$</mark>($\sin^2\theta = (1-\cos2\theta)/2$이고 $\cos2\theta$의 평균이 0). 따라서 평균 전력은</p>
+
+$$ P_{\text{avg}} = \frac{I^2R}{2} = \left(\frac{I}{\sqrt2}\right)^2R $$
+
+<h3>rms 값</h3>
+
+<p>위 식의 $I/\sqrt2$를 전류의 <mark>제곱평균제곱근(root-mean-square, rms) 값</mark>이라 한다. 사인 꼴 전류에서 $i^2$의 한 주기 평균의 제곱근이 $I/\sqrt2$이기 때문. 전위차와 기전력도 같은 방식으로 정의한다.</p>
+
+$$ I_{\text{rms}} = \frac{I}{\sqrt2}, \qquad V_{\text{rms}} = \frac{V}{\sqrt2}, \qquad \mathcal{E}_{\text{rms}} = \frac{\mathcal{E}_m}{\sqrt2}, \qquad P_{\text{avg}} = I_{\text{rms}}^2 R $$
+
+<p class="cond">조건: 사인 꼴로 변하는 교류</p>
+
+<ul class="sym">
+<li>$I$, $V$, $\mathcal{E}_m$: 각 양의 진폭, $I_{\text{rms}}$ (A), $V_{\text{rms}}$, $\mathcal{E}_{\text{rms}}$ (V): rms 값</li>
+<li>$P_{\text{avg}}$: 저항의 평균 소모 전력 (W)</li>
+</ul>
+
+<p>rms 값을 쓰면 <mark>평균 전력이 직류의 $P = I^2R$과 같은 꼴</mark>이 된다.</p>
+
+<h3>역률</h3>
+
+<p>$I = \mathcal{E}_m/Z$의 양변을 $\sqrt2$로 나누면 $I_{\text{rms}} = \mathcal{E}_{\text{rms}}/Z = \mathcal{E}_{\text{rms}}/\sqrt{R^2 + (X_L - X_C)^2}$. 이를 $P_{\text{avg}} = I_{\text{rms}}^2R$의 전류 하나에 대입하면 $P_{\text{avg}} = \mathcal{E}_{\text{rms}}I_{\text{rms}}(R/Z)$. 페이저 직각삼각형에서 $\tan\phi = (X_L - X_C)/R$이므로 $\cos\phi = R/Z$.</p>
+
+$$ P_{\text{avg}} = \mathcal{E}_{\text{rms}} I_{\text{rms}} \cos\phi = I_{\text{rms}}^2 R $$
+
+<ul class="sym">
+<li>$P_{\text{avg}}$: 발전기가 공급하는 평균 전력 (W)</li>
+<li>$\cos\phi = R/Z$: <mark>역률(power factor)</mark></li>
+</ul>
+
+<p>$\cos(-\phi) = \cos\phi$이므로 역률은 $\phi$의 부호와 무관. 역률은 공명($\phi = 0$)에서 최댓값 1.</p>
+
+<p>정상 상태에서 축전기와 인덕터에 저장된 에너지는 한 주기 동안 들어왔다 나갈 뿐이라 <mark>평균 저장 에너지는 일정</mark>. 따라서 <mark>발전기가 공급한 에너지는 평균적으로 모두 저항에서 열에너지로 소모</mark>되고, 그래서 발전기의 평균 전력이 저항의 $I_{\text{rms}}^2R$과 같다.</p>
+
+<h2>6. 변압기</h2>
+
+<h3>송전과 변압기의 필요</h3>
+
+<p>송전선의 저항을 $R$, 보내는 전류를 $I$라 하면 송전선에서 열로 잃는 전력은 $I^2R$. 보내는 전력 $P = IV$가 정해져 있으면 $I = P/V$이므로 <mark>높은 전압·낮은 전류로 보낼수록 손실이 작다</mark>. 그런데 사용하는 곳에서는 안전을 위해 낮은 전압이 필요하다. 그래서 전류 × 전압을 거의 일정하게 유지하면서 교류 전압을 송전용으로 높이고 사용용으로 낮추는 장치가 송전선 양 끝에 필요하다.</p>
+
+<p>그 장치가 <mark>변압기(transformer)</mark>. 움직이는 부분 없이 패러데이 유도 법칙으로 동작하며, 직류에는 대응하는 간단한 장치가 없다. 이상적인 변압기는 철심에 감은 두 코일로 이루어진다. 교류 발전기에 연결된 쪽이 <mark>1차 코일(primary)</mark>, 스위치 S를 닫으면 저항 부하 $R$에 연결되는 쪽이 <mark>2차 코일(secondary)</mark>.</p>
+
+<figure>
+<svg viewBox="0 0 640 280" role="img" aria-label="변압기 구조">
+  <rect x="210" y="50" width="220" height="180" fill="none" stroke="#bbb" stroke-width="26"/>
+  <text x="300" y="30" font-size="15" fill="#5c5c5c">Φ<tspan baseline-shift="sub" font-size="75%">B</tspan> (철심)</text>
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none">
+    <path d="M190 95 h40 M190 115 h40 M190 135 h40 M190 155 h40 M190 175 h40"/>
+    <path d="M410 80 h40 M410 95 h40 M410 110 h40 M410 125 h40 M410 140 h40 M410 155 h40 M410 170 h40 M410 185 h40 M410 200 h40"/>
+    <path d="M190 95 H100 V120 M100 160 V175 H190"/>
+    <path d="M450 80 H560 V115 M560 165 V200 H450"/>
+    <circle cx="100" cy="140" r="20"/>
+    <path d="M90 140 q5 -10 10 0 q5 10 10 0"/>
+    <path d="M560 115 l12 5 l-24 10 l24 10 l-24 10 l24 10 l-12 5"/>
+  </g>
+  <text x="36" y="146" font-size="15">ℰ</text>
+  <text x="584" y="146" font-size="15">R</text>
+  <text x="140" y="140" font-size="15">V<tspan baseline-shift="sub" font-size="75%">p</tspan></text>
+  <text x="480" y="146" font-size="15">V<tspan baseline-shift="sub" font-size="75%">s</tspan></text>
+  <text x="150" y="258" font-size="15">1차 코일 N<tspan baseline-shift="sub" font-size="75%">p</tspan>회</text>
+  <text x="400" y="258" font-size="15">2차 코일 N<tspan baseline-shift="sub" font-size="75%">s</tspan>회</text>
+</svg>
+<figcaption>이상적인 변압기. 철심이 1차 코일의 자기선속 Φ<sub>B</sub>를 강하게 하여 2차 코일까지 그대로 전달한다.</figcaption>
+</figure>
+
+<h3>전압 변환</h3>
+
+<p>철심은 선속을 강하게 하고 2차 코일까지 이끈다. 그래서 $\Phi_B$가 변하면 2차 코일의 한 바퀴마다 크기 $\mathcal{E}_{\text{turn}} = d\Phi_B/dt$인 기전력이 생기고, <mark>한 바퀴당 기전력은 1차와 2차에서 같다</mark>. 각 코일의 전압은 한 바퀴당 기전력 × 감은 수이므로</p>
+
+$$ V_p = N_p\frac{d\Phi_B}{dt}, \quad V_s = N_s\frac{d\Phi_B}{dt} \;\Rightarrow\; \frac{d\Phi_B}{dt} = \frac{V_p}{N_p} = \frac{V_s}{N_s} $$
+
+$$ V_s = V_p\frac{N_s}{N_p} $$
+
+<p class="cond">조건: 에너지 손실과 누설 선속이 없는 이상적인 변압기</p>
+
+<ul class="sym">
+<li>$V_p$, $V_s$: 1차·2차 코일의 전압 (V, 보통 rms 값)</li>
+<li>$N_p$, $N_s$: 1차·2차 코일의 감은 수</li>
+</ul>
+
+<p>$N_s \gt N_p$이면 $V_s \gt V_p$인 <mark>승압 변압기(step-up)</mark>, $N_s \lt N_p$이면 <mark>강압 변압기(step-down)</mark>.</p>
+
+<h3>전류 변환과 에너지 보존</h3>
+
+<p>발전기가 1차 코일에 에너지를 전달하는 비율은 $I_pV_p$, 1차 코일이 두 코일을 잇는 교류 자기장을 통해 2차 코일에 전달하는 비율은 $I_sV_s$. 도중에 잃는 에너지가 없으면 <mark>에너지 보존에 의해 $I_pV_p = I_sV_s$</mark>. 여기에 전압 변환식을 넣으면</p>
+
+$$ I_s = I_p\frac{N_p}{N_s} $$
+
+<ul class="sym">
+<li>$I_p$, $I_s$: 1차·2차 코일의 전류 (A)</li>
+</ul>
+
+<p>즉 <mark>전압을 높이면 전류는 같은 비율로 줄어든다</mark>.</p>
+
+<h3>등가 저항과 임피던스 정합</h3>
+
+<p>2차 쪽 부하 $R$은 1차 쪽 발전기에게 다른 크기의 저항처럼 보인다. $V_s = V_p N_s/N_p$와 $V_s = I_sR$을 쓰면</p>
+
+$$ I_p = I_s\frac{V_s}{V_p} = \frac{V_s}{R}\cdot\frac{N_s}{N_p} = \frac1R\left(\frac{N_s}{N_p}\right)^2V_p \equiv \frac{V_p}{R_{\text{eq}}} $$
+
+$$ R_{\text{eq}} = \left(\frac{N_p}{N_s}\right)^2 R $$
+
+<ul class="sym">
+<li>$R_{\text{eq}}$: 발전기 쪽에서 본 부하의 <mark>등가 저항(equivalent resistance)</mark> (Ω)</li>
+<li>$R$: 2차 코일에 연결된 실제 부하 저항 (Ω)</li>
+</ul>
+
+<p>발전기는 저항 $R_{\text{eq}}$에 직접 연결된 것처럼 전류 $I_p$와 전압 $V_p$를 만든다. 발전기(내부 저항을 가진 기전력원)에서 부하로 가는 에너지 전달은 부하 저항이 발전기 내부 저항과 같을 때 최대인데, 두 값이 다르면 감은 수의 비를 골라 $R_{\text{eq}}$를 내부 저항에 맞출 수 있다. 이것이 변압기를 이용한 <mark>임피던스 정합(impedance matching)</mark>.</p>
+
+<h2>예제</h2>
+
+<p><strong>1.</strong> $L = 10\text{ mH}$, $C = 1.0\ \mu\text{F}$인 LC 회로에서 축전기의 최대 전하가 $Q = 2.0\ \mu\text{C}$이다. 각진동수, 전류 진폭, 총에너지는?</p>
+
+<p>$\omega = 1/\sqrt{LC} = 1/\sqrt{(10^{-2})(10^{-6})} = 1.0\times10^4$ rad/s ($f = \omega/2\pi \approx 1.6$ kHz). $I = \omega Q = (10^4)(2\times10^{-6}) = 0.020$ A. $U = Q^2/2C = (2\times10^{-6})^2/(2\times10^{-6}) = 2.0\ \mu\text{J}$. 확인: $\tfrac12LI^2 = \tfrac12(10^{-2})(0.02)^2 = 2.0\ \mu\text{J}$.</p>
+
+<p><strong>2.</strong> $L = 10\text{ mH}$, $R = 2.0\ \Omega$인 RLC 회로에서 전하 진폭이 처음의 절반이 되는 시간은?</p>
+
+<p>$e^{-Rt/2L} = 1/2$에서 $t = 2L\ln2/R = (0.02)(0.693)/2.0 \approx 6.9\text{ ms}$.</p>
+
+<p><strong>3.</strong> 진동수 60 Hz에서 $C = 10\ \mu\text{F}$, $L = 0.10\text{ H}$의 리액턴스는?</p>
+
+<p>$\omega_d = 2\pi(60) \approx 377$ rad/s. $X_C = 1/(377\times10^{-5}) \approx 265\ \Omega$, $X_L = 377\times0.10 \approx 37.7\ \Omega$.</p>
+
+<p><strong>4.</strong> 직렬 RLC 회로에서 $R = 40\ \Omega$, $X_L = 80\ \Omega$, $X_C = 50\ \Omega$, $\mathcal{E}_m = 100$ V이다. $Z$, $I$, $\phi$, $P_{\text{avg}}$는?</p>
+
+<p>$Z = \sqrt{40^2 + 30^2} = 50\ \Omega$, $I = 100/50 = 2.0$ A. $\tan\phi = 30/40$에서 $\phi \approx +37^\circ$ (유도성, 전류가 뒤짐). $I_{\text{rms}} = 2/\sqrt2 \approx 1.41$ A이므로 $P_{\text{avg}} = I_{\text{rms}}^2R = 2\times40 = 80$ W. 확인: $\mathcal{E}_{\text{rms}}I_{\text{rms}}\cos\phi = (70.7)(1.41)(0.8) \approx 80$ W.</p>
+
+<p><strong>5.</strong> 이상적인 변압기에서 $V_p = 120$ V, $N_p = 200$, $N_s = 20$, 부하 $R = 6.0\ \Omega$이다. $V_s$, $I_s$, $I_p$, $R_{\text{eq}}$는?</p>
+
+<p>$V_s = 120\times20/200 = 12$ V, $I_s = 12/6.0 = 2.0$ A, $I_p = I_sN_s/N_p = 0.20$ A. $R_{\text{eq}} = (200/20)^2\times6.0 = 600\ \Omega$. 확인: $V_p/R_{\text{eq}} = 120/600 = 0.20$ A $= I_p$.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

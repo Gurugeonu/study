@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>32장 맥스웰 방정식과 물질의 자성</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>32장 맥스웰 방정식과 물질의 자성</h1>
+
+<h2>자기장에 대한 가우스 법칙</h2>
+
+<h3>자기 홀극은 없다</h3>
+
+<p>막대자석을 분필처럼 쪼개도 조각마다 다시 N극과 S극이 생긴다. 원자, 나아가 전자와 원자핵까지 쪼개도 극 하나만 떼어낼 수 없다. 홀로 있는 극이 <mark>자기 홀극(magnetic monopole)</mark>이고, 지금까지 발견된 적 없음.</p>
+
+<p>따라서 존재할 수 있는 가장 단순한 자기 구조는 N극과 S극이 짝을 이룬 <mark>자기 쌍극자(magnetic dipole)</mark>.</p>
+
+<h3>가우스 법칙</h3>
+
+<p>곡면을 지나는 <strong>자기 선속(magnetic flux)</strong>은 곡면을 작은 조각 $d\vec A$(크기 = 조각 넓이, 방향 = 면에 수직)로 나눠 $\vec B\cdot d\vec A$를 모두 더한 값. 닫힌 곡면, 즉 <strong>가우스 곡면</strong>에서는 $d\vec A$를 바깥쪽으로 잡는다.</p>
+
+$$\Phi_B=\oint\vec B\cdot d\vec A=0$$
+
+<ul class="sym">
+<li>$\Phi_B$: 닫힌 곡면을 지나는 알짜 자기 선속 (Wb = T·m²)</li>
+<li>$\vec B$: 자기장 (T)</li>
+<li>$d\vec A$: 곡면 조각의 넓이 벡터, 바깥 방향 (m²)</li>
+</ul>
+
+<p>이것이 <mark>자기장에 대한 가우스 법칙</mark>. 전기장의 가우스 법칙과 비교하면 뜻이 드러난다.</p>
+
+$$\Phi_E=\oint\vec E\cdot d\vec A=\frac{q_\text{enc}}{\varepsilon_0}$$
+
+<ul class="sym">
+<li>$q_\text{enc}$: 곡면이 둘러싼 알짜 전하 (C)</li>
+<li>$\varepsilon_0$: 진공의 유전율 ($8.85\times10^{-12}$ C²/(N·m²))</li>
+</ul>
+
+<p>전기 선속은 곡면 안의 전하에 비례한다. 자기 선속이 늘 0인 것은 곡면 안의 "자기 전하", 즉 홀극이 언제나 0이기 때문. 즉 <mark>자기 가우스 법칙 = 자기 홀극이 없다는 말</mark>.</p>
+
+<p>자기력선은 N극에서 나와 S극으로 들어간 뒤 자석 안을 지나 다시 N극으로 이어지는 닫힌 고리다. 그래서 어떤 닫힌 곡면을 잡아도 들어가는 선과 나오는 선의 수가 같다. N극만 감싼 곡면 I도 자석 안에서 올라오는 선이 들어오므로 알짜 선속은 0.</p>
+
+<figure>
+<svg id="gauss-svg" viewBox="0 0 640 330" role="img" aria-label="막대자석의 자기력선과 두 가우스 곡면">
+<rect x="300" y="120" width="40" height="100" fill="#e6e6e6" stroke="#1a1a1a" stroke-width="1.5"/>
+<line x1="320" y1="210" x2="320" y2="132" stroke="#1a1a1a" stroke-width="1.5"/>
+<polygon points="320,124 315,134 325,134" fill="#1a1a1a"/>
+<text x="331" y="140" font-size="14" text-anchor="middle" fill="#1a1a1a">N</text>
+<text x="331" y="212" font-size="14" text-anchor="middle" fill="#1a1a1a">S</text>
+<g id="gauss-lines"></g>
+<ellipse cx="320" cy="122" rx="48" ry="32" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6 4"/>
+<line x1="396" y1="32" x2="356" y2="98" stroke="#5c5c5c" stroke-width="1"/><text x="400" y="30" font-size="15" fill="#1a1a1a">곡면 I</text>
+<ellipse cx="172" cy="170" rx="30" ry="42" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6 4"/>
+<line x1="104" y1="292" x2="158" y2="208" stroke="#5c5c5c" stroke-width="1"/><text x="60" y="308" font-size="15" fill="#1a1a1a">곡면 II</text>
+<text x="432" y="56" font-size="16" fill="#1a1a1a">B</text>
+</svg>
+<figcaption>막대자석의 자기력선(실선)과 닫힌 곡면 두 개(점선). 두 곡면 모두 들어가는 선과 나오는 선의 수가 같다.</figcaption>
+</figure>
+
+<h2>유도 자기장</h2>
+
+<h3>맥스웰 유도 법칙</h3>
+
+<p>30장의 <strong>패러데이 유도 법칙</strong>: 변하는 자기 선속이 전기장을 유도한다.</p>
+
+$$\oint\vec E\cdot d\vec s=-\frac{d\Phi_B}{dt}$$
+
+<p>대칭성을 생각하면 반대 방향의 유도, 즉 변하는 전기 선속이 자기장을 만드는 현상도 기대할 수 있고, 실제로 일어난다. 식도 거의 대칭이다.</p>
+
+$$\oint\vec B\cdot d\vec s=\mu_0\varepsilon_0\frac{d\Phi_E}{dt}$$
+
+<ul class="sym">
+<li>$\vec B$: 닫힌 고리를 따라 유도된 자기장 (T)</li>
+<li>$d\vec s$: 고리를 따르는 길이 요소 (m)</li>
+<li>$\Phi_E$: 고리가 둘러싼 면을 지나는 전기 선속 (V·m)</li>
+<li>$\mu_0$: 진공의 투자율 ($4\pi\times10^{-7}$ T·m/A), $\varepsilon_0$: 진공의 유전율</li>
+</ul>
+
+<p>이것이 <mark>맥스웰 유도 법칙(Maxwell's law of induction)</mark>. 고리가 둘러싼 영역의 <mark>전기 선속이 변하면 고리를 따라 자기장이 유도</mark>된다.</p>
+
+<h3>충전 중인 축전기</h3>
+
+<p>원형 평행판 축전기를 일정한 전류 $i$로 충전하면 판의 전하가 일정한 비율로 늘고, 판 사이 전기장 $E$도 일정한 비율로 커진다. 판 사이에 판과 나란한 원형 고리를 잡으면 고리를 지나는 전기 선속이 변하므로 <mark>고리를 따라 자기장이 생긴다</mark>.</p>
+
+<p>대칭 때문에 같은 반지름 $r$의 고리 위에서 $B$의 크기는 같고 방향은 고리에 접한다. 방향은 오른손 엄지를 전기장이 커지는 방향에 두었을 때 나머지 손가락이 감는 방향.</p>
+
+<h3>유도 전기장과 유도 자기장의 방향</h3>
+
+<p>맥스웰 유도 법칙에는 패러데이 법칙의 음의 부호가 없다. 그래서 비슷한 상황에서 <mark>유도 전기장과 유도 자기장은 서로 반대 방향</mark>으로 감긴다.</p>
+
+<p>예를 들어 지면 안쪽을 향하는 전기장이 커지면 유도 자기장은 (앞에서 보아) 시계 방향이지만, 지면 안쪽을 향하는 자기장이 커지면 유도 전기장은 반시계 방향.</p>
+
+<h3>앙페르–맥스웰 법칙</h3>
+
+<p>자기장은 전류로도 생긴다. 29장의 <strong>앙페르 법칙</strong> $\oint\vec B\cdot d\vec s=\mu_0 i_\text{enc}$은 닫힌 고리를 따른 $B$의 선적분이 고리가 둘러싼 알짜 전류에 비례한다는 식.</p>
+
+<p>자성 물질 없이 자기장을 만드는 두 원인, 전류와 변하는 전기장이 <mark>똑같은 꼴의 식</mark>을 주므로 하나로 합친다.</p>
+
+$$\oint\vec B\cdot d\vec s=\mu_0\varepsilon_0\frac{d\Phi_E}{dt}+\mu_0 i_\text{enc}$$
+
+<ul class="sym">
+<li>$i_\text{enc}$: 고리가 둘러싼 알짜 실제 전류 (A)</li>
+<li>나머지 문자는 맥스웰 유도 법칙과 같음</li>
+</ul>
+
+<p>이것이 <mark>앙페르–맥스웰 법칙(Ampère–Maxwell law)</mark>. 일정한 전류가 흐르는 도선처럼 전류는 있지만 전기 선속 변화가 없으면 첫 항이 0이라 앙페르 법칙이 되고, 충전 중인 축전기의 판 사이처럼 전류 없이 전기 선속만 변하면 둘째 항이 0이라 맥스웰 유도 법칙이 된다.</p>
+
+<h2>변위 전류</h2>
+
+<h3>정의</h3>
+
+<p>앙페르–맥스웰 법칙의 두 항을 비교하면 $\varepsilon_0\,d\Phi_E/dt$는 전류와 같은 차원이어야 한다. 그래서 이 양을 가상의 전류로 보고 <mark>변위 전류(displacement current)</mark>라 부른다.</p>
+
+$$i_d=\varepsilon_0\frac{d\Phi_E}{dt}$$
+
+<ul class="sym">
+<li>$i_d$: 변위 전류 (A)</li>
+<li>$\Phi_E$: 전기 선속 (V·m), $\varepsilon_0$: 진공의 유전율</li>
+</ul>
+
+<p>이를 쓰면 앙페르–맥스웰 법칙이 두 전류의 합 꼴이 된다.</p>
+
+$$\oint\vec B\cdot d\vec s=\mu_0 i_{d,\text{enc}}+\mu_0 i_\text{enc}$$
+
+<ul class="sym">
+<li>$i_{d,\text{enc}}$: 적분 고리가 둘러싼 변위 전류 (A)</li>
+</ul>
+
+<p>실제로 전하가 흐르는 것은 아니지만, <mark>변하는 전기장의 효과를 전류처럼 다룰 수 있어</mark> 식이 간단해진다.</p>
+
+<h3>축전기 속 변위 전류와 실제 전류</h3>
+
+<p>넓이 $A$인 평행판의 전하 $q$와 판 사이 전기장의 크기 $E$ 사이에는 $q=\varepsilon_0 AE$. 시간으로 미분하면 도선의 실제 전류.</p>
+
+$$i=\frac{dq}{dt}=\varepsilon_0A\frac{dE}{dt}$$
+
+<p>판 사이 전기장은 균일하므로 $\Phi_E=EA$이고, 따라서</p>
+
+$$i_d=\varepsilon_0\frac{d\Phi_E}{dt}=\varepsilon_0\frac{d(EA)}{dt}=\varepsilon_0A\frac{dE}{dt}=i$$
+
+<p>즉 <mark>변위 전류는 도선의 실제 전류와 크기가 같다</mark>. 실제 전류가 한 판에서 틈을 건너 다른 판으로 이어지는 것처럼 볼 수 있고, 변위 전류는 <mark>판 면적 전체에 고르게 퍼져</mark> 있다.</p>
+
+<p>충전이 끝나 전기장이 변하지 않으면 $dE/dt=0$이므로 <mark>변위 전류는 전기장이 변하는 동안에만 존재</mark>. 방전 때는 $E$가 줄어 $i_d$가 전기장과 반대 방향이 되며, 실제 전류도 반대로 흐르므로 역시 $i_d=i$.</p>
+
+<p>실제 전류가 만드는 자기장의 방향을 찾던 오른손 규칙(엄지 = 전류 방향, 나머지 손가락 = 자기장이 감는 방향)을 변위 전류에도 그대로 쓴다. 충전 중에는 $i_d$가 $i$와 같은 방향이므로, 판 사이와 도선 주위의 자기장이 같은 방향으로 감긴다.</p>
+
+<h3>변위 전류가 만드는 자기장</h3>
+
+<p>반지름 $R$인 원형 판 사이에서 중심축으로부터 $r$ 떨어진 점의 자기장은, 실제 전류가 흐르는 굵은 도선의 경우를 그대로 따라 구한다. 중심축에 맞춘 반지름 $r$의 원을 고리로 잡으면 대칭 때문에 $\oint\vec B\cdot d\vec s=B(2\pi r)$이고, 판 사이에는 실제 전류가 없다.</p>
+
+<p>$r\le R$이면 고리는 고르게 퍼진 변위 전류 중 넓이 비 $\pi r^2/\pi R^2$만큼만 둘러싸므로 $B(2\pi r)=\mu_0 i_d\,r^2/R^2$. $r\ge R$이면 $i_d$ 전체를 둘러싸므로 $B(2\pi r)=\mu_0 i_d$.</p>
+
+$$B=\left(\frac{\mu_0 i_d}{2\pi R^2}\right)r\quad(r\le R),\qquad B=\frac{\mu_0 i_d}{2\pi r}\quad(r\ge R)$$
+
+<p class="cond">조건: <mark>원형 평행판</mark>, 판 사이 전기장 균일(가장자리 효과 무시)</p>
+
+<ul class="sym">
+<li>$B$: 중심축에서 $r$ 떨어진 점의 유도 자기장 (T)</li>
+<li>$i_d$: 변위 전류 (A)</li>
+<li>$R$: 판의 반지름 (m), $r$: 중심축에서의 거리 (m)</li>
+</ul>
+
+<p>자기장은 <mark>판 안쪽에서 $r$에 비례해 커지다 가장자리에서 최대, 바깥에서는 $1/r$로 감소</mark>. 판 바깥의 값은 같은 전류 $i$가 흐르는 긴 도선 주위의 자기장과 같다.</p>
+
+<figure>
+<svg id="cap-svg" viewBox="0 0 640 320" role="img" aria-label="축전기 판을 위에서 본 모습과 유도 자기장의 크기 그래프">
+<defs><marker id="ah-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<g id="cap-x"></g>
+<circle cx="150" cy="165" r="45" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+<circle id="cap-circ" cx="150" cy="165" r="27" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polygon id="cap-a1" points="0,0" fill="#1a1a1a"/>
+<polygon id="cap-a2" points="0,0" fill="#1a1a1a"/>
+<line x1="340" y1="280" x2="620" y2="280" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-c)"/>
+<line x1="340" y1="280" x2="340" y2="55" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-c)"/>
+<text x="350" y="62" font-size="15" fill="#1a1a1a">B</text>
+<text x="612" y="302" font-size="15" fill="#1a1a1a">r</text>
+<line x1="430" y1="280" x2="430" y2="80" stroke="#bdbdbd" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="430" y="300" font-size="14" text-anchor="middle" fill="#5c5c5c">R</text>
+<text x="520" y="300" font-size="14" text-anchor="middle" fill="#5c5c5c">2R</text>
+<text x="334" y="85" font-size="14" text-anchor="end" fill="#5c5c5c">최대</text>
+<path id="cap-curve" d="" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+<text x="350" y="140" font-size="14" fill="#5c5c5c">B ∝ r</text>
+<text x="525" y="160" font-size="14" fill="#5c5c5c">B ∝ 1/r</text>
+<line id="cap-guide" x1="0" y1="280" x2="0" y2="0" stroke="#5c5c5c" stroke-width="1" stroke-dasharray="2 3"/>
+<circle id="cap-dot" cx="0" cy="0" r="6" fill="#1a1a1a"/>
+<text x="10" y="22" font-size="14" fill="#5c5c5c">E: 지면 안쪽(×), 증가 중</text>
+</svg>
+<div class="controls">
+<label for="cap-r">고리 반지름 r</label>
+<input type="range" id="cap-r" min="0.1" max="3" step="0.05" value="0.6">
+<span id="cap-out">r = 0.60R, B = 0.60 × 최대</span>
+</div>
+<figcaption>왼쪽: 판(실선 원)을 위에서 본 모습과 반지름 r의 고리(점선). 지면 안쪽 전기장이 커지면 자기장은 시계 방향으로 감긴다. 오른쪽: 거리 r에 따른 B. 판 가장자리(r = R)에서 최대.</figcaption>
+</figure>
+
+<h2>맥스웰 방정식</h2>
+
+<h3>네 방정식</h3>
+
+<p>지금까지의 법칙 넷이 전자기학의 기본 방정식인 <mark>맥스웰 방정식(Maxwell's equations)</mark>. 아래는 <mark>유전체나 자성 물질이 없는 경우</mark>의 형태.</p>
+
+<table>
+<thead><tr><th>이름</th><th>식</th><th>의미</th></tr></thead>
+<tbody>
+<tr><td>전기에 대한 가우스 법칙</td><td>$\oint\vec E\cdot d\vec A=q_\text{enc}/\varepsilon_0$</td><td>알짜 전기 선속과 둘러싼 알짜 전하의 관계</td></tr>
+<tr><td>자기에 대한 가우스 법칙</td><td>$\oint\vec B\cdot d\vec A=0$</td><td>알짜 자기 선속과 둘러싼 알짜 자기 전하(= 0)의 관계</td></tr>
+<tr><td>패러데이 법칙</td><td>$\oint\vec E\cdot d\vec s=-\dfrac{d\Phi_B}{dt}$</td><td>유도 전기장과 변하는 자기 선속의 관계</td></tr>
+<tr><td>앙페르–맥스웰 법칙</td><td>$\oint\vec B\cdot d\vec s=\mu_0\varepsilon_0\dfrac{d\Phi_E}{dt}+\mu_0 i_\text{enc}$</td><td>유도 자기장과 변하는 전기 선속 및 전류의 관계</td></tr>
+</tbody>
+</table>
+
+<p>네 식은 나침반이 북쪽을 가리키는 이유부터 열쇠를 돌리면 자동차 시동이 걸리는 이유까지 폭넓은 현상을 설명하고, 전동기, TV 송수신기, 전화, 스캐너, 레이더, 전자레인지 같은 <mark>전자기 장치 작동의 바탕</mark>이 된다.</p>
+
+<h3>미분형</h3>
+
+<p>위의 적분형은 곡면이나 고리 전체에 대한 식이다. 공간의 한 점에서 성립하는 식(미분형)으로 바꾸려면 두 가지 수학 도구가 필요하다.</p>
+
+<p><mark>발산(divergence)</mark>: 한 점을 감싼 작은 부피에서 나가는 알짜 선속을 그 부피로 나눈 극한.</p>
+
+$$\nabla\cdot\vec E=\lim_{\int dV\to0}\frac{\oint\vec E\cdot d\vec A}{\int dV}$$
+
+<p>부피를 작은 조각으로 나눠 이 정의를 더하면, 닫힌 곡면을 지나는 선속 = 안쪽 발산의 부피 적분, 즉 $\oint\vec E\cdot d\vec A=\int(\nabla\cdot\vec E)\,dV$ (발산 정리).</p>
+
+<p><mark>스토크스 정리(Stokes' theorem)</mark>: 닫힌 고리를 따른 선적분 = 고리가 둘러싼 면에 대한 회전(curl)의 면적분.</p>
+
+$$\oint\vec E\cdot d\vec s=\int(\nabla\times\vec E)\cdot d\vec A$$
+
+<details><summary>유도 보기</summary><div>
+<p>가우스 법칙: 좌변을 발산 정리로 $\int(\nabla\cdot\vec E)\,dV$로, 우변의 $q_\text{enc}$를 전하 밀도 $\rho$의 적분 $\int\rho\,dV$로 쓴다. 어떤 부피를 잡아도 두 적분이 같아야 하므로 피적분 함수끼리 같다: $\nabla\cdot\vec E=\rho/\varepsilon_0$. 자기 가우스 법칙도 같은 방법으로 $\nabla\cdot\vec B=0$.</p>
+<p>패러데이 법칙: 좌변을 스토크스 정리로 $\int(\nabla\times\vec E)\cdot d\vec A$로, 우변을 $\Phi_B=\int\vec B\cdot d\vec A$로 쓰면 (면이 고정되어 있을 때) $-\int(\partial\vec B/\partial t)\cdot d\vec A$. 어떤 면에서도 같아야 하므로 $\nabla\times\vec E=-\partial\vec B/\partial t$.</p>
+<p>앙페르–맥스웰 법칙: 같은 방법에 $i_\text{enc}=\int\vec J\cdot d\vec A$를 쓰면 $\nabla\times\vec B=\mu_0\varepsilon_0\,\partial\vec E/\partial t+\mu_0\vec J$.</p>
+</div></details>
+
+$$\nabla\cdot\vec E=\frac{\rho}{\varepsilon_0},\qquad\nabla\cdot\vec B=0,\qquad\nabla\times\vec E=-\frac{\partial\vec B}{\partial t},\qquad\nabla\times\vec B=\mu_0\varepsilon_0\frac{\partial\vec E}{\partial t}+\mu_0\vec J$$
+
+<ul class="sym">
+<li>$\rho$: 그 점의 전하 밀도 (C/m³)</li>
+<li>$\vec J$: 그 점의 전류 밀도 (A/m²)</li>
+</ul>
+
+<p><mark>적분형과 미분형은 같은 내용</mark>을 곡면 전체와 한 점이라는 다른 관점으로 쓴 것.</p>
+
+<h2>지구의 자기</h2>
+
+<h3>천연 자석과 지구 쌍극자</h3>
+
+<p>자연에서 이미 자화된 채 발견되는 돌이 <mark>천연 자석(lodestone)</mark>. 자철석(magnetite) 덩어리로, 생기는 이유는 강자성 절에서 다룬다.</p>
+
+<p>지구는 거대한 자석이다. 표면 근처의 자기장은 지구 중심을 가로지르는 거대한 막대자석, 즉 <mark>자기 쌍극자의 자기장으로 근사</mark>된다. 실제 자기장은 태양에서 날아오는 대전 입자 때문에 일그러지지만 아래 그림은 이를 뺀 이상적인 모습.</p>
+
+<p>쌍극자 축 $MM$은 <mark>자전축 $RR$과 11.5°</mark> 기울어 있다. 또 <mark>쌍극자의 S극이 북반구</mark>, N극이 남반구에 있다. 그래서 나침반의 N극이 끌려가는 북쪽의 <strong>지자기 북극(geomagnetic north pole)</strong>은 실제로는 쌍극자의 S극.</p>
+
+<h3>편각과 복각</h3>
+
+<p>지표의 한 지점에서 자기장의 방향은 두 각으로 나타낸다.</p>
+
+<ul>
+<li><mark>편각(field declination)</mark>: 지리적 북쪽(위도 90° 쪽)과 자기장의 수평 성분 사이의 좌우 각.</li>
+<li><mark>복각(field inclination)</mark>: 수평면과 자기장 방향 사이의 위아래 각.</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 640 320" role="img" aria-label="지구 쌍극자 축의 기울기와 편각, 복각">
+<defs><marker id="ah-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<circle cx="150" cy="170" r="95" fill="#f2f2f2" stroke="#1a1a1a" stroke-width="1.5"/>
+<line x1="150" y1="55" x2="150" y2="285" stroke="#1a1a1a" stroke-width="1.5"/>
+<line x1="127" y1="57" x2="173" y2="283" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="6 4"/>
+<g transform="rotate(-11.5 150 170)">
+<rect x="140" y="120" width="20" height="100" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="150" y="146" font-size="15" text-anchor="middle" fill="#1a1a1a">S</text>
+<text x="150" y="208" font-size="15" text-anchor="middle" fill="#1a1a1a">N</text>
+</g>
+<text x="156" y="300" font-size="14" fill="#1a1a1a">R</text>
+<text x="178" y="292" font-size="14" fill="#1a1a1a">M</text>
+<text x="156" y="52" font-size="14" fill="#1a1a1a">R</text>
+<text x="112" y="52" font-size="14" fill="#1a1a1a">M</text>
+<text x="160" y="30" font-size="14" fill="#5c5c5c">지리적 북극</text>
+<text x="10" y="30" font-size="14" fill="#5c5c5c">지자기 북극</text>
+<text x="124" y="100" font-size="14" text-anchor="end" fill="#1a1a1a">11.5°</text>
+<line x1="390" y1="200" x2="390" y2="90" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-e)"/>
+<text x="378" y="82" font-size="14" fill="#5c5c5c">지리적 북쪽</text>
+<line x1="390" y1="200" x2="450" y2="105" stroke="#1a1a1a" stroke-width="2.5" marker-end="url(#ah-e)"/>
+<text x="458" y="120" font-size="14" fill="#1a1a1a">B 수평 성분</text>
+<path d="M390,150 A50,50 0 0 1 417,158" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="396" y="140" font-size="14" fill="#1a1a1a">편각</text>
+<text x="390" y="250" font-size="14" text-anchor="middle" fill="#5c5c5c">수평면(위에서 본 모습)</text>
+<line x1="500" y1="130" x2="630" y2="130" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="600" y="120" font-size="14" fill="#5c5c5c">수평면</text>
+<line x1="510" y1="130" x2="565" y2="225" stroke="#1a1a1a" stroke-width="2.5" marker-end="url(#ah-e)"/>
+<text x="572" y="228" font-size="14" fill="#1a1a1a">B</text>
+<path d="M555,130 A45,45 0 0 1 533,169" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="556" y="166" font-size="14" fill="#1a1a1a">복각</text>
+<text x="565" y="275" font-size="14" text-anchor="middle" fill="#5c5c5c">수직 단면(옆에서 본 모습)</text>
+</svg>
+<figcaption>왼쪽: 지구 속 쌍극자(S극이 북쪽). 실선은 자전축 RR, 점선은 쌍극자 축 MM. 가운데: 편각. 오른쪽: 복각(북반구에서는 B가 땅속을 향한다).</figcaption>
+</figure>
+
+<h2>자성과 전자</h2>
+
+<p>물질의 자성은 전자가 가진 두 가지 자기 쌍극자 모멘트, 스핀에 따른 것과 궤도 운동에 따른 것에서 나온다. 둘 다 양자역학이 정하는 양이다.</p>
+
+<h3>양자역학의 배경</h3>
+
+<p>전자는 파동처럼 퍼져 나가 간섭을 일으킨다(<strong>입자의 파동성</strong>). 이중 슬릿을 지난 전자를 하나씩 기록하면 처음에는 무작위한 점이지만 많이 쌓이면 간섭무늬가 된다. 즉 파동은 전자가 어디서 발견될지의 확률을 정한다(<strong>통계적 해석</strong>).</p>
+
+<p>파수 $k=2\pi/\lambda$가 분명한 긴 파동은 위치가 퍼져 있고, 위치가 분명한 짧은 펄스는 파수가 불분명하다. 이 관계가 $\Delta x\,\Delta k\ge 1/2$이고, 운동량 $p=\hbar k$를 쓰면 <mark>불확정성 원리(uncertainty principle)</mark>: 위치가 정확할수록 운동량(파장)이 부정확하고, 그 반대도 마찬가지.</p>
+
+$$\Delta x\,\Delta p\ge\frac{\hbar}{2},\qquad\hbar\equiv\frac{h}{2\pi}$$
+
+<ul class="sym">
+<li>$\Delta x$: 위치의 불확정도 (m), $\Delta p$: 운동량의 불확정도 (kg·m/s)</li>
+<li>$h$: 플랑크 상수 ($6.63\times10^{-34}$ J·s)</li>
+</ul>
+
+<p>좁은 곳에 갇힌 전자는 특정 에너지만 가질 수 있다(<mark>에너지 양자화</mark>). 예를 들어 폭 $L$의 영역($U=0$) 양쪽이 무한히 높은 벽인 무한 퍼텐셜 우물에 갇힌 전자의 허용 에너지는</p>
+
+$$E_n=\left(\frac{h^2}{8mL^2}\right)n^2,\qquad n=1,2,3,\dots$$
+
+<ul class="sym">
+<li>$E_n$: $n$번째 에너지 준위 (J), $n$: 양자수</li>
+<li>$m$: 전자 질량 (kg), $L$: 우물의 폭 (m)</li>
+</ul>
+
+<p>그 사이의 에너지는 허용되지 않는다. 이렇게 허용된 값만 갖는 성질이 전자의 각운동량에도 나타난다.</p>
+
+<h3>스핀 자기 쌍극자 모멘트</h3>
+
+<p>전자는 질량이나 전하처럼 타고난 각운동량을 가진다. 이것이 <mark>스핀 각운동량(spin angular momentum)</mark> $\vec S$, 줄여서 <strong>스핀</strong>. 공간 속 운동과 상관없는 입자 내부의 <strong>고유 성질</strong>이며 양성자와 중성자도 가진다. 스핀에 딸린 고유 자기 모멘트가 <mark>스핀 자기 쌍극자 모멘트</mark> $\vec\mu_s$.</p>
+
+$$\vec\mu_s=-\frac{e}{m}\vec S$$
+
+<ul class="sym">
+<li>$\vec\mu_s$: 스핀 자기 쌍극자 모멘트 (J/T)</li>
+<li>$\vec S$: 스핀 각운동량 (J·s)</li>
+<li>$e$: 기본 전하 ($1.60\times10^{-19}$ C), $m$: 전자 질량 ($9.11\times10^{-31}$ kg)</li>
+</ul>
+
+<p>전자의 전하가 음이라 음의 부호가 붙고, 따라서 <mark>$\vec\mu_s$와 $\vec S$는 반대 방향</mark>.</p>
+
+<p>$\vec S$와 $\vec\mu_s$ 벡터 자체는 측정할 수 없고, <mark>측정축(보통 $z$축) 방향 성분만 측정</mark>된다. 그 성분은 <mark>양자화</mark>되어 정해진 값만 가진다.</p>
+
+$$S_z=m_s\frac{h}{2\pi}=m_s\hbar,\qquad m_s=\pm\tfrac12$$
+
+<ul class="sym">
+<li>$S_z$: 스핀의 $z$성분 (J·s)</li>
+<li>$m_s$: 스핀 자기 양자수</li>
+</ul>
+
+<p>$m_s=+\tfrac12$($S_z$가 $+z$ 방향)이 <mark>스핀 업(spin up)</mark>, $m_s=-\tfrac12$이 <mark>스핀 다운(spin down)</mark>. $\mu_{s,z}=-(e/m)S_z$에 대입하면</p>
+
+$$\mu_{s,z}=-2m_s\mu_B=\mp\frac{eh}{4\pi m}=\mp\mu_B\quad(m_s=\pm\tfrac12),\qquad\mu_B=\frac{eh}{4\pi m}=\frac{e\hbar}{2m}=9.27\times10^{-24}\ \text{J/T}$$
+
+<ul class="sym">
+<li>$\mu_{s,z}$: 스핀 자기 모멘트의 $z$성분 (J/T)</li>
+<li>$\mu_B$: <strong>보어 마그네톤(Bohr magneton)</strong> (J/T)</li>
+</ul>
+
+<p>즉 <mark>스핀 자기 모멘트의 $z$성분 크기는 보어 마그네톤 하나</mark>. 보어 마그네톤은 전자 자기 모멘트를 재는 자연스러운 단위.</p>
+
+<h3>궤도 자기 쌍극자 모멘트</h3>
+
+<p>원자 속 전자는 스핀 외에 궤도 운동에 따른 <mark>궤도 각운동량(orbital angular momentum)</mark> $\vec L_\text{orb}$를 더 가지며, 여기에 <mark>궤도 자기 쌍극자 모멘트</mark> $\vec\mu_\text{orb}$가 딸린다.</p>
+
+$$\vec\mu_\text{orb}=-\frac{e}{2m}\vec L_\text{orb}$$
+
+<ul class="sym">
+<li>$\vec\mu_\text{orb}$: 궤도 자기 쌍극자 모멘트 (J/T)</li>
+<li>$\vec L_\text{orb}$: 궤도 각운동량 (J·s)</li>
+</ul>
+
+<p>역시 음의 부호라 둘은 반대 방향이고, <mark>비례 계수는 스핀의 절반</mark>($e/2m$ 대 $e/m$). 궤도 각운동량도 측정축 성분만 측정되며 양자화된다.</p>
+
+$$L_{\text{orb},z}=m_\ell\frac{h}{2\pi}=m_\ell\hbar,\qquad\mu_{\text{orb},z}=-m_\ell\frac{eh}{4\pi m}=-m_\ell\mu_B$$
+
+<p class="cond">조건: $m_\ell=0,\pm1,\pm2,\dots,\pm(\text{한계 정수})$. 한계는 전자의 상태가 정한다.</p>
+
+<ul class="sym">
+<li>$L_{\text{orb},z}$: 궤도 각운동량의 $z$성분 (J·s)</li>
+<li>$m_\ell$: 궤도 자기 양자수</li>
+<li>$\mu_{\text{orb},z}$: 궤도 자기 모멘트의 $z$성분 (J/T)</li>
+</ul>
+
+<h3>고리 모형</h3>
+
+<p>$\vec\mu_\text{orb}=-(e/2m)\vec L_\text{orb}$는 고전 역학으로도 얻을 수 있다. 전자가 원자보다 훨씬 큰 반지름 $r$의 원 궤도를 일정한 속력 $v$로 돈다고 보는 것이 <mark>고리 모형(loop model)</mark>.</p>
+
+<p>감은 수 1인 전류 고리의 자기 쌍극자 모멘트 크기는 $\mu=iA$($A$: 고리 넓이). 전류는 한 점을 지나는 전하의 비율이고, 전하 $e$가 한 바퀴 $2\pi r$을 도는 데 $2\pi r/v$가 걸리므로</p>
+
+$$i=\frac{e}{2\pi r/v},\qquad\mu_\text{orb}=iA=\frac{e}{2\pi r/v}\,\pi r^2=\frac{evr}{2}$$
+
+<p>각운동량은 $\vec l=\vec r\times\vec p$, $\vec p=m\vec v$이고 $\vec r\perp\vec v$이므로 $L_\text{orb}=mvr\sin90°=mvr$. 두 식을 나누면 $\mu_\text{orb}/L_\text{orb}=e/2m$.</p>
+
+<p>방향: 전자가 위에서 보아 반시계 방향으로 돌면 $\vec L_\text{orb}$는 위쪽. 전자 전하가 음이라 전류는 시계 방향이고 $\vec\mu_\text{orb}$는 아래쪽. 반대 방향이므로 음의 부호를 붙이면 $\vec\mu_\text{orb}=-(e/2m)\vec L_\text{orb}$. 즉 <mark>고전적 분석이 양자역학과 같은 결과</mark>. 스핀의 계수 $e/m$은 이런 고전적 회전으로 설명되지 않는 고유 성질이다.</p>
+
+<p>같은 방법으로, 전하 $q$가 반지름 $R$인 고리에 고르게 퍼져 회전목마처럼 각속력 $\omega$로 돌면 주기 $2\pi/\omega$마다 전하 $q$가 한 점을 지나므로 $i=q\omega/2\pi$, $\mu=i\pi R^2=q\omega R^2/2$. 반지름 $r$의 원을 속력 $v$로 도는 대전 입자 $q$는 $\mu=qvr/2$.</p>
+
+<figure>
+<svg viewBox="0 0 640 300" role="img" aria-label="고리 모형: 원 궤도를 도는 전자와 각운동량, 자기 모멘트의 방향">
+<defs><marker id="ah-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<ellipse cx="320" cy="170" rx="160" ry="50" fill="#f2f2f2" stroke="#1a1a1a" stroke-width="1.5"/>
+<line x1="320" y1="170" x2="320" y2="40" stroke="#1a1a1a" stroke-width="2.5" marker-end="url(#ah-l)"/>
+<text x="330" y="50" font-size="16" fill="#1a1a1a">L<tspan baseline-shift="sub" font-size="75%">orb</tspan></text>
+<line x1="320" y1="170" x2="320" y2="290" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="7 4" marker-end="url(#ah-l)"/>
+<text x="330" y="285" font-size="16" fill="#1a1a1a">μ<tspan baseline-shift="sub" font-size="75%">orb</tspan></text>
+<line x1="320" y1="170" x2="217" y2="208" stroke="#5c5c5c" stroke-width="1.5"/>
+<text x="262" y="182" font-size="15" fill="#5c5c5c">r</text>
+<text x="420" y="178" font-size="15" fill="#5c5c5c">A</text>
+<circle cx="217" cy="208" r="8" fill="#1a1a1a"/>
+<text x="190" y="240" font-size="15" fill="#1a1a1a">−e</text>
+<line x1="227" y1="211" x2="282" y2="225" stroke="#1a1a1a" stroke-width="2" marker-end="url(#ah-l)"/>
+<text x="288" y="240" font-size="15" fill="#1a1a1a">v</text>
+<line x1="423" y1="132" x2="465" y2="143" stroke="#1a1a1a" stroke-width="2" marker-end="url(#ah-l)"/>
+<text x="440" y="124" font-size="15" fill="#1a1a1a">i</text>
+</svg>
+<figcaption>전자(−e)가 위에서 보아 반시계 방향으로 돌면 L<sub>orb</sub>는 위, 전류 i는 시계 방향, μ<sub>orb</sub>는 아래(점선).</figcaption>
+</figure>
+
+<h3>외부 자기장 속 에너지</h3>
+
+<p>외부 자기장 $\vec B_\text{ext}$ 속 전류 고리에 방향에 따른 에너지가 있듯, 전자의 자기 모멘트에도 <mark>방향 에너지(orientation energy)</mark>가 있다. $z$축을 $\vec B_\text{ext}$ 방향으로 잡으면</p>
+
+$$U=-\vec\mu_s\cdot\vec B_\text{ext}=-\mu_{s,z}B_\text{ext},\qquad U=-\vec\mu_\text{orb}\cdot\vec B_\text{ext}=-\mu_{\text{orb},z}B_\text{ext}$$
+
+<ul class="sym">
+<li>$U$: 방향 에너지 (J)</li>
+<li>$B_\text{ext}$: 외부 자기장 (T)</li>
+<li>$\mu_{s,z}$, $\mu_{\text{orb},z}$: 스핀·궤도 자기 모멘트의 $z$성분 (J/T)</li>
+</ul>
+
+<p><mark>자기 모멘트가 외부장과 나란할수록 에너지가 낮다</mark>. 스핀 업 전자는 $\mu_{s,z}=-\mu_B$라 $U=+\mu_BB_\text{ext}$, 스핀 다운은 $U=-\mu_BB_\text{ext}$. 궤도 운동은 $U=m_\ell\mu_BB_\text{ext}$.</p>
+
+<p>크기 감각: $B=1$ T이면 $\mu_BB\approx9.3\times10^{-24}$ J $\approx5.8\times10^{-5}$ eV이고, 볼츠만 상수 $k_B$로 나눠 온도로 바꾸면 약 0.7 K. 상온(300 K)의 열에너지 $k_BT\approx\tfrac1{40}$ eV는 이보다 400배 이상 크므로, <mark>상온에서는 열운동이 자기 정렬보다 훨씬 강하다</mark>.</p>
+
+<h3>비균일 자기장 속 고리가 받는 힘</h3>
+
+<p>자성 물질이 비균일 자기장에서 끌리거나 밀리는 이유를 고리 모형으로 본다. 위로 갈수록 자기력선이 퍼지는(약해지는) 장에서는, 고리가 있는 곳의 $\vec B_\text{ext}$가 바깥쪽으로 기울어 있다.</p>
+
+<p>고리 조각 $d\vec L$이 받는 힘 $d\vec F=i\,d\vec L\times\vec B_\text{ext}$는 $\vec B_\text{ext}$에 수직이라 약간 위나 아래로 기운다. 고리 전체를 더하면 수평 성분은 상쇄되고 수직 성분만 남는다.</p>
+
+<ul>
+<li>위에서 보아 <strong>시계 방향 전류</strong>($\vec\mu$가 아래, 장과 반대): 알짜 힘이 <mark>위, 약한 장 쪽</mark>.</li>
+<li><strong>반시계 방향 전류</strong>($\vec\mu$가 위, 장과 나란): 알짜 힘이 <mark>아래, 강한 장 쪽</mark>.</li>
+</ul>
+
+<p>에너지로도 같은 결론: $U=-\vec\mu\cdot\vec B$이므로 $\vec\mu$가 장과 나란하면 $B$가 클수록 $U$가 낮아 강한 쪽으로, 반대면 $B$가 작을수록 $U$가 낮아 약한 쪽으로 간다.</p>
+
+<figure>
+<svg viewBox="0 0 640 320" role="img" aria-label="비균일 자기장 속 두 전류 고리가 받는 힘">
+<defs><marker id="ah-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<g id="nonu-g"></g>
+<text x="170" y="306" font-size="14" text-anchor="middle" fill="#1a1a1a">시계 방향 전류: 위(약한 장)로</text>
+<text x="470" y="306" font-size="14" text-anchor="middle" fill="#1a1a1a">반시계 방향 전류: 아래(강한 장)로</text>
+</svg>
+<figcaption>옆에서 본 고리. 자기장(가는 회색 선)은 위로 갈수록 퍼져 약해진다. ⊗·⊙는 고리 양 끝의 전류 방향, 짧은 화살표는 각 끝이 받는 힘 dF, 굵은 화살표는 알짜 힘 F, 점선 화살표는 자기 모멘트 μ.</figcaption>
+</figure>
+
+<h2>물질의 자성</h2>
+
+<h3>세 종류</h3>
+
+<table>
+<thead><tr><th></th><th>원자의 자기 모멘트</th><th>외부장과 모멘트의 방향</th><th>비균일장에서</th></tr></thead>
+<tbody>
+<tr><td>반자성</td><td>외부장이 있을 때만 생김</td><td>반대</td><td>약하게 밀림</td></tr>
+<tr><td>상자성</td><td>영구 모멘트, 방향 무작위</td><td>나란하게 정렬하려 함</td><td>약하게 끌림</td></tr>
+<tr><td>강자성</td><td>영구 모멘트, 이웃끼리 정렬</td><td>나란, 강함. 외부장 없이도 자발적 자화</td><td>강하게 끌림, 영구 자화 유지 가능</td></tr>
+</tbody>
+</table>
+
+<h3>반자성</h3>
+
+<p><mark>반자성(diamagnetism)</mark> 물질은 외부 자기장 속에서만 자성을 띠며, <mark>외부장과 반대 방향</mark>의 자기 쌍극자 모멘트가 생긴다. 외부장을 거는 동안 선속이 변하며 유도된 전기장이 전자의 궤도 운동을 바꿔 생기는 효과.</p>
+
+<p>비균일 장에서는 <mark>강한 장에서 약한 장 쪽으로 밀려난다</mark>. 고리 모형의 시계 방향 고리($\vec\mu$가 장과 반대)와 같은 경우. 반자성은 모든 물질에 있지만 매우 약해, 상자성이나 강자성이 있는 물질에서는 가려진다.</p>
+
+<h3>상자성과 자기화</h3>
+
+<p><mark>상자성(paramagnetism)</mark> 물질의 원자는 영구 자기 쌍극자 모멘트를 갖지만 방향이 무작위라 알짜 모멘트는 0. 외부장 $\vec B_\text{ext}$를 걸면 쌍극자가 장 방향으로 정렬하려 해서 알짜 모멘트가 생기고, 비균일 장에서는 강한 쪽으로 약하게 끌린다.</p>
+
+<p>부피 $V$ 안에서 정렬된 정도가 <mark>자기화(magnetization)</mark> $M$.</p>
+
+$$M=\frac{\text{측정된 자기 모멘트}}{V},\qquad M_\text{max}=\frac{N\mu}{V}$$
+
+<ul class="sym">
+<li>$M$: 자기화 (A/m), $V$: 시료 부피 (m³)</li>
+<li>$M_\text{max}$: 쌍극자가 모두 정렬했을 때의 최대 자기화 (A/m)</li>
+<li>$N$: 부피 안 쌍극자 수, $\mu$: 원자 하나의 자기 쌍극자 모멘트 (J/T)</li>
+</ul>
+
+<p>쌍극자 $N$개가 모두 정렬한 상태가 <mark>포화(saturation)</mark>이고, 이때 $M$이 최대.</p>
+
+<h3>퀴리 법칙</h3>
+
+<p>외부장은 쌍극자를 정렬시키고 열운동은 흩뜨리므로, 정렬 정도는 $B_\text{ext}/T$로 정해진다. 그 비가 작을 때</p>
+
+$$M=C\frac{B_\text{ext}}{T}$$
+
+<p class="cond">조건: <mark>$B_\text{ext}/T$가 작을 때</mark>(약한 장 또는 높은 온도)</p>
+
+<ul class="sym">
+<li>$C$: 물질마다 정해진 퀴리 상수(Curie constant) (A·K/(T·m))</li>
+<li>$T$: 절대 온도 (K)</li>
+</ul>
+
+<p>이것이 <mark>퀴리 법칙(Curie's law)</mark>. 자기화는 자기 에너지와 열에너지의 비를 따라 $M/M_\text{max}\sim\mu_BB_\text{ext}/(k_BT)$ 정도. $B_\text{ext}/T$가 커지면 직선에서 벗어나 $M\to M_\text{max}$로 <mark>포화</mark>한다. 실험에서도 서로 다른 온도의 측정값이 모두 $B_\text{ext}/T$만의 함수로 한 곡선에 놓이고, 같은 온도에서는 $B_\text{ext}$가 클수록 정렬이 크다.</p>
+
+<p>가장 단순한 모형은 모멘트 $\mu$의 쌍극자가 장과 나란한 방향($U=-\mu B$)과 반대 방향($U=+\mu B$) 둘만 갖는다고 보는 것. 온도 $T$에서 에너지 $E_r$인 상태의 확률은 볼츠만 인자 $P_r\propto e^{-E_r/k_BT}$를 따른다.</p>
+
+$$\frac{M}{M_\text{max}}=\tanh\!\left(\frac{\mu B_\text{ext}}{k_BT}\right),\qquad C=\frac{N\mu^2}{Vk_B}$$
+
+<ul class="sym">
+<li>$k_B$: 볼츠만 상수 ($1.38\times10^{-23}$ J/K)</li>
+</ul>
+
+<details><summary>유도 보기</summary><div>
+<p>쌍극자 하나의 평균 모멘트(장 방향 성분)는 두 상태 확률의 가중 평균. $x=\mu B/(k_BT)$로 두면 $P_\text{up}\propto e^{x}$, $P_\text{dn}\propto e^{-x}$이므로</p>
+$$\bar\mu=\frac{\mu P_\text{up}-\mu P_\text{dn}}{P_\text{up}+P_\text{dn}}=\mu\,\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}=\mu\tanh x$$
+<p>$M=N\bar\mu/V$이고 $M_\text{max}=N\mu/V$이므로 $M/M_\text{max}=\tanh x$.</p>
+<p>약한 장($x\ll1$)이면 $\tanh x\approx x$라 $\bar\mu\approx(\mu^2/k_BT)B$. 원자 하나의 감수율 $\chi\approx\mu^2/(k_BT)$가 $1/T$에 비례하고, $M\approx\dfrac{N\mu^2}{Vk_B}\dfrac{B}{T}$이므로 퀴리 법칙과 같은 꼴이며 $C=N\mu^2/(Vk_B)$.</p>
+</div></details>
+
+<figure>
+<svg id="para-svg" viewBox="0 0 640 320" role="img" aria-label="상자성체의 자기화 곡선">
+<defs><marker id="ah-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<line x1="80" y1="280" x2="600" y2="280" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-p)"/>
+<line x1="80" y1="280" x2="80" y2="35" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-p)"/>
+<line x1="80" y1="60" x2="590" y2="60" stroke="#bdbdbd" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="72" y="65" font-size="14" text-anchor="end" fill="#5c5c5c">1</text>
+<text x="72" y="175" font-size="14" text-anchor="end" fill="#5c5c5c">0.5</text>
+<text x="240" y="300" font-size="14" text-anchor="middle" fill="#5c5c5c">1</text>
+<text x="400" y="300" font-size="14" text-anchor="middle" fill="#5c5c5c">2</text>
+<text x="560" y="300" font-size="14" text-anchor="middle" fill="#5c5c5c">3</text>
+<text x="90" y="40" font-size="15" fill="#1a1a1a">M/M<tspan baseline-shift="sub" font-size="75%">max</tspan></text>
+<text x="590" y="270" font-size="15" text-anchor="end" fill="#1a1a1a">μB/k<tspan baseline-shift="sub" font-size="75%">B</tspan>T</text>
+<line x1="80" y1="280" x2="300" y2="38" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="250" y="45" font-size="14" text-anchor="end" fill="#1a1a1a">퀴리 법칙(직선)</text>
+<path id="para-curve" d="" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+<text x="470" y="92" font-size="14" fill="#1a1a1a">tanh 곡선 → 포화</text>
+<line id="para-guide" x1="0" y1="280" x2="0" y2="0" stroke="#5c5c5c" stroke-width="1" stroke-dasharray="2 3"/>
+<circle id="para-dot" cx="0" cy="0" r="6" fill="#1a1a1a"/>
+</svg>
+<div class="controls">
+<label for="para-b">B<sub>ext</sub></label>
+<input type="range" id="para-b" min="0" max="6" step="0.1" value="2">
+<label for="para-t">T</label>
+<input type="range" id="para-t" min="0.5" max="30" step="0.5" value="2">
+<span id="para-out">B = 2.0 T, T = 2.0 K → M/M<sub>max</sub> = 0.59</span>
+</div>
+<figcaption>두 상태 모형(μ = μ<sub>B</sub>)의 자기화. B<sub>ext</sub>/T가 작으면 퀴리 법칙의 직선을 따르고, 커지면 1로 포화한다. 같은 B<sub>ext</sub>/T면 같은 점에 놓인다.</figcaption>
+</figure>
+
+<h3>강자성</h3>
+
+<p>철, 니켈 같은 물질에서는 이웃 원자의 전자 스핀끼리 <mark>교환 결합(exchange coupling)</mark>이라는 양자역학적 상호작용을 해서 원자 쌍극자가 서로 나란히 정렬한다. 원자 충돌(열운동)이 흩뜨리려 해도 정렬이 유지되므로 <mark>외부장 없이도 강한 자기화</mark>가 가능하다. 이것이 <mark>강자성(ferromagnetism)</mark>.</p>
+
+<p>상자성체에서는 열에너지 $k_BT$가 쌍극자 방향 에너지 $\mu B$보다 커서 정렬이 약했지만, 강자성체는 교환 결합 덕분에 정렬이 유지된다. 그러나 온도가 물질의 <mark>퀴리 온도(Curie temperature)</mark>를 넘으면 열운동이 교환 결합을 이겨 정렬이 사라지고 상자성체가 된다. 철의 퀴리 온도는 1043 K.</p>
+
+<p>포화된 강자성 시료의 자기화는 원자 하나의 모멘트 $\mu$로 $M=N\mu/V$.</p>
+
+<p>외부장 $\vec B_\text{ext}$ 속 강자성체에는 <mark>외부장 방향의 강한 자기 쌍극자 모멘트</mark> $\vec\mu$가 생긴다. 균일한 장에서는 쌍극자로서 토크와 방향 에너지를 갖고, 비균일 장에서는 <mark>강한 장 쪽으로 끌린다</mark>.</p>
+
+$$\vec\tau=\vec\mu\times\vec B_\text{ext},\qquad U=-\vec\mu\cdot\vec B_\text{ext}$$
+
+<ul class="sym">
+<li>$\vec\tau$: 시료가 받는 토크 (N·m)</li>
+<li>$\vec\mu$: 시료 전체의 알짜 자기 쌍극자 모멘트 (J/T)</li>
+<li>$U$: 방향 에너지 (J)</li>
+</ul>
+
+<h3>자기 구역</h3>
+
+<p>외부장으로 정렬된 쌍극자는 외부장을 없앤 뒤에도 영역별로 부분적으로 정렬된 채 남는다. 이 영역이 <mark>자기 구역(magnetic domain)</mark>. 한 구역 안의 쌍극자는 모두 나란하지만 구역마다 방향이 다르다.</p>
+
+<p>니켈 단결정 사진에서는 흰 선이 구역 경계로, 그 사이 구역마다 알짜 쌍극자 방향이 다르게 나타난다. <mark>모든 구역의 벡터 합이 0이면 결정 전체는 자화되지 않은 상태</mark>. 외부장을 걸면 장 방향 구역이 커지고(경계 이동) 다른 구역이 방향을 틀어 알짜 모멘트가 생긴다.</p>
+
+<h3>롤런드 고리와 자기 이력</h3>
+
+<p>강자성체의 자화를 재는 장치가 <mark>롤런드 고리(Rowland ring)</mark>. 강자성체로 된 고리 모양(토로이드) 심 위에 1차 코일을 감아 전류 $i$로 자기장 $B_0=\mu_0 ni$($n$: 단위 길이당 감은 수)를 걸고, 심의 자화가 더하는 자기장 $B_M$을 2차 코일로 측정한다. 심 속 자기장은 $B=B_0+B_M$이고 보통 $B_M\gg B_0$.</p>
+
+<p>$B_0$를 0에서 늘려 포화시키고(a→b) 다시 줄였다가 반대로 늘리고(→d) 되돌리면(→b), $B_M$은 같은 길로 돌아오지 않는다. 이렇게 <mark>되짚어 가지 못하는 성질이 자기 이력(hysteresis)</mark>이고, 닫힌 곡선 bcdeb가 <strong>이력 고리(hysteresis loop)</strong>.</p>
+
+<p>점 c와 e에서는 코일 전류가 0($B_0=0$)인데도 심이 자화되어 있다. 이것이 <mark>영구 자석</mark>의 원리.</p>
+
+<p>원인은 자기 구역이다. 구역 경계의 이동과 구역 방향의 전환이 완전히 되돌려지지 않아 처음 정렬의 "기억"이 남는다. <mark>이 기억이 자기 정보 저장의 바탕</mark>. 천연 자석도 같은 이유로 생긴 것으로 여겨진다. 번개의 큰 전류가 만든 강한 자기장이 자철석을 자화시키고, 장이 사라진 뒤에도 자화가 남은 것.</p>
+
+<figure>
+<svg viewBox="0 0 640 320" role="img" aria-label="자기 이력 고리">
+<defs><marker id="ah-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a"/></marker></defs>
+<line x1="110" y1="160" x2="560" y2="160" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-h)"/>
+<line x1="320" y1="300" x2="320" y2="22" stroke="#1a1a1a" stroke-width="1.5" marker-end="url(#ah-h)"/>
+<text x="560" y="185" font-size="15" text-anchor="end" fill="#1a1a1a">B<tspan baseline-shift="sub" font-size="75%">0</tspan></text>
+<text x="330" y="30" font-size="15" fill="#1a1a1a">B<tspan baseline-shift="sub" font-size="75%">M</tspan></text>
+<path d="M320,160 C340,120 400,60 500,50" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6 4"/>
+<path d="M500,50 C420,55 340,70 320,95 C300,120 292,145 286,170 C272,230 200,265 140,270" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+<path d="M140,270 C220,265 300,250 320,225 C340,200 348,175 354,150 C368,90 440,55 500,50" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+<circle cx="320" cy="95" r="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<circle cx="320" cy="225" r="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="306" y="178" font-size="15" text-anchor="end" fill="#1a1a1a">a</text>
+<text x="510" y="45" font-size="15" fill="#1a1a1a">b</text>
+<text x="306" y="88" font-size="15" text-anchor="end" fill="#1a1a1a">c</text>
+<text x="128" y="282" font-size="15" text-anchor="end" fill="#1a1a1a">d</text>
+<text x="334" y="240" font-size="15" fill="#1a1a1a">e</text>
+<text x="420" y="120" font-size="14" fill="#5c5c5c">처음 자화(a→b)</text>
+</svg>
+<figcaption>롤런드 고리로 잰 자기 이력 고리. 점선은 처음 자화 곡선, 실선이 이력 고리 bcdeb. c와 e(흰 점)는 B<sub>0</sub> = 0인데도 자화가 남은 상태.</figcaption>
+</figure>
+
+<h2>예제</h2>
+
+<p><strong>1.</strong> 반지름 $R=5.0$ cm인 원형 평행판 축전기의 판 사이 전기장이 $dE/dt=1.0\times10^{12}$ V/(m·s)로 커진다. 변위 전류와, 중심축에서 $r=2.0$ cm, $r=10$ cm인 점의 자기장을 구하라.</p>
+
+<p>$i_d=\varepsilon_0\pi R^2\,dE/dt=(8.85\times10^{-12})\pi(0.050)^2(1.0\times10^{12})\approx6.95\times10^{-2}$ A. $r=2.0$ cm $\lt R$이므로 $B=\mu_0i_dr/(2\pi R^2)=(2\times10^{-7})(0.0695)(0.020)/(0.050)^2\approx1.1\times10^{-7}$ T. $r=10$ cm $\gt R$이므로 $B=\mu_0i_d/(2\pi r)=(2\times10^{-7})(0.0695)/0.10\approx1.4\times10^{-7}$ T.</p>
+
+<p><strong>2.</strong> 고리 모형에서 전자가 반지름 $r=5.3\times10^{-11}$ m의 원을 속력 $v=2.2\times10^{6}$ m/s로 돈다. $\mu_\text{orb}$와 $L_\text{orb}$를 구하라.</p>
+
+<p>$\mu_\text{orb}=evr/2=(1.60\times10^{-19})(2.2\times10^{6})(5.3\times10^{-11})/2\approx9.3\times10^{-24}$ J/T (약 $\mu_B$). $L_\text{orb}=mvr=(9.11\times10^{-31})(2.2\times10^{6})(5.3\times10^{-11})\approx1.06\times10^{-34}$ J·s (약 $\hbar$). 비는 $e/2m\approx8.8\times10^{10}$ C/kg로 일치.</p>
+
+<p><strong>3.</strong> $B_\text{ext}=2.0$ T 속 전자의 스핀 업, 스핀 다운 상태의 방향 에너지와 그 차이를 구하라.</p>
+
+<p>스핀 업: $\mu_{s,z}=-\mu_B$이므로 $U=+\mu_BB=(9.27\times10^{-24})(2.0)\approx1.85\times10^{-23}$ J. 스핀 다운: $U\approx-1.85\times10^{-23}$ J. 차이 $2\mu_BB\approx3.7\times10^{-23}$ J.</p>
+
+<p><strong>4.</strong> $m_\ell=-1$인 전자의 $\mu_{\text{orb},z}$와, $B_\text{ext}=0.50$ T 속 방향 에너지를 구하라.</p>
+
+<p>$\mu_{\text{orb},z}=-m_\ell\mu_B=+9.27\times10^{-24}$ J/T. $U=-\mu_{\text{orb},z}B_\text{ext}=-(9.27\times10^{-24})(0.50)\approx-4.6\times10^{-24}$ J.</p>
+
+<p><strong>5.</strong> 상자성 시료가 $T=10$ K, $B_\text{ext}=0.50$ T에서 $M=2.0\times10^{3}$ A/m이다(퀴리 법칙 범위). 퀴리 상수와, $T=40$ K, 같은 장에서의 자기화를 구하라.</p>
+
+<p>$C=MT/B_\text{ext}=(2.0\times10^{3})(10)/0.50=4.0\times10^{4}$ A·K/(T·m). $M=C\,B_\text{ext}/T=(4.0\times10^{4})(0.50)/40=5.0\times10^{2}$ A/m. 온도가 4배면 자기화는 1/4.</p>
+
+<script>
+(() => {
+  const g = document.getElementById('gauss-lines');
+  const NS = 'http://www.w3.org/2000/svg';
+  const bez = (p, t) => {
+    const u = 1 - t;
+    return [0, 1].map(k => u*u*u*p[0][k] + 3*u*u*t*p[1][k] + 3*u*t*t*p[2][k] + t*t*t*p[3][k]);
+  };
+  const tan = (p, t) => {
+    const u = 1 - t;
+    return [0, 1].map(k => 3*u*u*(p[1][k]-p[0][k]) + 6*u*t*(p[2][k]-p[1][k]) + 3*t*t*(p[3][k]-p[2][k]));
+  };
+  const tri = (pt, d) => {
+    const L = Math.hypot(d[0], d[1]); const dx = d[0]/L, dy = d[1]/L;
+    const [x, y] = pt;
+    const pts = [[x+dx*7, y+dy*7], [x-dx*5-dy*5, y-dy*5+dx*5], [x-dx*5+dy*5, y-dy*5-dx*5]];
+    const poly = document.createElementNS(NS, 'polygon');
+    poly.setAttribute('points', pts.map(q => q.join(',')).join(' '));
+    poly.setAttribute('fill', '#1a1a1a');
+    g.appendChild(poly);
+  };
+  [70, 130, 190].forEach(W => {
+    const H = 0.55 * W;
+    [-1, 1].forEach(s => {
+      const s1 = [[320,120],[320+s*0.15*W,120-H],[320+s*W,170-H],[320+s*W,170]];
+      const s2 = [[320+s*W,170],[320+s*W,170+H],[320+s*0.15*W,220+H],[320,220]];
+      const path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', `M${s1[0]} C${s1[1]} ${s1[2]} ${s1[3]} C${s2[1]} ${s2[2]} ${s2[3]}`);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', '#1a1a1a');
+      path.setAttribute('stroke-width', '1.5');
+      g.appendChild(path);
+      tri(bez(s1, 0.5), tan(s1, 0.5));
+      tri(bez(s2, 0.5), tan(s2, 0.5));
+    });
+  });
+})();
+
+(() => {
+  const cx = 150, cy = 165, Rp = 45, x0 = 340, y0 = 280, sx = 90, sy = 200;
+  const xg = document.getElementById('cap-x');
+  let xs = '';
+  for (let x = cx - 36; x <= cx + 36; x += 18) {
+    for (let y = cy - 36; y <= cy + 36; y += 18) {
+      if (Math.hypot(x - cx, y - cy) < Rp - 6) {
+        xs += `<path d="M${x-4},${y-4} L${x+4},${y+4} M${x+4},${y-4} L${x-4},${y+4}" stroke="#8a8a8a" stroke-width="1.5"/>`;
+      }
+    }
+  }
+  xg.innerHTML = xs;
+  const Bf = r => (r <= 1 ? r : 1 / r);
+  let d = '';
+  for (let i = 0; i <= 300; i++) {
+    const r = i / 100;
+    d += (i ? 'L' : 'M') + (x0 + sx * r).toFixed(1) + ',' + (y0 - sy * Bf(r)).toFixed(1);
+  }
+  document.getElementById('cap-curve').setAttribute('d', d);
+  const slider = document.getElementById('cap-r');
+  const out = document.getElementById('cap-out');
+  const circ = document.getElementById('cap-circ');
+  const a1 = document.getElementById('cap-a1');
+  const a2 = document.getElementById('cap-a2');
+  const dot = document.getElementById('cap-dot');
+  const guide = document.getElementById('cap-guide');
+  const arrow = (x, y, dir) => `${x + 8*dir},${y} ${x - 6*dir},${y - 6} ${x - 6*dir},${y + 6}`;
+  const update = () => {
+    const r = parseFloat(slider.value);
+    const pr = r * Rp;
+    circ.setAttribute('r', pr.toFixed(1));
+    a1.setAttribute('points', arrow(cx, cy - pr, 1));
+    a2.setAttribute('points', arrow(cx, cy + pr, -1));
+    const px = x0 + sx * r, py = y0 - sy * Bf(r);
+    dot.setAttribute('cx', px); dot.setAttribute('cy', py);
+    guide.setAttribute('x1', px); guide.setAttribute('x2', px); guide.setAttribute('y2', py);
+    out.textContent = `r = ${r.toFixed(2)}R, B = ${Bf(r).toFixed(2)} × 최대`;
+  };
+  slider.addEventListener('input', update);
+  update();
+})();
+
+(() => {
+  const x0 = 80, y0 = 280, sx = 160, sy = 220, k = 9.274e-24 / 1.381e-23;
+  let d = '';
+  for (let i = 0; i <= 300; i++) {
+    const x = i / 100;
+    d += (i ? 'L' : 'M') + (x0 + sx * x).toFixed(1) + ',' + (y0 - sy * Math.tanh(x)).toFixed(1);
+  }
+  document.getElementById('para-curve').setAttribute('d', d);
+  const sb = document.getElementById('para-b');
+  const st = document.getElementById('para-t');
+  const out = document.getElementById('para-out');
+  const dot = document.getElementById('para-dot');
+  const guide = document.getElementById('para-guide');
+  const update = () => {
+    const B = parseFloat(sb.value), T = parseFloat(st.value);
+    const x = k * B / T;
+    const y = Math.tanh(x);
+    const px = x0 + sx * Math.min(x, 3.05), py = y0 - sy * y;
+    dot.setAttribute('cx', px); dot.setAttribute('cy', py);
+    guide.setAttribute('x1', px); guide.setAttribute('x2', px); guide.setAttribute('y2', py);
+    out.innerHTML = `B = ${B.toFixed(1)} T, T = ${T.toFixed(1)} K → M/M<sub>max</sub> = ${y.toFixed(2)}`;
+  };
+  sb.addEventListener('input', update);
+  st.addEventListener('input', update);
+  update();
+})();
+
+(() => {
+  const g = document.getElementById('nonu-g');
+  const draw = (cx, cw) => {
+    let s = '';
+    [-1, 1].forEach(side => {
+      [40, 75].forEach(off => {
+        const xb = cx + side * off * 0.55, xt = cx + side * (off + 70);
+        s += `<line x1="${xb}" y1="290" x2="${xt}" y2="30" stroke="#9a9a9a" stroke-width="1.2" marker-end="url(#ah-n)"/>`;
+      });
+    });
+    s += `<text x="${cx + 22}" y="44" font-size="15" fill="#5c5c5c">B<tspan baseline-shift="sub" font-size="75%">ext</tspan></text>`;
+    s += `<ellipse cx="${cx}" cy="170" rx="90" ry="20" fill="none" stroke="#1a1a1a" stroke-width="2"/>`;
+    const sym = (x, into) => into
+      ? `<circle cx="${x}" cy="170" r="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/><path d="M${x-5},165 L${x+5},175 M${x+5},165 L${x-5},175" stroke="#1a1a1a" stroke-width="1.5"/>`
+      : `<circle cx="${x}" cy="170" r="8" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="${x}" cy="170" r="2.5" fill="#1a1a1a"/>`;
+    s += sym(cx - 90, cw) + sym(cx + 90, !cw);
+    const v = cw ? -1 : 1, h = cw ? 44 : -44;
+    s += `<line x1="${cx - 90}" y1="170" x2="${cx - 90 + h}" y2="${170 + 16 * v}" stroke="#1a1a1a" stroke-width="1.8" marker-end="url(#ah-n)"/>`;
+    s += `<line x1="${cx + 90}" y1="170" x2="${cx + 90 - h}" y2="${170 + 16 * v}" stroke="#1a1a1a" stroke-width="1.8" marker-end="url(#ah-n)"/>`;
+    if (cw) {
+      s += `<line x1="${cx}" y1="148" x2="${cx}" y2="92" stroke="#1a1a1a" stroke-width="3.5" marker-end="url(#ah-n)"/>`;
+      s += `<text x="${cx + 8}" y="104" font-size="15" fill="#1a1a1a">F</text>`;
+      s += `<line x1="${cx}" y1="192" x2="${cx}" y2="250" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ah-n)"/>`;
+      s += `<text x="${cx + 8}" y="250" font-size="15" fill="#1a1a1a">μ</text>`;
+    } else {
+      s += `<line x1="${cx}" y1="192" x2="${cx}" y2="250" stroke="#1a1a1a" stroke-width="3.5" marker-end="url(#ah-n)"/>`;
+      s += `<text x="${cx + 8}" y="250" font-size="15" fill="#1a1a1a">F</text>`;
+      s += `<line x1="${cx}" y1="148" x2="${cx}" y2="92" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ah-n)"/>`;
+      s += `<text x="${cx + 8}" y="104" font-size="15" fill="#1a1a1a">μ</text>`;
+    }
+    return s;
+  };
+  g.innerHTML = draw(170, true) + draw(470, false);
+})();
+</script>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>
