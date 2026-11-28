@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16장 곡면과 면적분</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>16장 곡면과 면적분</h1>
+
+<h2>1. 곡면</h2>
+
+<h3>1.1 매개화된 곡면</h3>
+<p>곡선을 변수 하나로 그리듯, 곡면은 변수 두 개로 그린다. 좌표평면 $\mathbb R^2$의 한 영역 $D$에서 3차원 공간 $\mathbb R^3$로 가는 연속사상이 <mark>(매개화된) 곡면(surface)</mark>.</p>
+$$X:D\to\mathbb R^3,\qquad (u,v)\mapsto X(u,v)=(x(u,v),\,y(u,v),\,z(u,v))$$
+<p>즉 <mark>평면 영역의 점 $(u,v)$를 공간의 점으로 옮기는 규칙</mark>이고, $u,v$가 매개변수다.</p>
+
+<figure>
+<svg viewBox="0 0 640 230" fill="none" stroke="#222" stroke-width="1.4">
+<path d="M40 190H240M50 200V30"/>
+<path d="M90 70H210V160H90Z" fill="#eee"/>
+<path d="M130 70V160M170 70V160M90 100H210M90 130H210" stroke="#999"/>
+<path d="M260 105H355" /><path d="M346 99L357 105L346 111"/>
+<path d="M400 90Q470 30 590 65L560 170Q470 135 385 180Z" fill="#eee"/>
+<path d="M395 120Q475 62 580 100M390 150Q475 97 570 135M446 62L428 161M505 51L488 147M552 56L526 154" stroke="#999"/>
+<g stroke="none" fill="#111" font-size="16"><text x="244" y="195">u</text><text x="32" y="34">v</text><text x="142" y="55">D</text><text x="297" y="92">X</text><text x="470" y="205">곡면 X(D)</text></g>
+</svg>
+<figcaption>$D$의 격자선이 곡면 위의 곡선 격자로 옮겨진다.</figcaption>
+</figure>
+
+<p>대표적인 매개화:</p>
+<table>
+<thead><tr><th>매개화</th><th>곡면</th></tr></thead>
+<tbody>
+<tr><td>$X(u,v)=(\cos u,\ \sin u,\ v)$</td><td>원기둥면 $x^2+y^2=1$</td></tr>
+<tr><td>$Y(r,\theta)=(r\cos\theta,\ r\sin\theta,\ r)$</td><td>원뿔면 $z^2=x^2+y^2$ ($r\ge 0$이면 위쪽)</td></tr>
+<tr><td>$Z(\varphi,\theta)=(\cos\theta\sin\varphi,\ \sin\theta\sin\varphi,\ \cos\varphi)$</td><td>단위구면 $x^2+y^2+z^2=1$</td></tr>
+</tbody>
+</table>
+
+<h3>1.2 그래프곡면</h3>
+<p>곡면을 얻는 가장 쉬운 방법은 이변수함수의 그래프다. 함수 $z=f(x,y)$의 그래프는 <mark>$x,y$를 그대로 매개변수로 쓴 곡면</mark>이고, 이를 <mark>그래프곡면</mark>이라 한다.</p>
+$$G_f(x,y):=(x,\,y,\,f(x,y))$$
+
+<h3>1.3 등위면과 음함수 정리</h3>
+<p>곡면은 $f(x,y,z)=0$ 같은 방정식으로도 주어진다. 이때 곡면을 그래프로 바꿀 수 있는지가 문제다.</p>
+<p>원 $x^2+y^2=1$ 전체는 일변수함수의 그래프가 아니지만, 일부는 그래프다. $y>0$인 부분은 $y=\sqrt{1-x^2}$, $y<0$인 부분은 $y=-\sqrt{1-x^2}$.</p>
+<p>반면 점 $(\pm1,0)$에서는 접선이 $y$축과 나란해서, 그 근방에서는 아무리 좁혀도 $x$ 하나에 $y$가 두 개 대응한다. 따라서 <mark>$y$를 $x$의 함수로 나타낼 수 없다</mark>.</p>
+
+<figure>
+<svg viewBox="0 0 640 260" fill="none" stroke="#222" stroke-width="1.4">
+<path d="M170 130H470M320 245V15" stroke="#999"/>
+<path d="M220 130A100 100 0 0 1 420 130" stroke-width="3"/>
+<path d="M220 130A100 100 0 0 0 420 130" stroke-width="3" stroke-dasharray="7 5"/>
+<path d="M420 60V200"/><circle cx="420" cy="130" r="5" fill="#111"/><circle cx="220" cy="130" r="5" fill="#111"/>
+<g stroke="none" fill="#111" font-size="15"><text x="476" y="135">x</text><text x="328" y="20">y</text><text x="140" y="48">y = √(1 − x²)</text><text x="140" y="232">y = −√(1 − x²)</text><text x="432" y="80">(1, 0)의 접선은 y축과 나란함</text><text x="432" y="152">(1, 0)</text><text x="152" y="152">(−1, 0)</text></g>
+</svg>
+<figcaption>위쪽(실선)과 아래쪽(점선)은 각각 함수의 그래프다.</figcaption>
+</figure>
+
+<p>이를 일반화한 것이 <strong>음함수 정리(implicit function theorem)</strong>. 등위면 $f(x_1,\dots,x_n,y)=c$의 접평면이 $y$축과 나란하지 않으면, 그 근방(국소적)에서 등위면은 양함수 $y=g(x_1,\dots,x_n)$의 그래프다.</p>
+<p>접평면의 법벡터가 $\operatorname{grad}f$이므로, <mark>접평면이 $y$축과 나란하지 않다는 것은 $\partial f/\partial y\ne0$과 같다</mark>. 정리의 $f$는 일급(C¹)함수, 즉 편도함수가 존재하고 연속인 함수다.</p>
+
+<p><strong>음함수 정리</strong></p>
+<p class="cond">조건: $f$는 일급함수이고, 등위면 $f^{-1}(c)$ 위의 점 $P=(X_0,y_0)=(x_1^0,\dots,x_n^0,y_0)$에서 $\dfrac{\partial f}{\partial y}(P)\ne0$.</p>
+<p>결론: $P$ 근방에서 $f^{-1}(c)$는 <mark>어떤 일급함수 $y=g(x_1,\dots,x_n)$의 그래프</mark>이고,</p>
+$$\frac{\partial g}{\partial x_j}(X_0)=-\,\frac{\partial f}{\partial x_j}(P)\Big/\frac{\partial f}{\partial y}(P)$$
+<ul class="sym"><li>$f^{-1}(c)$: $f$의 값이 $c$인 점 전체(등위면)</li><li>$X_0$: $P$에서 $y$를 뺀 나머지 좌표, $g$: 방정식에서 $y$를 풀어낸 함수</li></ul>
+<p>편도함수 공식은 $g$의 존재에서 바로 나온다. 근방에서 $f(x_1,\dots,x_n,\,g(x_1,\dots,x_n))=c$가 항상 성립하므로, 양변을 연쇄법칙으로 $x_j$에 대해 미분하면</p>
+$$\frac{\partial f}{\partial x_j}+\frac{\partial f}{\partial y}\,\frac{\partial g}{\partial x_j}=0$$
+<p>$P$에서 $\partial f/\partial y\ne0$이므로 나누면 위 공식.</p>
+
+<p>3차원의 방정식 $f(x,y,z)=0$에 적용하면, 점 $P=(x_0,y_0,z_0)$가 이를 만족하고 $f$가 일급일 때 <mark>0이 아닌 편미분의 변수를 나머지 두 변수의 함수로</mark> 풀 수 있다. 방정식의 해 전체인 등위면은</p>
+$$Z(f):=\{(x,y,z)\in\mathbb R^3\mid f(x,y,z)=0\}$$
+<table>
+<thead><tr><th>$P$에서의 조건</th><th>$P$ 근방에서 $Z(f)$의 모양</th></tr></thead>
+<tbody>
+<tr><td>$\partial f/\partial z\ne0$</td><td>$z=g(x,y)$의 그래프</td></tr>
+<tr><td>$\partial f/\partial x\ne0$</td><td>$x=h(y,z)$의 그래프</td></tr>
+<tr><td>$\partial f/\partial y\ne0$</td><td>$y=k(x,z)$의 그래프</td></tr>
+</tbody>
+</table>
+
+<p><strong>정리 (등위면의 국소 매개화)</strong></p>
+<p class="cond">조건: 공간의 영역 $U$에서 정의된 일급함수 $f:U\to\mathbb R$의 등위면 $Z(f)=\{P\in U\mid f(P)=0\}$ 위의 점 $P$에서 $\operatorname{grad}f(P)\ne\mathbf 0$.</p>
+<p>결론: <mark>$Z(f)$는 $P$ 근방에서 매개화 가능</mark>.</p>
+<p>이유: $\operatorname{grad}f(P)\ne\mathbf0$이면 세 편미분 중 적어도 하나가 0이 아니기에, 위 표에 따라 근방이 그래프가 된다. 그래프는 예컨대 $(u,v)\mapsto(u,v,g(u,v))$로 매개화된다. 상수 $c$의 등위면 $f=c$는 $f-c=0$으로 보면 된다.</p>
+
+<h3>1.4 정규곡면</h3>
+<p>연속이기만 한 사상은 곡면이 뾰족하거나 선·점으로 찌그러질 수 있다. 접평면을 가지려면 두 매개변수 방향의 접벡터가 필요하기에, $X$가 미분가능(일급)한 경우에 다음을 정의한다.</p>
+$$X_u:=\frac{\partial X}{\partial u},\qquad X_v:=\frac{\partial X}{\partial v}$$
+<p>$X_u$는 $v$를 고정하고 $u$만 움직인 곡선의 접벡터, $X_v$는 그 반대다. 곡면의 각 점에서 <mark>$X_u,X_v$가 일차독립이면 $X$는 정규곡면(regular surface)</mark>. 일차독립은 두 벡터가 0이 아니고 서로 나란하지 않다는 것이다.</p>
+<p>정규곡면에서는 모든 접벡터가 $X_u$와 $X_v$의 일차결합이다. 따라서 둘이 접평면을 만들고, 둘의 외적은 접평면에 수직이다.</p>
+$$\mathbf N:=X_u\times X_v\ (\ne\mathbf 0)$$
+<p class="cond">조건: <mark>$X$가 정규곡면</mark></p>
+<ul class="sym"><li>$\mathbf N$: 접평면에 수직인 법벡터장(normal vector field)</li></ul>
+<p>따라서 <mark>접평면은 법벡터 $\mathbf N$에 수직인 평면</mark>이고, 점 $P$에서의 접평면은 $\mathbf N\cdot(Q-P)=0$을 만족하는 점 $Q$ 전체다. <strong>이후의 곡면은 특별한 말이 없으면 모두 정규곡면</strong>이다.</p>
+<p>그래프곡면은 $G_x=(1,0,f_x)$, $G_y=(0,1,f_y)$가 항상 일차독립이므로, $f$가 일급이면 정규곡면이다.</p>
+
+<h3>1.5 회전면</h3>
+<p>$xz$평면의 정규곡선(일급이고 속도벡터가 0이 아닌 곡선) $(r(t),0,z(t))$를 $z$축 둘레로 돌린 것이 <mark>회전면(surface of revolution)</mark>. 높이 $z(t)$는 그대로이고, 축까지 거리 $r(t)$인 점이 각 $\theta$만큼 돈다.</p>
+$$X(t,\theta)=(r(t)\cos\theta,\ r(t)\sin\theta,\ z(t))$$
+<p class="cond">조건: $r(t)>0$ (곡선이 $z$축에 닿지 않음)</p>
+<ul class="sym"><li>$t$: 원래 곡선의 매개변수, $\theta$: 회전각</li><li>$r(t)$: $z$축까지 거리, $z(t)$: 높이</li></ul>
+<p>회전면 계산에는 다음 세 단위벡터가 편하다. $\mathbf e(\theta)$는 축에서 바깥쪽, $\mathbf e^*(\theta)$는 회전 방향, $\mathbf k$는 축 방향이다.</p>
+$$\mathbf e(\theta)=(\cos\theta,\sin\theta,0),\quad \mathbf e^*(\theta)=(-\sin\theta,\cos\theta,0),\quad \mathbf k=(0,0,1)$$
+<p>셋은 서로 수직이고 $\mathbf e\times\mathbf e^*=\mathbf k$, $\mathbf k\times\mathbf e^*=-\mathbf e$, $\dfrac{d\mathbf e}{d\theta}=\mathbf e^*$. 이를 쓰면 $X=r\,\mathbf e+z\,\mathbf k$이므로</p>
+$$X_t=r'\mathbf e+z'\mathbf k,\quad X_\theta=r\,\mathbf e^*,\quad X_t\times X_\theta=r\,(r'\mathbf k-z'\mathbf e)$$
+<p>크기는 $r\sqrt{(r')^2+(z')^2}$. $r>0$이고 정규곡선이라 0이 아니므로, 회전면은 정규곡면이다.</p>
+
+<h2>2. 곡면의 넓이</h2>
+
+<h3>2.1 면적소</h3>
+<p>곡선의 길이는 곡선을 잘게 잘라 접선 조각의 길이 $\vert\gamma'(t)\vert\Delta t$를 더해 $\int\vert\gamma'(t)\vert\,dt$로 얻었다($\gamma(t)$: 곡선의 매개화). 곡면의 넓이는 같은 방법으로, 잘게 자른 조각을 접평면 조각으로 바꿔 더한다.</p>
+<p>정규곡면 $X$의 정의역인 $uv$평면의 영역 $D$를 가로 $\Delta u$, 세로 $\Delta v$인 칸으로 나누면, 한 칸이 옮겨진 곡면 조각은 일차근사에 의해</p>
+$$\begin{aligned}X_{ij}&=\{X(u_i+s\Delta u,\;v_j+t\Delta v)\mid 0\le s,t\le1\}\\&\approx\{X(u_i,v_j)+s\,X_u(u_i,v_j)\Delta u+t\,X_v(u_i,v_j)\Delta v\mid 0\le s,t\le1\}\end{aligned}$$
+<p>아래 집합은 두 변이 $X_u\Delta u$, $X_v\Delta v$인 평행사변형이다. 평행사변형의 넓이는 두 변의 외적의 크기이므로</p>
+$$\text{Area}(X_{ij})\approx\vert X_u(u_i,v_j)\times X_v(u_i,v_j)\vert\,\Delta u\,\Delta v$$
+
+<figure>
+<svg viewBox="0 0 640 240" fill="none" stroke="#222" stroke-width="1.4">
+<path d="M60 70H190V170H60Z" fill="#eee"/>
+<path d="M225 120H295"/><path d="M286 114L297 120L286 126"/>
+<path d="M340 175Q420 160 495 180Q525 125 590 95Q510 70 435 80Q400 135 340 175Z" stroke-dasharray="6 4"/>
+<path d="M340 175L490 175L585 90L435 90Z" fill="#999" fill-opacity=".18"/>
+<path d="M340 175H488" stroke-width="3"/><path d="M477 168L491 175L477 182" stroke-width="3"/>
+<path d="M340 175L434 91" stroke-width="3"/><path d="M420 94L436 89L430 104" stroke-width="3"/>
+<circle cx="340" cy="175" r="5" fill="#111"/>
+<g stroke="none" fill="#111" font-size="15"><text x="112" y="192">Δu</text><text x="30" y="125">Δv</text><text x="254" y="106">X</text><text x="360" y="205">X<tspan baseline-shift="sub" font-size="75%">u</tspan> Δu</text><text x="318" y="108">X<tspan baseline-shift="sub" font-size="75%">v</tspan> Δv</text><text x="260" y="236">점선: 곡면 조각, 실선: 접평면의 평행사변형</text></g>
+</svg>
+<figcaption>작은 직사각형은 거의 평행사변형인 곡면 조각이 된다.</figcaption>
+</figure>
+
+<p>모든 조각을 더하면 곡면 전체 넓이의 근삿값이다.</p>
+$$\text{Area}(X)\approx\sum_{i,j}\vert X_u(u_i,v_j)\times X_v(u_i,v_j)\vert\,\Delta u\,\Delta v$$
+<p>$D$의 분할을 한없이 잘게 하면 이 리만 합은 이중적분이 된다. 이때 <mark>작은 넓이를 나타내는 $dS$가 곡면의 면적소(area element)</mark>.</p>
+$$dS:=\vert X_u\times X_v\vert\,du\,dv=\vert\mathbf N\vert\,du\,dv$$
+$$\text{Area}(X)=\iint_X dS=\iint_D\vert X_u\times X_v\vert\,du\,dv$$
+<p class="cond">조건: $X$는 $D$에서 정의된 정규곡면</p>
+<ul class="sym"><li>$D$: 매개변수 영역, $u,v$: 매개변수</li><li>$\vert X_u\times X_v\vert$: <mark>$uv$평면의 넓이가 곡면에서 늘어나는 배율</mark></li></ul>
+<p>넓이는 겹치지 않게 덮을 때 정확하다. 아래의 구면처럼 영역의 경계 같은 넓이 0인 부분에서만 겹치거나 $\mathbf N=\mathbf0$이 되는 것은 적분값에 영향이 없다.</p>
+
+<h3>2.2 그래프곡면과 회전면의 넓이</h3>
+<p>그래프곡면 $X(x,y)=(x,y,f(x,y))$는 $X_x=(1,0,f_x)$, $X_y=(0,1,f_y)$이므로</p>
+$$\mathbf N=X_x\times X_y=(-f_x,\,-f_y,\,1)$$
+$$dS=\vert\mathbf N\vert\,dx\,dy=\sqrt{(f_x)^2+(f_y)^2+1}\;dx\,dy$$
+<p class="cond">조건: $f$는 일급함수</p>
+<ul class="sym"><li>$f_x,f_y$: $f$의 편도함수</li></ul>
+<p><mark>그래프가 가파를수록 같은 밑넓이 위의 곡면 넓이가 커진다</mark>. 회전포물면 $z=x^2+y^2$처럼 그래프로 주어진 곡면의 넓이는 이 식으로 구한다.</p>
+<p>회전면은 1.5의 $\vert X_t\times X_\theta\vert$를 $0\le\theta\le2\pi$에서 적분한다. 피적분함수가 $\theta$와 무관하기에</p>
+$$\text{Area}=2\pi\int_a^b r(t)\sqrt{r'(t)^2+z'(t)^2}\;dt$$
+<p class="cond">조건: $a\le t\le b$에서 $r(t)>0$인 정규곡선을 한 바퀴 회전하고, 곡선이 같은 부분을 두 번 지나지 않음</p>
+<p>즉 <mark>둘레 $2\pi r$를 원래 곡선의 길이 방향으로 적분</mark>한 것이다.</p>
+<p>회전면이 아닌 예로 <strong>나선면(helicoid)</strong>이 있다. $X(x,y)=(\sinh x\cos y,\ \sinh x\sin y,\ y)$는 축에서 뻗은 직선이 돌면서 위로 올라가며 만드는 곡면이고, 넓이는 같은 일반식 $\iint\vert X_x\times X_y\vert\,dx\,dy$로 구한다.</p>
+
+<h3>2.3 구면의 넓이와 아르키메데스</h3>
+<p><strong>아르키메데스</strong>는 <mark>구면의 넓이가 구면에 접하는 원기둥의 옆면 넓이와 같음</mark>을 보였다. 나아가 원기둥의 중심축에 수직인 두 평행 평면 사이에 잘린 부분끼리도 넓이가 같음을 발견했다. 두 곡면을 같은 매개변수로 놓고 면적소를 비교하면 확인된다.</p>
+<p>반지름 1인 구면($0\le\varphi\le\pi$, $0\le\theta\le2\pi$)은 $\varphi$가 $z$축 양의 방향에서 잰 각, $\theta$가 회전각이다.</p>
+$$X(\varphi,\theta)=(\cos\theta\sin\varphi,\ \sin\theta\sin\varphi,\ \cos\varphi)=(\sin\varphi)\,\mathbf e(\theta)+(\cos\varphi)\,\mathbf k$$
+<p>미분하면 $X_\varphi=(\cos\varphi)\mathbf e-(\sin\varphi)\mathbf k$, $X_\theta=(\sin\varphi)\mathbf e^*$. 1.5의 외적 관계를 쓰면</p>
+$$X_\varphi\times X_\theta=\sin\varphi\,\big[(\sin\varphi)\mathbf e+(\cos\varphi)\mathbf k\big]=(\sin\varphi)\,X$$
+<p>법벡터는 구의 중심에서 바깥을 향하고, $\vert X\vert=1$이므로 $dS=\sin\varphi\,d\varphi\,d\theta$.</p>
+<p>접하는 원기둥(반지름 1, $-1\le z\le1$)도 높이를 $z=\cos\varphi$로 두면</p>
+$$Y(\varphi,\theta)=(\cos\theta,\ \sin\theta,\ \cos\varphi)=\mathbf e(\theta)+(\cos\varphi)\,\mathbf k$$
+<p>$Y_\varphi=-(\sin\varphi)\mathbf k$, $Y_\theta=\mathbf e^*$이므로 $Y_\varphi\times Y_\theta=(\sin\varphi)\,\mathbf e$이고, 역시 $dS=\sin\varphi\,d\varphi\,d\theta$.</p>
+<p>($\varphi=0,\pi$에서는 두 매개화 모두 $\mathbf N=\mathbf0$이라 정규가 아니지만, 넓이 0인 부분이라 적분에 영향이 없다.)</p>
+<p><mark>같은 높이의 두 조각은 면적소가 같으므로 넓이도 같다</mark>. $\varphi_1\le\varphi\le\varphi_2$인 띠는</p>
+$$\text{Area}=\int_0^{2\pi}\!\!\int_{\varphi_1}^{\varphi_2}\sin\varphi\,d\varphi\,d\theta=2\pi(\cos\varphi_1-\cos\varphi_2)=2\pi H$$
+<p class="cond">조건: 반지름 1인 구면, $0\le\varphi_1\le\varphi_2\le\pi$</p>
+<ul class="sym"><li>$H=\cos\varphi_1-\cos\varphi_2$: 두 평면 사이의 높이</li></ul>
+<p><mark>띠의 넓이는 위치와 상관없이 높이에만 비례</mark>한다. 전체($H=2$)는 $4\pi$. 반지름 $a$인 구는 길이가 $a$배라 $dS=a^2\sin\varphi\,d\varphi\,d\theta$, 띠 넓이 $2\pi aH$, 전체 $4\pi a^2$.</p>
+
+<figure>
+<svg viewBox="0 0 640 300" fill="none" stroke="#222" stroke-width="1.4">
+<path id="arc-bs" fill="#777" fill-opacity=".45" stroke="none"/>
+<rect id="arc-bc" x="400" width="200" fill="#777" fill-opacity=".45" stroke="none"/>
+<circle cx="170" cy="140" r="100"/><rect x="400" y="40" width="200" height="200"/>
+<path id="arc-l1" stroke-dasharray="6 4"/><path id="arc-l2" stroke-dasharray="6 4"/>
+<g stroke="none" fill="#111" font-size="15"><text x="125" y="26">구면 (옆에서 봄)</text><text x="440" y="26">접하는 원기둥 (옆에서 봄)</text><text id="arc-t" x="320" y="280" text-anchor="middle">높이 H = 0.50, 두 띠의 넓이 = 2πH = 3.14</text></g>
+</svg>
+<div class="controls">
+<label>띠의 아래 높이 <input type="range" id="arc-z" min="-1" max="1" step="0.05" value="0.4"></label>
+<label>띠의 높이 H <input type="range" id="arc-h" min="0.05" max="1" step="0.05" value="0.5"></label>
+</div>
+<figcaption>띠를 극 쪽으로 옮기면 구면 띠는 둘레가 짧아지는 만큼 비스듬히 넓어져 넓이가 유지된다.</figcaption>
+</figure>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const draw = () => {
+    const h = +$('arc-h').value, lo = Math.min(+$('arc-z').value, 1 - h), hi = lo + h;
+    const y1 = 140 - 100 * hi, y2 = 140 - 100 * lo;
+    const w = z => 100 * Math.sqrt(Math.max(0, 1 - z * z));
+    const a = w(hi), b = w(lo);
+    $('arc-bs').setAttribute('d', `M${170-a} ${y1}H${170+a}A100 100 0 0 1 ${170+b} ${y2}H${170-b}A100 100 0 0 1 ${170-a} ${y1}Z`);
+    $('arc-bc').setAttribute('y', y1); $('arc-bc').setAttribute('height', y2 - y1);
+    $('arc-l1').setAttribute('d', `M50 ${y1}H620`); $('arc-l2').setAttribute('d', `M50 ${y2}H620`);
+    $('arc-t').textContent = `높이 H = ${h.toFixed(2)}, 두 띠의 넓이 = 2πH = ${(2*Math.PI*h).toFixed(2)}`;
+  };
+  ['arc-z','arc-h'].forEach(i => $(i).addEventListener('input', draw)); draw();
+})();
+</script>
+
+<h3>2.4 입체각</h3>
+<p>평면각이 두 방향이 벌어진 정도라면, 한 점에서 영역이 시야를 차지하는 정도를 재는 것이 입체각이다. 점 $P$에서 바라본 어떤 영역의 <mark>입체각(solid angle)은 그 영역의 상이 $P$ 중심 단위구면에 맺힌 넓이</mark>. 상은 $P$와 영역의 각 점을 잇는 반직선이 단위구면과 만나는 점들이다.</p>
+<p>평면각의 크기는 단위원의 호의 길이 자체가 아니라 <strong>반지름에 대한 호의 길이의 비</strong>이기에 단위 없는 양이다. 이는 원둘레에 대한 호의 비에 온각(한 바퀴) $2\pi$를 곱한 것과 같다.</p>
+<p>입체각도 넓이 자체보다 <mark>구면 전체에 대한 넓이의 비에 입체온각 $4\pi$를 곱한 값</mark>으로 보는 것이 적절하다($4\pi$는 두 온각). 따라서 반지름 $R$인 구면에 맺힌 상의 넓이 $A$로도 구한다.</p>
+$$\theta=\frac{\ell}{R}=2\pi\cdot\frac{\ell}{2\pi R},\qquad \Omega=\frac{A}{R^2}=4\pi\cdot\frac{A}{4\pi R^2}$$
+<ul class="sym"><li>$\theta,\Omega$: 평면각과 입체각 (단위 없음. 각각 라디안 rad, 스테라디안 sr로 표시)</li><li>$R$: 원·구면의 반지름, $\ell,A$: 그 위의 호의 길이와 상의 넓이</li></ul>
+<p>그러므로 대칭으로 공간이 똑같은 조각들로 나뉘면, 한 조각의 입체각은 $4\pi$를 조각 수로 나눈 값이다.</p>
+<p>꼭짓점이 $P$이고 중심축과 모선이 이루는 각(반꼭지각)이 $\alpha$인 원뿔은, 단위구면에서 $0\le\varphi\le\alpha$인 부분을 차지한다. 2.3의 띠 넓이에 $\varphi_1=0$, $\varphi_2=\alpha$를 넣으면</p>
+$$\Omega=2\pi(1-\cos\alpha)$$
+<p class="cond">조건: 꼭짓점에서 바라본 원뿔의 내부, $0\le\alpha\le\pi$</p>
+<p>두 원뿔면 사이의 영역($\alpha_1\le\varphi\le\alpha_2$)은 같은 띠 공식 $2\pi(\cos\alpha_1-\cos\alpha_2)$. 원뿔이 위아래 양쪽에 있으면 두 쪽을 모두 센다.</p>
+
+<figure>
+<svg viewBox="0 0 640 280" fill="none" stroke="#222" stroke-width="1.4">
+<circle cx="220" cy="140" r="110" stroke="#999"/>
+<path id="sa-f" fill="#777" fill-opacity=".25" stroke="none"/><path id="sa-l"/><path id="sa-c" stroke-width="5"/>
+<path d="M220 140V12" stroke-dasharray="5 4"/><circle cx="220" cy="140" r="4" fill="#111"/>
+<g stroke="none" fill="#111" font-size="16"><text x="196" y="147">P</text><text x="390" y="110" id="sa-a">α = 60°</text><text x="390" y="145" id="sa-o">Ω = 2π(1 − cos α) = 3.14</text><text x="390" y="180" id="sa-r">입체온각 4π 중 25.0%</text></g>
+</svg>
+<div class="controls"><label>반꼭지각 α <input type="range" id="sa-s" min="5" max="180" step="5" value="60"></label></div>
+<figcaption>원뿔의 단면. 굵은 호를 축 둘레로 돌린 부분이 단위구면에 맺힌 상이다.</figcaption>
+</figure>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const draw = () => {
+    const d = +$('sa-s').value, a = d * Math.PI / 180;
+    const x = 110 * Math.sin(a), y = 140 - 110 * Math.cos(a);
+    const arc = d >= 180 ? 'M220 30A110 110 0 1 1 220 250A110 110 0 1 1 220 30' :
+      `M${220-x} ${y}A110 110 0 ${d>90?1:0} 1 ${220+x} ${y}`;
+    $('sa-c').setAttribute('d', arc);
+    $('sa-f').setAttribute('d', d >= 180 ? arc : arc + 'L220 140Z');
+    $('sa-l').setAttribute('d', `M${220-x} ${y}L220 140L${220+x} ${y}`);
+    const o = 2 * Math.PI * (1 - Math.cos(a));
+    $('sa-a').textContent = `α = ${d}°`;
+    $('sa-o').textContent = `Ω = 2π(1 − cos α) = ${o.toFixed(2)}`;
+    $('sa-r').textContent = `입체온각 4π 중 ${(o/(4*Math.PI)*100).toFixed(1)}%`;
+  };
+  $('sa-s').addEventListener('input', draw); draw();
+})();
+</script>
+
+<h2>3. 면적분</h2>
+
+<h3>3.1 함수의 면적분</h3>
+<p>곡면의 각 점에 밀도 같은 값이 있으면, 조각마다 값에 조각 넓이를 곱해 더한다. 즉 넓이 적분의 $dS$ 앞에 함수를 곱한 것이 <mark>함수의 면적분(surface integral)</mark>.</p>
+$$\iint_X f\,dS:=\iint_D f(u,v)\,\vert X_u\times X_v\vert\,du\,dv$$
+<p class="cond">조건: 정규곡면 $X:D\to\mathbb R^3$, 곡면에서 정의된 적분가능한 함수 $f(u,v)$</p>
+<ul class="sym"><li>$f$: 곡면의 점마다 주어진 값, $dS$: 면적소</li></ul>
+<p>$f=1$이면 곡면의 넓이다. $f$를 <strong>밀도함수</strong>로 보면 적분값을 <mark>질량</mark>이라 부른다.</p>
+<p>$f$가 $D$가 아니라 곡면을 포함하는 $\mathbb R^3$의 부분집합에서 정의된 $f(x,y,z)$라면, <mark>곡면의 점 $X(u,v)$를 대입</mark>해 적분한다.</p>
+$$\iint_X f\,dS=\iint_D f(X(u,v))\,\vert X_u\times X_v\vert\,du\,dv$$
+
+<h3>3.2 재매개화</h3>
+<p>같은 곡면도 매개화 방법은 여럿이므로, 면적분이 곡면의 값이 되려면 매개화를 바꿔도 같아야 한다.</p>
+<p>좌표평면의 두 영역 $\overline D, D$ 사이의 일급 가역사상(일대일 대응이고 양방향 모두 일급인 사상) $G:\overline D\to D$와 곡면 $X:D\to\mathbb R^3$에 대해, <mark>$\widetilde X:=X\circ G:\overline D\to\mathbb R^3$가 $X$의 재매개화(reparametrization)</mark>.</p>
+<p>$G'$는 $G$의 야코비 행렬이고, 가역이므로 $\det G'\ne0$이다. 부호에 따라 나눈다.</p>
+<table>
+<thead><tr><th>조건</th><th>$\widetilde X$의 이름</th></tr></thead>
+<tbody>
+<tr><td>$\det G'>0$</td><td><mark>동향 재매개화</mark></td></tr>
+<tr><td>$\det G'<0$</td><td>역향 재매개화</td></tr>
+</tbody>
+</table>
+
+<p><strong>정리 (면적분의 재매개화 불변성)</strong></p>
+<p class="cond">조건: $f$는 매개곡면 $X:D\to\mathbb R^3$에서 정의된 적분가능한 함수, $\widetilde X=X\circ G$는 재매개화</p>
+<p>결론: 동향이든 역향이든 <mark>함수의 면적분값은 변하지 않는다</mark>.</p>
+<p>증명은 법벡터의 변화를 구한 뒤 치환적분을 쓴다. $(u,v)=G(s,t)$라 하면 연쇄법칙에 의해</p>
+$$\widetilde X_s=u_sX_u+v_sX_v,\qquad\widetilde X_t=u_tX_u+v_tX_v$$
+<p>외적하면 $X_u\times X_u=X_v\times X_v=\mathbf0$, $X_v\times X_u=-X_u\times X_v$이므로</p>
+$$\widetilde X_s\times\widetilde X_t=(u_sv_t-u_tv_s)\,X_u\times X_v=(\det G')\,(X_u\times X_v)\circ G$$
+<p>따라서 $\widetilde X$도 정규곡면이고, 크기에는 $\vert\det G'\vert$가 곱해진다. 이중적분의 변수변환 공식 $du\,dv=\vert\det G'\vert\,ds\,dt$에 의해</p>
+$$\begin{aligned}\iint_{\widetilde X}f\,dS&=\iint_{\overline D}f(G(s,t))\,\vert(X_u\times X_v)(G(s,t))\vert\,\vert\det G'\vert\,ds\,dt\\&=\iint_D f(u,v)\,\vert X_u\times X_v\vert\,du\,dv=\iint_X f\,dS\end{aligned}$$
+<p>$f=1$로 두면 곡면의 넓이도 매개화와 무관하다.</p>
+
+<h3>3.3 평균값과 중심</h3>
+<p>면적분을 넓이로 나누면 곡면 위의 평균이 된다. 좌표함수 $x,y,z$의 평균이 도형의 중심이고, 밀도를 가중치로 한 평균이 질량중심이다.</p>
+<p><strong>평균값</strong>: <mark>적분값을 넓이로 나눈 값</mark>.</p>
+$$\frac{1}{\text{Area}(X)}\iint_X f\,dS$$
+<p><strong>기하적 중심</strong> $\widetilde X=(\bar x,\bar y,\bar z)$: <mark>각 좌표의 평균값</mark>. (3.2의 재매개화와 기호가 같지만 다른 대상이다.)</p>
+$$\bar x=\frac{1}{\text{Area}(X)}\iint_X x\,dS,\quad\bar y=\frac{1}{\text{Area}(X)}\iint_X y\,dS,\quad\bar z=\frac{1}{\text{Area}(X)}\iint_X z\,dS$$
+<p><strong>질량</strong>: 곡면의 밀도함수가 $f$일 때</p>
+$$M=\iint_X f\,dS$$
+<p><strong>질량중심</strong> $\widehat X=(\hat x,\hat y,\hat z)$: <mark>밀도로 가중한 좌표의 평균</mark>.</p>
+$$\hat x=\frac1M\iint_X xf\,dS,\quad\hat y=\frac1M\iint_X yf\,dS,\quad\hat z=\frac1M\iint_X zf\,dS$$
+<p class="cond">조건: $M\ne0$</p>
+<ul class="sym"><li>$\text{Area}(X)$: 곡면의 넓이, $f$: 밀도함수, $M$: 질량</li></ul>
+<p><strong>평균밀도</strong>는 밀도함수의 평균값, 즉 $M/\text{Area}(X)$. 밀도가 0이 아닌 상수면 질량중심은 기하적 중심과 같다.</p>
+
+<h2>4. 벡터장의 면적분</h2>
+
+<h3>4.1 곡면의 향</h3>
+<p>벡터장의 선적분에서 곡선의 방향이 중요했듯, 벡터장의 면적분에서는 어느 쪽으로 지나가는 것을 양으로 셀지 정해야 한다. 3차원 공간에서 곡면의 <mark>향(orientation)은 각 점에서 곡면에 수직인 방향을 연속적으로 정해 준 것</mark>. 향이 정해진 곡면이 <strong>유향곡면</strong>이다.</p>
+<p>곡면 $S$를 $X(u,v)$로 매개화하면 법벡터 $\mathbf N$이 연속적인 방향을 하나 준다.</p>
+$$\mathbf n=\frac{X_u\times X_v}{\vert X_u\times X_v\vert}$$
+<p class="cond">조건: 정규곡면</p>
+<ul class="sym"><li>$\mathbf n$: 매개화가 정하는 단위법벡터</li></ul>
+<p>순서를 바꿔 $Y(u,v)=X(v,u)$로 재매개화하면, 같은 점에서 $Y_u\times Y_v=X_v\times X_u=-(X_u\times X_v)$이므로 향이 반대다.</p>
+<p>일반적으로 3.2의 식 $\widetilde X_s\times\widetilde X_t=(\det G')(X_u\times X_v)\circ G$에 의해 <mark>동향 재매개화는 향을 보존, 역향 재매개화는 향을 반대로</mark> 바꾼다.</p>
+<p>모든 곡면은 국소적으로 매개화되므로 국소적으로는 향이 항상 있다. 다만 곡면 전체에 연속적으로 정해지는지는 별개이며, 뫼비우스 띠는 한 바퀴 돌면 수직 방향이 뒤집혀 전체 향이 없다.</p>
+
+<h3>4.2 닫힌곡면</h3>
+<p><mark>폐곡면(닫힌곡면, closed surface)은 경계가 없고 유계이며 연결된 곡면</mark>. 구면(sphere), 원환면(torus, 도넛 모양)이 예다.</p>
+<p>3차원 공간에서 스스로 교차하지 않는 닫힌곡면 $S$를 빼면, 남는 부분은 두 연결성분인 안쪽 $\operatorname{int}S$(유계)와 바깥쪽 $\operatorname{ext}S$(유계 아님)로 나뉜다.</p>
+$$\mathbb R^3-S=(\operatorname{int}S)\cup(\operatorname{ext}S)$$
+<p>안팎이 구분되기에, <mark>닫힌곡면의 향은 별말이 없으면 외향 단위법벡터</mark>(바깥쪽을 향하는 $\mathbf n$)로 정한다.</p>
+
+<figure>
+<svg viewBox="0 0 640 240" fill="none" stroke="#222" stroke-width="1.6">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#111" stroke="none"/></marker></defs>
+<ellipse cx="320" cy="120" rx="140" ry="75" fill="#eee"/>
+<g marker-end="url(#ah)"><path d="M460 120H520"/><path d="M180 120H120"/><path d="M320 45V8"/><path d="M320 195V232"/><path d="M419 67L455 33"/><path d="M221 173L185 207"/></g>
+<g stroke="none" fill="#111" font-size="16"><text x="290" y="126">int S</text><text x="520" y="190">ext S</text><text x="526" y="125">n</text><text x="196" y="62">S</text></g>
+</svg>
+<figcaption>닫힌곡면의 단면과 외향 단위법벡터.</figcaption>
+</figure>
+
+<h3>4.3 벡터장의 면적분</h3>
+<p>$\mathbf F$를 유체의 속도라 하면, 곡면을 가로질러 지나가는 데 기여하는 것은 법선 방향 성분 $\mathbf F\cdot\mathbf n$뿐이고, 접선 방향 성분은 곡면을 따라 흐른다. 유향곡면 $S$의 각 점에서 정의된 벡터장 $\mathbf F(x,y,z)\in\mathbb R^3$에 대해, <mark>법선 성분의 면적분이 벡터장 $\mathbf F$의 면적분</mark>이다. 이 값을 <strong>유량(flux)</strong>이라고도 한다.</p>
+$$\iint_S\mathbf F\cdot d\mathbf S:=\iint_S\mathbf F\cdot\mathbf n\;dS$$
+<p class="cond">조건: $S$는 유향곡면, $\mathbf F$는 $S$ 위에서 적분가능</p>
+<ul class="sym"><li>$\mathbf F$: 벡터장, $\mathbf n$: 향을 나타내는 단위법벡터</li></ul>
+<p>매개화의 $\mathbf N=X_u\times X_v$가 주어진 향과 같은 쪽이면 $\mathbf n=\mathbf N/\vert\mathbf N\vert$, $dS=\vert\mathbf N\vert\,du\,dv$이다. 곱하면 $\vert\mathbf N\vert$가 약분되어</p>
+$$\iint_S\mathbf F\cdot d\mathbf S=\iint_D\mathbf F(X(u,v))\cdot(X_u\times X_v)\;du\,dv$$
+<p class="cond">조건: <mark>$X_u\times X_v$의 방향이 $S$의 향과 일치</mark> (반대면 전체에 $-$를 붙임)</p>
+<p>그래프곡면 $z=f(x,y)$에 위쪽 향을 주면 $\mathbf N=(-f_x,-f_y,1)$이므로, 위 식의 $\mathbf N$ 자리에 그대로 들어간다.</p>
+<p>향을 바꾸면 $\mathbf n$이 $-\mathbf n$이 되므로 <mark>벡터장의 면적분은 향이 바뀌면 부호가 바뀐다</mark>. 따라서 동향 재매개화에서는 값이 같고 역향에서는 부호만 반대다. 부호가 변하지 않는 함수의 면적분과 다른 점이다.</p>
+
+<figure>
+<svg viewBox="0 0 640 240" fill="none" stroke="#222" stroke-width="1.6">
+<defs><marker id="fh" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#111" stroke="none"/></marker></defs>
+<path d="M90 130H350" stroke-width="3"/>
+<path d="M220 130V40" marker-end="url(#fh)" stroke-dasharray="6 4"/>
+<path id="fx-F" d="M220 130L298 85" stroke-width="3" marker-end="url(#fh)"/>
+<g stroke="none" fill="#111" font-size="16"><text x="196" y="45">n</text><text id="fx-lab" x="310" y="82">F</text><text x="96" y="156">곡면 조각</text><text x="420" y="105" id="fx-a">F와 n의 각 = 60°</text><text x="420" y="140" id="fx-v">F · n = |F| cos 60° = 0.50 |F|</text></g>
+</svg>
+<div class="controls"><label>F와 n 사이의 각 <input type="range" id="fx-s" min="0" max="180" step="5" value="60"></label></div>
+<figcaption>$90^\circ$면 곡면을 따라 흘러 0, $90^\circ$를 넘으면 향의 반대쪽으로 지나가 음수다.</figcaption>
+</figure>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const draw = () => {
+    const d = +$('fx-s').value, a = d * Math.PI / 180;
+    const x = 220 + 90 * Math.sin(a), y = 130 - 90 * Math.cos(a);
+    $('fx-F').setAttribute('d', `M220 130L${x} ${y}`);
+    $('fx-lab').setAttribute('x', x + 12); $('fx-lab').setAttribute('y', y + (d > 90 ? 14 : -2));
+    let c = Math.cos(a); if (Math.abs(c) < 1e-9) c = 0;
+    $('fx-a').textContent = `F와 n의 각 = ${d}°`;
+    $('fx-v').textContent = `F · n = |F| cos ${d}° = ${c.toFixed(2)} |F|`;
+  };
+  $('fx-s').addEventListener('input', draw); draw();
+})();
+</script>
+
+<p>공간 영역 $R$의 경계 곡면을 $\partial R$라 쓴다. 외향 단위법벡터를 줄 때 $\iint_{\partial R}\mathbf F\cdot d\mathbf S$(한 겹의 적분기호로 $\int_{\partial R}$라고도 씀)는 <mark>$R$에서 빠져나가는 양</mark>이다. 경계가 포물면과 평면처럼 여러 매끄러운 조각이면, <mark>조각마다 외향으로 적분해 더한다</mark>.</p>
+
+<h2>예제</h2>
+
+<h3>1. 그래프곡면의 넓이</h3>
+<p>평면 $z=2x+2y$ 중 $0\le x\le1$, $0\le y\le1$인 부분의 넓이는?</p>
+<p>$f_x=f_y=2$이므로 $dS=\sqrt{4+4+1}\,dx\,dy=3\,dx\,dy$. 밑넓이가 1이므로 넓이는 $3$.</p>
+
+<h3>2. 함수의 면적분과 평균</h3>
+<p>단위 반구면 $x^2+y^2+z^2=1$ $(z\ge0)$에서 $f=z$의 면적분과 평균값은?</p>
+<p>$z=\cos\varphi$, $dS=\sin\varphi\,d\varphi\,d\theta$이므로</p>
+$$\iint_X z\,dS=\int_0^{2\pi}\!\!\int_0^{\pi/2}\cos\varphi\sin\varphi\,d\varphi\,d\theta=2\pi\cdot\tfrac12=\pi$$
+<p>넓이가 $2\pi$이므로 평균값은 $\tfrac12$. 이는 기하적 중심의 $\bar z$이기도 하다.</p>
+
+<h3>3. 원뿔의 입체각</h3>
+<p>반꼭지각이 $60^\circ$인 원뿔을 꼭짓점에서 본 입체각은?</p>
+<p>$\Omega=2\pi(1-\cos60^\circ)=\pi$.</p>
+
+<h3>4. 벡터장의 면적분</h3>
+<p>$\mathbf F=(1,2,3)$이고, $S$는 평면 $z=x$ 중 $0\le x,y\le1$인 부분(위쪽 향)이다. $\iint_S\mathbf F\cdot d\mathbf S$는?</p>
+<p>$\mathbf N=(-1,0,1)$이므로 $\mathbf F\cdot\mathbf N=-1+3=2$. 밑넓이가 1이므로 값은 $2$.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

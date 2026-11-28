@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>36장 회절</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>36장 회절</h1>
+
+<h2>회절과 단일 슬릿</h2>
+
+<h3>회절</h3>
+
+<p>파동이 자기 파장과 비슷한 크기의 모서리, 장애물, 틈을 만나면 직진하지 않고 퍼져 나가며, 퍼진 파동끼리 간섭한다. 이 현상이 <mark>회절(diffraction)</mark>. 그래서 틈을 지난 빛은 스크린에 틈 모양 그대로가 아니라 밝고 어두운 무늬, 즉 <strong>회절 무늬(diffraction pattern)</strong>를 만든다.</p>
+
+<p>영의 이중 슬릿 실험도 회절을 이용한다. 단색광이 슬릿 $S_0$에서 회절되어 반원형 파면을 내는 점광원이 되고, 이 빛이 다시 슬릿 $S_1$, $S_2$에서 회절되어 두 점광원이 된다. 두 슬릿에서 나온 파동이 겹쳐 간섭하므로 스크린에 극대와 극소의 간섭 무늬가 생긴다.</p>
+
+<p>회절은 빛이 파동이라는 증거다. 작은 불투명 원판의 그림자 한가운데에도 밝은 점이 생기는데, 원판 가장자리를 돌아 들어온 파동들이 중심에서 모두 같은 거리를 지나 보강 간섭하기 때문이다. 이 점이 <mark>프레넬 밝은 점(Fresnel bright spot)</mark>. 빛이 입자처럼 직진한다면 그림자 중심은 완전히 어두워야 한다.</p>
+
+<h3>단일 슬릿 회절의 극소 위치</h3>
+
+<p>폭 $a$인 길고 좁은 슬릿에 단색광을 비추면 스크린에 <strong>단일 슬릿 회절 무늬(single-slit diffraction pattern)</strong>가 생긴다. 가운데에 넓고 밝은 <mark>중앙 극대(central maximum)</mark>가 있고, 양옆으로 어두운 무늬(극소)와 훨씬 약한 밝은 무늬(부극대)가 번갈아 나온다.</p>
+
+<p>어두운 무늬의 위치는 슬릿을 지나는 광선들을 <mark>두 개씩 짝지어, 각 짝이 서로 상쇄되는 조건</mark>을 찾아 구한다. 모든 짝이 동시에 상쇄되면 그 점은 완전히 어둡다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <line x1="200" y1="40" x2="200" y2="140" stroke="#222" stroke-width="6"/>
+  <line x1="200" y1="260" x2="200" y2="290" stroke="#222" stroke-width="6"/>
+  <line x1="200" y1="200" x2="600" y2="200" stroke="#888" stroke-dasharray="6 5"/>
+  <text x="520" y="222" font-size="14" fill="#555">중심축</text>
+  <line x1="185" y1="140" x2="185" y2="200" stroke="#555"/>
+  <line x1="185" y1="200" x2="185" y2="260" stroke="#555"/>
+  <line x1="180" y1="140" x2="190" y2="140" stroke="#555"/>
+  <line x1="180" y1="200" x2="190" y2="200" stroke="#555"/>
+  <line x1="180" y1="260" x2="190" y2="260" stroke="#555"/>
+  <text x="140" y="176" font-size="15">a/2</text>
+  <text x="140" y="236" font-size="15">a/2</text>
+  <line x1="200" y1="140" x2="557" y2="10" stroke="#111" stroke-width="2"/>
+  <line x1="200" y1="200" x2="557" y2="70" stroke="#111" stroke-width="2"/>
+  <text x="430" y="40" font-size="16">r<tspan baseline-shift="sub" font-size="75%">1</tspan></text>
+  <text x="470" y="120" font-size="16">r<tspan baseline-shift="sub" font-size="75%">2</tspan></text>
+  <line x1="200" y1="140" x2="219.3" y2="193" stroke="#666" stroke-dasharray="4 4"/>
+  <line x1="200" y1="200" x2="219.3" y2="193" stroke="#000" stroke-width="5"/>
+  <path d="M 270 200 A 70 70 0 0 0 265.8 176" fill="none" stroke="#444"/>
+  <text x="276" y="192" font-size="15">θ</text>
+  <text x="230" y="250" font-size="14" fill="#222">경로차 (a/2) sin θ</text>
+  <line x1="236" y1="236" x2="212" y2="200" stroke="#888"/>
+  <text x="40" y="190" font-size="14" fill="#555">입사파</text>
+  <line x1="40" y1="200" x2="160" y2="200" stroke="#888" marker-end="url(#ah1)"/>
+  <defs><marker id="ah1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#888"/></marker></defs>
+</svg>
+<figcaption>슬릿 위쪽 끝의 광선 $r_1$과 가운데의 광선 $r_2$. 스크린이 멀면 두 광선은 거의 평행하고, 경로차는 굵은 선분 $(a/2)\sin\theta$.</figcaption>
+</figure>
+
+<p>슬릿을 위아래 두 구역으로 나누고, 위 구역 맨 위의 광선 $r_1$과 아래 구역 맨 위(슬릿 중앙)의 광선 $r_2$를 짝짓는다. 슬릿-스크린 거리 $D$가 $a$보다 훨씬 크면 두 광선은 평행하다고 볼 수 있기에, 각 $\theta$로 가는 두 광선의 경로차는 $(a/2)\sin\theta$. 이것이 $\lambda/2$이면 두 광선은 반대 위상으로 만나 상쇄된다. 두 구역에서 같은 위치끼리 짝지은 다른 모든 쌍도 경로차가 같으므로 함께 상쇄되어 첫 번째 극소가 된다.</p>
+
+$$\frac{a}{2}\sin\theta=\frac{\lambda}{2}\;\Rightarrow\; a\sin\theta=\lambda$$
+
+<p>두 번째 극소는 슬릿을 폭 $a/4$인 네 구역으로 나눠 이웃한 두 구역끼리 짝짓는다. 1·2구역의 짝과 3·4구역의 짝 모두 경로차가 $(a/4)\sin\theta$이므로, 이것이 $\lambda/2$일 때 전부 상쇄된다. 즉 $a\sin\theta=2\lambda$. 일반적으로 슬릿을 $2m$개 구역으로 나누면 $\dfrac{a}{2m}\sin\theta=\dfrac{\lambda}{2}$에서 다음을 얻는다.</p>
+
+$$a\sin\theta=m\lambda,\qquad m=1,2,3,\dots\quad\text{(극소, 어두운 무늬)}$$
+
+<ul class="sym">
+<li>$a$: 슬릿 폭 (m)</li>
+<li>$\theta$: 중심축에서 극소까지 잰 각</li>
+<li>$\lambda$: 빛의 파장 (m)</li>
+<li>$m$: 극소의 차수 (첫째 극소 $m=1$)</li>
+</ul>
+
+<p>$m=0$은 극소가 아니다. $\theta=0$에서는 모든 광선이 같은 거리를 지나 같은 위상으로 도착하므로 중앙 극대가 된다.</p>
+
+<p>스크린에서의 위치는 각에서 구한다. 슬릿-스크린 거리 $D$, 무늬 중심에서 극소까지 거리 $y$이면 $\tan\theta=y/D$이고, $\theta$가 작으면 $\sin\theta\approx\tan\theta\approx\theta$이기에 $y\approx D\theta\approx mD\lambda/a$.</p>
+
+<p>$\sin\theta=m\lambda/a$이므로 <mark>슬릿이 좁을수록, 파장이 길수록 무늬가 넓게 퍼진다</mark>. $a=\lambda$이면 첫째 극소가 $\theta=90^\circ$로 가서 중앙 극대가 스크린 전체를 덮는다.</p>
+
+<h2>단일 슬릿 회절의 세기</h2>
+
+<h3>페이저로 보는 세기</h3>
+
+<p>극소 위치뿐 아니라 각 $\theta$에서의 세기를 구하려면, 슬릿을 폭 $\Delta x$인 $N$개의 아주 좁은 구역으로 나누고 각 구역에서 나온 작은 파동(wavelet)의 전기장을 더한다. 이웃한 두 구역의 광선은 경로차가 $\Delta x\sin\theta$이므로 위상차는</p>
+
+$$\Delta\phi=\frac{2\pi}{\lambda}\,\Delta x\sin\theta$$
+
+<p>각 작은 파동의 전기장 진폭은 같은 $\Delta E$이므로, 길이 $\Delta E$인 페이저 $N$개를 이웃끼리 $\Delta\phi$씩 돌려 머리-꼬리로 이으면 된다. 첫 페이저의 꼬리에서 마지막 페이저의 머리까지가 점 $P$에서 합성 전기장의 진폭 $E_\theta$. <mark>세기는 전기장 진폭의 제곱에 비례</mark>하므로 $E_\theta$가 곧 그 점의 밝기를 정한다.</p>
+
+<ul>
+<li><strong>중앙 극대</strong> ($\theta=0$): $\Delta\phi=0$이라 페이저가 일직선으로 놓인다. 합성 진폭이 가장 큰 값 $E_m=N\Delta E$.</li>
+<li><strong>첫째 극소</strong>: $\theta$가 커지면 $\Delta\phi$도 커져 페이저 사슬이 원호로 휜다. 사슬이 원을 한 바퀴 완전히 돌아 마지막 머리가 첫 꼬리에 닿으면 $E_\theta=0$, 세기도 0. 이때 첫 페이저와 마지막 페이저의 위상차가 $2\pi$, 즉 슬릿 맨 위와 맨 아래 광선의 <mark>경로차가 한 파장</mark>이기에 $a\sin\theta=\lambda$와 일치.</li>
+<li><strong>첫째 부극대</strong>: $\theta$가 더 커지면 사슬이 한 바퀴 넘게 감기며 작아지는 코일이 된다. $E_\theta$가 다시 커져 약 1.5바퀴에서 최대가 되는 곳이 첫째 부극대. 두 바퀴를 감으면 다시 0(둘째 극소).</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 640 320" id="ph-svg">
+  <text x="20" y="28" font-size="14" fill="#555">페이저 사슬 (전체 길이 E<tspan baseline-shift="sub" font-size="75%">m</tspan> 일정)</text>
+  <g id="ph-chain"></g>
+  <line id="ph-res" stroke="#000" stroke-width="3" stroke-dasharray="8 4"/>
+  <text id="ph-reslabel" font-size="15">E<tspan baseline-shift="sub" font-size="75%">θ</tspan></text>
+  <line x1="380" y1="270" x2="625" y2="270" stroke="#444"/>
+  <line x1="380" y1="270" x2="380" y2="60" stroke="#444"/>
+  <text x="388" y="58" font-size="14">I / I<tspan baseline-shift="sub" font-size="75%">m</tspan></text>
+  <text x="612" y="258" font-size="15">α</text>
+  <text x="372" y="292" font-size="14">0</text>
+  <text x="452" y="292" font-size="14">π</text>
+  <text x="528" y="292" font-size="14">2π</text>
+  <text x="604" y="306" font-size="14">3π</text>
+  <path id="ph-curve" fill="none" stroke="#333" stroke-width="2"/>
+  <circle id="ph-dot" r="6" fill="#000"/>
+</svg>
+<figcaption>위상차 $\phi$(슬릿 맨 위와 맨 아래 광선 사이)를 바꾸면 페이저 사슬이 감기는 정도와 합성 진폭 $E_\theta$, 오른쪽 세기 곡선의 위치($\alpha=\phi/2$)가 함께 바뀐다. 처음 상태는 $\phi=\pi$로 사슬이 반원.</figcaption>
+<div class="controls">
+<label>φ / π <input type="range" id="ph-phi" min="0" max="6" step="0.05" value="1"></label>
+<output id="ph-out"></output>
+</div>
+</figure>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const chain = document.getElementById('ph-chain');
+  const res = document.getElementById('ph-res');
+  const lab = document.getElementById('ph-reslabel');
+  const dot = document.getElementById('ph-dot');
+  const out = document.getElementById('ph-out');
+  const sl = document.getElementById('ph-phi');
+  const N = 18, Em = 280, x0 = 40, y0 = 270;
+  const ax = a => 380 + a / (3 * Math.PI) * 230;
+  const ay = v => 270 - v * 200;
+  const f = a => a === 0 ? 1 : Math.pow(Math.sin(a) / a, 2);
+  let d = '';
+  for (let i = 0; i <= 300; i++) { const a = 3 * Math.PI * i / 300; d += (i ? 'L' : 'M') + ax(a).toFixed(1) + ' ' + ay(f(a)).toFixed(1) + ' '; }
+  document.getElementById('ph-curve').setAttribute('d', d);
+  function draw() {
+    const phi = parseFloat(sl.value) * Math.PI;
+    chain.innerHTML = '';
+    let x = x0, y = y0;
+    const L = Em / N;
+    for (let k = 0; k < N; k++) {
+      const ang = (k + 0.5) * phi / N;
+      const nx = x + L * Math.cos(ang), ny = y - L * Math.sin(ang);
+      const ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', x); ln.setAttribute('y1', y);
+      ln.setAttribute('x2', nx); ln.setAttribute('y2', ny);
+      ln.setAttribute('stroke', '#777'); ln.setAttribute('stroke-width', '2');
+      chain.appendChild(ln);
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', nx); c.setAttribute('cy', ny); c.setAttribute('r', 2.2); c.setAttribute('fill', '#555');
+      chain.appendChild(c);
+      x = nx; y = ny;
+    }
+    res.setAttribute('x1', x0); res.setAttribute('y1', y0);
+    res.setAttribute('x2', x); res.setAttribute('y2', y);
+    lab.setAttribute('x', (x0 + x) / 2 + 6); lab.setAttribute('y', (y0 + y) / 2 + 20);
+    const a = phi / 2;
+    const r = a === 0 ? 1 : Math.abs(Math.sin(a) / a);
+    dot.setAttribute('cx', ax(a)); dot.setAttribute('cy', ay(r * r));
+    out.textContent = 'α = ' + (a / Math.PI).toFixed(2) + 'π,  Eθ/Em = ' + r.toFixed(3) + ',  I/Im = ' + (r * r).toFixed(3);
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h3>세기 공식</h3>
+
+<p>페이저 사슬이 원호를 이룬다는 점을 이용해 $E_\theta$를 정확히 구하면</p>
+
+$$I(\theta)=I_m\left(\frac{\sin\alpha}{\alpha}\right)^2,\qquad \alpha=\frac{1}{2}\phi=\frac{\pi a}{\lambda}\sin\theta$$
+
+<ul class="sym">
+<li>$I(\theta)$: 각 $\theta$에서 회절 무늬의 세기 (W/m²)</li>
+<li>$I_m$: 무늬 중심($\theta=0$)의 세기, 무늬 전체의 최댓값 (W/m²)</li>
+<li>$\phi$: 슬릿 맨 위와 맨 아래 광선의 위상차 (rad)</li>
+<li>$a$: 슬릿 폭, $\lambda$: 파장 (m)</li>
+</ul>
+
+<p>$\alpha$는 스크린 위치를 정하는 각 $\theta$와 그곳의 세기 $I$를 잇는 편의상의 변수다.</p>
+
+<details><summary>유도 보기</summary><div>
+<p>슬릿 맨 위와 맨 아래 광선의 경로차는 $a\sin\theta$이므로 위상차는</p>
+$$\phi=\frac{2\pi}{\lambda}a\sin\theta=2\alpha$$
+<p>$N\to\infty$이면 페이저 사슬은 길이 $E_m$인 매끄러운 원호. 원호의 양 끝 접선(첫 페이저와 마지막 페이저) 사이 각이 $\phi$이므로, 원의 반지름을 $R$이라 하면 중심각도 $\phi$이고 호의 길이 관계에서 $\phi=E_m/R$.</p>
+<p>합성 진폭 $E_\theta$는 이 원호의 현. 중심각 $\phi$인 현의 길이는</p>
+$$E_\theta=2R\sin\frac{\phi}{2}$$
+<p>$R=E_m/\phi$를 대입하면</p>
+$$E_\theta=\frac{E_m}{\phi/2}\sin\frac{\phi}{2}=E_m\frac{\sin\alpha}{\alpha}$$
+<p>전자기파의 세기는 전기장 진폭의 제곱에 비례하고, $I_m$은 $E_\theta=E_m$인 $\theta=0$의 세기이므로</p>
+$$\frac{I(\theta)}{I_m}=\frac{E_\theta^2}{E_m^2}=\left(\frac{\sin\alpha}{\alpha}\right)^2$$
+</div></details>
+
+<p>극소는 $\sin\alpha=0$, $\alpha\neq0$인 곳, 즉 $\alpha=m\pi$. 이를 $\alpha$의 정의에 넣으면 $a\sin\theta=m\lambda$로 앞의 극소 조건과 같다. 부극대는 대략 극소 사이 한가운데인 $\alpha\approx(m+\tfrac12)\pi$에 있고, 세기는 $I\approx I_m/[(m+\tfrac12)\pi]^2$이라 첫째가 약 $0.045I_m$, 둘째가 약 $0.016I_m$. <mark>부극대는 중앙 극대보다 훨씬 약하다.</mark></p>
+
+<h3>슬릿 폭과 파장에 따른 무늬</h3>
+
+<p>무늬의 모양은 $a/\lambda$ 하나로 정해진다. <mark>슬릿이 넓을수록 중앙 극대가 좁아진다</mark>(슬릿이 빛을 덜 퍼뜨림). $a\gg\lambda$이면 부극대가 사라지고 극소도 중심에 모여 더 이상 단일 슬릿 회절로 볼 수 없으며, 빛은 거의 직진한다.</p>
+
+<figure>
+<svg viewBox="0 0 640 280">
+  <line x1="40" y1="230" x2="620" y2="230" stroke="#444"/>
+  <line x1="330" y1="230" x2="330" y2="40" stroke="#bbb" stroke-dasharray="4 4"/>
+  <text x="338" y="44" font-size="14">I / I<tspan baseline-shift="sub" font-size="75%">m</tspan></text>
+  <text x="28" y="252" font-size="14">−90°</text>
+  <text x="168" y="252" font-size="14">−45°</text>
+  <text x="325" y="252" font-size="14">0</text>
+  <text x="458" y="252" font-size="14">45°</text>
+  <text x="590" y="252" font-size="14">90°</text>
+  <text x="560" y="272" font-size="15">θ</text>
+  <path id="ss-curve" fill="none" stroke="#111" stroke-width="2.2"/>
+</svg>
+<figcaption>단일 슬릿 회절의 상대 세기. $a/\lambda$를 키우면 중앙 극대가 좁아지고, $a/\lambda=1$이면 중앙 극대가 $\pm90^\circ$까지 퍼진다.</figcaption>
+<div class="controls">
+<label>a / λ <input type="range" id="ss-a" min="1" max="20" step="0.5" value="5"></label>
+<output id="ss-out"></output>
+</div>
+</figure>
+<script>
+(() => {
+  const sl = document.getElementById('ss-a');
+  const path = document.getElementById('ss-curve');
+  const out = document.getElementById('ss-out');
+  const X = t => 330 + t / 90 * 280;
+  const Y = v => 230 - v * 180;
+  function draw() {
+    const r = parseFloat(sl.value);
+    let d = '';
+    for (let i = 0; i <= 1200; i++) {
+      const t = -90 + 180 * i / 1200;
+      const a = Math.PI * r * Math.sin(t * Math.PI / 180);
+      const v = Math.abs(a) < 1e-9 ? 1 : Math.pow(Math.sin(a) / a, 2);
+      d += (i ? 'L' : 'M') + X(t).toFixed(1) + ' ' + Y(v).toFixed(1) + ' ';
+    }
+    path.setAttribute('d', d);
+    const th = Math.asin(Math.min(1, 1 / r)) * 180 / Math.PI;
+    out.textContent = '첫째 극소: θ = ±' + th.toFixed(1) + '°';
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<p>같은 슬릿이라도 파장이 길면 극소가 더 큰 각에 생긴다. 그래서 두 파장을 함께 비추면, 짧은 파장의 극소 자리에는 긴 파장의 빛만 남고, 긴 파장의 극소 근처에는 짧은 파장의 부극대가 남아 서로 다른 색이 보인다.</p>
+
+<h2>원형 구멍에 의한 회절</h2>
+
+<h3>원형 구멍의 회절 무늬</h3>
+
+<p>렌즈나 동공처럼 빛이 지나는 구멍은 대개 원형이다. 지름 $d$인 원형 구멍(또는 렌즈)을 지난 빛은 밝은 원판 모양의 중앙 극대와 그 둘레의 동심원 극소·부극대를 만든다. 동심원 부극대는 중앙 극대보다 훨씬 약하다. 첫째 극소의 각은</p>
+
+$$\sin\theta=1.22\,\frac{\lambda}{d}\quad\text{(첫째 극소, 원형 구멍)}$$
+
+<ul class="sym">
+<li>$\theta$: 중심축에서 첫째 극소까지의 각</li>
+<li>$\lambda$: 파장 (m), $d$: 구멍(렌즈)의 지름 (m)</li>
+</ul>
+
+<p>단일 슬릿의 $a\sin\theta=\lambda$와 다른 점은 인자 1.22뿐이며, <mark>1.22는 구멍이 원형이기 때문에 생긴다</mark>. 스크린까지 거리가 $D$이면 첫째 극소 고리의 반지름은 $y=D\tan\theta$.</p>
+
+<h3>레일리 기준과 분해</h3>
+
+<p>렌즈로 두 점광원(예: 멀리 있는 두 별)을 보면 각 점은 점이 아니라 회절 무늬로 맺힌다. 두 점이 가까우면 두 무늬가 겹쳐 하나로 보이므로, 회절은 볼 수 있는 세부의 한계를 정한다. 두 물체를 따로 구별하는 것이 <strong>분해(resolve)</strong>.</p>
+
+<p><mark>레일리 기준(Rayleigh's criterion)</mark>: 한 물체 회절 무늬의 중앙 극대가 다른 물체 무늬의 첫째 극소에 놓이면 두 물체는 겨우 분해된다. 이때의 각 간격 $\theta_R$이 분해 가능한 최소 각 간격.</p>
+
+$$\theta_R=\sin^{-1}\frac{1.22\lambda}{d}\;\approx\;1.22\,\frac{\lambda}{d}$$
+
+<p class="cond">조건: <mark>각이 작다</mark> ($\sin\theta_R\approx\theta_R$, $\theta_R$은 라디안)</p>
+<ul class="sym">
+<li>$\theta_R$: 두 점광원이 겨우 분해되는 각 간격 (rad)</li>
+<li>$\lambda$: 빛의 파장 (m)</li>
+<li>$d$: 빛이 지나는 구멍(렌즈, 동공)의 지름 (m)</li>
+</ul>
+
+<p>두 물체가 렌즈에서 보이는 각 $\theta$가 $\theta_R$보다 크면 분해되고, 작으면 분해되지 않는다. 거리 $L$에 있고 서로 $s$만큼 떨어진 두 물체는 $L\gg s$일 때 $\theta\approx s/L$.</p>
+
+<figure>
+<svg viewBox="0 0 640 260">
+  <g id="ry-g"></g>
+  <text x="62" y="250" font-size="15">θ &lt; θ<tspan baseline-shift="sub" font-size="75%">R</tspan>: 분해 안 됨</text>
+  <text x="270" y="250" font-size="15">θ = θ<tspan baseline-shift="sub" font-size="75%">R</tspan>: 겨우 분해</text>
+  <text x="478" y="250" font-size="15">θ &gt; θ<tspan baseline-shift="sub" font-size="75%">R</tspan>: 분해됨</text>
+</svg>
+<figcaption>두 점광원의 회절 무늬(점선)와 그 합(실선). 가운데는 레일리 기준: 한쪽의 중앙 극대가 다른 쪽의 첫째 극소 위에 있어 합에 얕은 골이 생긴다.</figcaption>
+</figure>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const g = document.getElementById('ry-g');
+  const J1 = x => { let s = 0; const n = 200; for (let i = 0; i < n; i++) { const t = Math.PI * (i + 0.5) / n; s += Math.cos(t - x * Math.sin(t)); } return s / n; };
+  const A = x => Math.abs(x) < 1e-6 ? 1 : Math.pow(2 * J1(x) / x, 2);
+  const z = 3.8317;
+  const seps = [0.6, 1.0, 1.6];
+  seps.forEach((s, k) => {
+    const cx = 110 + k * 208, w = 95, base = 220, h = 150;
+    const X = u => cx + u / (2.6 * z) * w;
+    const half = s * z / 2;
+    let p1 = '', p2 = '', ps = '';
+    let maxv = 0; const vals = [];
+    for (let i = 0; i <= 260; i++) {
+      const u = -2.6 * z + 5.2 * z * i / 260;
+      const a = A(u + half), b = A(u - half);
+      vals.push([u, a, b, a + b]); maxv = Math.max(maxv, a + b);
+    }
+    vals.forEach(([u, a, b, t], i) => {
+      const c = i ? 'L' : 'M';
+      p1 += c + X(u).toFixed(1) + ' ' + (base - a / maxv * h).toFixed(1) + ' ';
+      p2 += c + X(u).toFixed(1) + ' ' + (base - b / maxv * h).toFixed(1) + ' ';
+      ps += c + X(u).toFixed(1) + ' ' + (base - t / maxv * h).toFixed(1) + ' ';
+    });
+    [[p1, '#999', '4 3', 1.4], [p2, '#999', '4 3', 1.4], [ps, '#111', '', 2.2]].forEach(([d, col, da, sw]) => {
+      const e = document.createElementNS(NS, 'path');
+      e.setAttribute('d', d); e.setAttribute('fill', 'none'); e.setAttribute('stroke', col); e.setAttribute('stroke-width', sw);
+      if (da) e.setAttribute('stroke-dasharray', da);
+      g.appendChild(e);
+    });
+    const ax = document.createElementNS(NS, 'line');
+    ax.setAttribute('x1', cx - w); ax.setAttribute('x2', cx + w); ax.setAttribute('y1', base); ax.setAttribute('y2', base); ax.setAttribute('stroke', '#444');
+    g.appendChild(ax);
+  });
+})();
+</script>
+
+<p>$\theta_R$은 자의 최소 눈금과 같아서 작을수록 세밀하게 분해된다. 즉 <mark>분해능은 $1/\theta_R\propto d/\lambda$</mark>: 렌즈가 클수록, 파장이 짧을수록 좋다. 예를 들어 주변이 밝아져 동공이 작아지면 $d$가 줄어 $\theta_R$이 커지므로 (회절만 고려하면) 분해가 나빠진다.</p>
+
+<p>점묘화(pointillism)는 붓질 대신 수많은 작은 색 점으로 그린 그림이다. 가까이서는 이웃한 점이 눈에서 이루는 각이 $\theta_R$보다 커서 점이 따로 보이지만, 멀어지면 각이 $\theta_R$보다 작아져 점들이 분해되지 않고 색이 섞여 보인다. 그래서 거리에 따라 색이 미묘하게 달라진다.</p>
+
+<h2>이중 슬릿에 의한 회절</h2>
+
+<h3>이중 슬릿 간섭 복습</h3>
+
+<p>35장에서는 슬릿 폭을 무시했다. 두 슬릿을 떠나는 빛은 같은 위상이지만 점 $P$까지 거리가 달라, $P$에서 두 전기장 성분은 위상이 어긋난 채 시간에 따라 진동한다.</p>
+
+$$E_1=E_0\sin\omega t,\qquad E_2=E_0\sin(\omega t+\phi),\qquad \phi=\frac{2\pi d\sin\theta}{\lambda}$$
+
+<p>두 성분은 페이저를 벡터로 더해 합친다. 길이 $E_0$인 두 페이저가 각 $\phi$를 이루므로 합성 진폭과 세기는</p>
+
+$$E=2E_0\cos\frac{\phi}{2},\qquad \frac{I}{I_0}=\frac{E^2}{E_0^2}=4\cos^2\beta,\qquad \beta=\frac{\phi}{2}$$
+
+<p>여기서 $I_0$는 슬릿 하나만 있을 때의 세기, $d$는 두 슬릿 중심 사이 거리. 극대는 $\beta=m\pi$, 즉 $d\sin\theta=m\lambda$.</p>
+
+<h3>회절이 더해진 이중 슬릿 세기</h3>
+
+<p>실제 슬릿은 폭 $a$가 있어서 각 슬릿이 단일 슬릿 회절을 일으킨다. 따라서 <mark>이중 슬릿 무늬는 두 슬릿 사이의 간섭과 각 슬릿의 회절이 결합</mark>된 것. 폭이 같은 두 슬릿에서 세기는</p>
+
+$$I(\theta)=I_m\,(\cos^2\beta)\left(\frac{\sin\alpha}{\alpha}\right)^2,\qquad \beta=\frac{\pi d}{\lambda}\sin\theta,\quad \alpha=\frac{\pi a}{\lambda}\sin\theta$$
+
+<ul class="sym">
+<li>$I_m$: 무늬 중심($\theta=0$)의 세기 (W/m²)</li>
+<li>$d$: 두 슬릿 중심 사이 거리 (m), $a$: 각 슬릿의 폭 (m)</li>
+<li>$\lambda$: 파장 (m), $\theta$: 중심축에서 잰 각</li>
+</ul>
+
+<p>우변은 $I_m$과 두 인자의 곱이다.</p>
+<ul>
+<li><strong>간섭 인자(interference factor)</strong> $\cos^2\beta$: 간격 $d$인 두 슬릿 사이의 간섭에서 온다.</li>
+<li><strong>회절 인자(diffraction factor)</strong> $(\sin\alpha/\alpha)^2$: 폭 $a$인 단일 슬릿의 회절에서 온다.</li>
+</ul>
+
+<p>슬릿이 무한히 좁으면($a\to0$) $\alpha\to0$, $\sin\alpha/\alpha\to1$이라 같은 세기의 간섭 무늬만 끝없이 이어진다. 폭이 있으면 단일 슬릿 회절 곡선이 <mark>포락선(envelope)</mark>이 되어 간섭 무늬의 세기를 제한한다. 포락선 안에서 가운데 큰 봉우리가 <strong>중앙 봉우리</strong>, 그 옆 작은 봉우리들이 <strong>측면 봉우리</strong>.</p>
+
+<p>간섭 극대 $d\sin\theta=m\lambda$가 회절 극소 $a\sin\theta=m'\lambda$와 같은 각에 오면 그 밝은 무늬는 <mark>회절 극소에 지워진다</mark>. 두 식을 나누면 $m=m'(d/a)$. 따라서 중앙 봉우리 안의 밝은 무늬는 $\lvert m\rvert \lt d/a$인 것들이고, $d/a$가 정수이면 그 개수는 $2(d/a)-1$, 각 측면 봉우리 안에는 $d/a-1$개.</p>
+
+<figure>
+<svg viewBox="0 0 640 280">
+  <line x1="40" y1="230" x2="620" y2="230" stroke="#444"/>
+  <text x="28" y="252" font-size="14">−30°</text>
+  <text x="172" y="252" font-size="14">−15°</text>
+  <text x="325" y="252" font-size="14">0</text>
+  <text x="466" y="252" font-size="14">15°</text>
+  <text x="598" y="252" font-size="14">30°</text>
+  <text x="560" y="272" font-size="15">θ</text>
+  <path id="ds-env" fill="none" stroke="#888" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <path id="ds-curve" fill="none" stroke="#111" stroke-width="1.6"/>
+  <text x="420" y="70" font-size="14" fill="#555">점선: 회절 포락선</text>
+</svg>
+<figcaption>폭 $a=5\lambda$인 두 슬릿의 세기. 간격 $d$를 바꾸면 포락선(회절)은 그대로이고 그 안의 간섭 무늬 수가 바뀐다. 처음 상태 $d/a=4$에서는 $m=\pm4$ 무늬가 첫째 회절 극소에 지워져 중앙 봉우리에 7개가 남는다.</figcaption>
+<div class="controls">
+<label>d / a <input type="range" id="ds-r" min="1.5" max="8" step="0.5" value="4"></label>
+<output id="ds-out"></output>
+</div>
+</figure>
+<script>
+(() => {
+  const sl = document.getElementById('ds-r');
+  const pc = document.getElementById('ds-curve');
+  const pe = document.getElementById('ds-env');
+  const out = document.getElementById('ds-out');
+  const aL = 5;
+  const X = t => 330 + t / 30 * 280;
+  const Y = v => 230 - v * 180;
+  function draw() {
+    const r = parseFloat(sl.value), dL = r * aL;
+    let dc = '', de = '';
+    for (let i = 0; i <= 2400; i++) {
+      const t = -30 + 60 * i / 2400;
+      const s = Math.sin(t * Math.PI / 180);
+      const al = Math.PI * aL * s, be = Math.PI * dL * s;
+      const env = Math.abs(al) < 1e-9 ? 1 : Math.pow(Math.sin(al) / al, 2);
+      const v = Math.pow(Math.cos(be), 2) * env;
+      const c = i ? 'L' : 'M';
+      dc += c + X(t).toFixed(2) + ' ' + Y(v).toFixed(2) + ' ';
+      de += c + X(t).toFixed(2) + ' ' + Y(env).toFixed(2) + ' ';
+    }
+    pc.setAttribute('d', dc); pe.setAttribute('d', de);
+    const n = Math.abs(r - Math.round(r)) < 1e-9 ? 2 * Math.round(r) - 1 : 2 * Math.floor(r) + 1;
+    out.textContent = '중앙 봉우리 안 밝은 무늬: ' + n + '개';
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h2>회절 격자</h2>
+
+<h3>격자와 선</h3>
+
+<p><mark>회절 격자(diffraction grating)</mark>는 이중 슬릿과 같은 배치에 슬릿 수 $N$만 훨씬 많은 장치다. 슬릿은 <strong>눈금(ruling)</strong>이라고도 하며 1 mm에 수천 개까지 새긴다. 이웃한 눈금 사이 거리가 $d$이면, 이웃한 두 광선의 경로차는 이중 슬릿처럼 $d\sin\theta$이고 이 경로차가 간섭을 결정한다. 모든 이웃 쌍이 동시에 보강되는 조건에서 밝은 선이 생긴다.</p>
+
+$$d\sin\theta=m\lambda,\qquad m=0,1,2,\dots\quad\text{(극대, 선)}$$
+
+<ul class="sym">
+<li>$d$: 눈금 간격 (m)</li>
+<li>$\theta$: 격자 중심축에서 선까지의 각</li>
+<li>$m$: 차수(order number)</li>
+<li>$\lambda$: 파장 (m)</li>
+</ul>
+
+<p>격자가 만드는 좁고 밝은 극대가 <mark>선(line)</mark>, 정수 $m$이 그 선의 <strong>차수</strong>다. $m=0$인 중앙선(0차 선)을 중심으로 각 차수의 선이 양쪽에 대칭으로 생긴다. $\sin\theta\le1$이어야 하므로 $m\le d/\lambda$이기에, <mark>한 격자로 볼 수 있는 차수에는 최댓값이 있다</mark>.</p>
+
+<p>극대 위치 공식은 이중 슬릿과 같지만 무늬 모양이 다르다. 이중 슬릿의 밝은 무늬는 넓고 완만하지만, <mark>격자의 선은 매우 좁고 그 사이는 넓은 어두운 영역</mark>이다. 슬릿이 많을수록 극대에서 조금만 벗어나도 여러 광선이 서로 상쇄되기 때문이다.</p>
+
+<h3>선의 반폭</h3>
+
+<p>선의 <mark>반폭(half-width) $\Delta\theta_{hw}$</mark>: 선의 중심에서 선이 어두워져 사라지는 첫 극소까지의 각. 그 극소에서는 $N$개 슬릿에서 온 $N$개 광선이 모두 상쇄된다.</p>
+
+$$\Delta\theta_{hw}=\frac{\lambda}{Nd\cos\theta}\quad\text{(각 }\theta\text{에 있는 선의 반폭)}$$
+
+<p class="cond">조건: <mark>$\Delta\theta_{hw}$가 작다</mark></p>
+<ul class="sym">
+<li>$\Delta\theta_{hw}$: 선의 반폭 (rad)</li>
+<li>$N$: 눈금 수, $d$: 눈금 간격 (m), $Nd$: 격자 전체 폭</li>
+<li>$\theta$: 선의 위치, $\lambda$: 파장 (m)</li>
+</ul>
+
+<p>중앙선($\theta=0$)이면 $\Delta\theta_{hw}=\lambda/Nd$.</p>
+
+<details><summary>유도 보기</summary><div>
+<p><strong>중앙선.</strong> 단일 슬릿에서는 맨 위와 맨 아래 광선의 경로차가 $\lambda$일 때 첫째 극소가 생겼다($\tfrac a2\sin\theta=\tfrac\lambda2$, 즉 $a\sin\theta=\lambda$). 격자도 같은 논리로, 폭 $Nd$인 격자의 맨 위와 맨 아래 광선의 경로차가 $\lambda$가 되면 광선을 두 묶음으로 짝지어 모두 상쇄할 수 있다.</p>
+$$Nd\sin\Delta\theta_{hw}=\lambda\;\Rightarrow\;\Delta\theta_{hw}\approx\frac{\lambda}{Nd}\quad(\Delta\theta_{hw}\text{ 작음})$$
+<p><strong>일반 선.</strong> 각 $\theta$의 $m$차 선에서 맨 위와 맨 아래 광선의 경로차는 $Nd\sin\theta=N(m\lambda)$. 이웃한 극소 $\theta+\Delta\theta_{hw}$에서 모든 광선이 상쇄되려면 이 경로차가 $\lambda$만큼 더 커져야 한다.</p>
+$$Nd\sin(\theta+\Delta\theta_{hw})=N(m\lambda)+\lambda$$
+<p>$\Delta\theta_{hw}$가 작으면 $\sin(\theta+\Delta\theta_{hw})\approx\sin\theta+\Delta\theta_{hw}\cos\theta$. 대입하고 $d\sin\theta=m\lambda$로 양변의 $Nm\lambda$를 지우면</p>
+$$Nd\,\Delta\theta_{hw}\cos\theta=\lambda$$
+</div></details>
+
+<p>파장과 간격이 같으면 <mark>눈금 수 $N$이 많을수록 선이 좁아진다</mark>. 그래서 $N$이 큰 격자는 가까운 파장의 선이 덜 겹쳐 파장을 더 잘 구별한다.</p>
+
+<figure>
+<svg viewBox="0 0 640 280">
+  <line x1="40" y1="230" x2="620" y2="230" stroke="#444"/>
+  <text x="28" y="252" font-size="14">−40°</text>
+  <text x="172" y="252" font-size="14">−20°</text>
+  <text x="325" y="252" font-size="14">0</text>
+  <text x="466" y="252" font-size="14">20°</text>
+  <text x="598" y="252" font-size="14">40°</text>
+  <text x="560" y="272" font-size="15">θ</text>
+  <text x="318" y="36" font-size="14">m=0</text>
+  <text x="395" y="36" font-size="14">m=1</text>
+  <text x="480" y="36" font-size="14">m=2</text>
+  <text x="572" y="36" font-size="14">m=3</text>
+  <path id="gr-curve" fill="none" stroke="#111" stroke-width="1.8"/>
+</svg>
+<figcaption>눈금 간격 $d=5\lambda$인 격자의 상대 세기(슬릿 폭의 회절은 무시). 선의 위치는 $N$과 무관하고, $N$이 커지면 선만 좁아진다. 처음 상태는 $N=6$.</figcaption>
+<div class="controls">
+<label>N <input type="range" id="gr-n" min="2" max="20" step="1" value="6"></label>
+<output id="gr-out"></output>
+</div>
+</figure>
+<script>
+(() => {
+  const sl = document.getElementById('gr-n');
+  const p = document.getElementById('gr-curve');
+  const out = document.getElementById('gr-out');
+  const dL = 5;
+  const X = t => 330 + t / 40 * 280;
+  const Y = v => 230 - v * 180;
+  function draw() {
+    const N = parseInt(sl.value, 10);
+    let d = '';
+    for (let i = 0; i <= 3000; i++) {
+      const t = -40 + 80 * i / 3000;
+      const b = Math.PI * dL * Math.sin(t * Math.PI / 180);
+      const sb = Math.sin(b);
+      const v = Math.abs(sb) < 1e-9 ? 1 : Math.pow(Math.sin(N * b) / (N * sb), 2);
+      d += (i ? 'L' : 'M') + X(t).toFixed(2) + ' ' + Y(v).toFixed(2) + ' ';
+    }
+    p.setAttribute('d', d);
+    out.textContent = '중앙선 반폭 λ/(Nd) = ' + (180 / Math.PI / (N * dL)).toFixed(2) + '°';
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<h3>격자 분광기</h3>
+
+<p>격자는 광원이 내는 파장을 측정하는 데 쓴다. <strong>격자 분광기(grating spectroscope)</strong>에서는 광원의 빛을 평행광으로 만들어 격자에 비추고, 회전하는 망원경으로 각 선이 나타나는 각 $\theta$를 잰다. 파장마다 $\theta$가 다르므로 $\lambda=d\sin\theta/m$으로 광원이 내는 파장들을 알아낸다. 선이 좁을수록(즉 $N$이 클수록) 가까운 파장을 구별할 수 있다.</p>
+
+<h2>분산과 분해능</h2>
+
+<h3>분산</h3>
+
+<p>파장을 구별하려면 파장이 다른 선들이 서로 떨어져 나타나야 한다. 격자의 <mark>분산(dispersion) $D$</mark>: 파장이 $\Delta\lambda$만큼 다른 두 선이 벌어지는 각 간격 $\Delta\theta$의 척도.</p>
+
+$$D=\frac{\Delta\theta}{\Delta\lambda}=\frac{m}{d\cos\theta}$$
+
+<ul class="sym">
+<li>$D$: 분산 (rad/m 또는 °/m)</li>
+<li>$\Delta\theta$: 두 선의 각 간격, $\Delta\lambda$: 두 파장의 차이 (m)</li>
+<li>$m$: 차수, $d$: 눈금 간격 (m), $\theta$: 선의 위치</li>
+</ul>
+
+<details><summary>유도 보기</summary><div>
+<p>$d\sin\theta=m\lambda$를 $\lambda$로 미분하면 $d\cos\theta\,d\theta=m\,d\lambda$. 차이가 작으면 미분을 $\Delta$로 바꿔 $\Delta\theta/\Delta\lambda=m/(d\cos\theta)$.</p>
+</div></details>
+
+<p>분산을 키우려면 <mark>눈금 간격 $d$가 작은 격자</mark>를 쓰고 <mark>높은 차수 $m$</mark>에서 관측한다. 분산은 <mark>눈금 수 $N$과 무관</mark>하다.</p>
+
+<p>CD 표면의 미세한 홈(폭 약 0.5 μm)도 회절 격자처럼 작동한다. 백색광을 비추면 파장마다 회절각이 달라 홈들의 회절 무늬가 합쳐진 무지갯빛 띠가 보인다.</p>
+
+<h3>분해능</h3>
+
+<p>분산이 커도 선이 넓으면 가까운 두 선이 겹친다. 격자의 <mark>분해능(resolving power) $R$</mark>: 아주 가까운 두 파장의 선을 구별하는 능력의 척도. 평균 파장 $\lambda_{avg}$, 파장 차 $\Delta\lambda$인 두 선을 겨우 분해할 때</p>
+
+$$R=\frac{\lambda_{avg}}{\Delta\lambda}=Nm$$
+
+<ul class="sym">
+<li>$R$: 분해능 (단위 없음)</li>
+<li>$\lambda_{avg}$: 두 파장의 평균, $\Delta\lambda$: 겨우 구별되는 파장 차 (m)</li>
+<li>$N$: 눈금 수, $m$: 차수</li>
+</ul>
+
+<details><summary>유도 보기</summary><div>
+<p>두 선을 구별하는 최소 각 간격 $\Delta\theta$는 레일리 기준에 따라 한 선의 중심이 다른 선의 첫 극소에 놓일 때, 즉 선의 반폭과 같다.</p>
+$$\Delta\theta=\Delta\theta_{hw}=\frac{\lambda}{Nd\cos\theta}$$
+<p>한편 분산의 정의에서 $\Delta\theta=D\Delta\lambda=\dfrac{m\,\Delta\lambda}{d\cos\theta}$. 두 식을 같게 놓으면</p>
+$$\frac{\lambda}{\Delta\lambda\,Nd\cos\theta}=\frac{m}{d\cos\theta}\;\Rightarrow\;\frac{\lambda}{\Delta\lambda}=Nm$$
+</div></details>
+
+<p>$\Delta\lambda$가 작을수록 분해능이 크다. <mark>분해능을 높이려면 눈금 수 $N$을 늘린다</mark>.</p>
+
+<h3>세 격자 비교</h3>
+
+<p>파장 589 nm, $m=1$일 때 세 격자의 값이다.</p>
+
+<table>
+<thead><tr><th>격자</th><th>$N$</th><th>$d$ (nm)</th><th>$\theta$</th><th>$D$ (°/μm)</th><th>$R$</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>10 000</td><td>2540</td><td>13.4°</td><td>23.2</td><td>10 000</td></tr>
+<tr><td>B</td><td>20 000</td><td>2540</td><td>13.4°</td><td>23.2</td><td>20 000</td></tr>
+<tr><td>C</td><td>10 000</td><td>1360</td><td>25.7°</td><td>46.7</td><td>10 000</td></tr>
+</tbody>
+</table>
+
+<p>A와 B는 $d$가 같아 분산이 같고, $N$이 두 배인 B는 분해능이 두 배라 선이 더 좁아 훨씬 가까운 파장도 구별한다. A와 C는 $N$이 같아 분해능이 같고, $d$가 작은 C는 분산이 커서 두 선 사이 각 간격이 더 넓다. 즉 <mark>분산은 선 사이를 벌리고, 분해능은 선 자체를 좁힌다</mark>.</p>
+
+<h2>X선 회절</h2>
+
+<h3>X선</h3>
+
+<p><mark>X선</mark>은 파장이 약 $1\,\text{Å}=10^{-10}\,\text{m}$ 정도인 전자기파로, 전자기 스펙트럼에서 자외선보다 파장이 짧은 쪽에 있다. 가열된 필라멘트 $F$에서 나온 전자를 전위차 $V$로 가속해 금속 표적 $T$에 충돌시키면 X선이 나온다.</p>
+
+<p>보통의 광학 격자는 $d$가 μm 정도라 $\lambda\approx0.1$ nm이면 $\sin\theta=m\lambda/d$가 너무 작아 선들이 중앙선에 붙어 버린다. 대신 원자 간격이 X선 파장과 비슷한 0.1 nm 정도인 결정이 <mark>3차원 회절 격자</mark> 역할을 한다.</p>
+
+<h3>결정 격자와 단위 세포</h3>
+
+<p>결정은 원자가 규칙적으로 반복 배열된 구조다. 반복되는 점들의 배열이 <strong>격자(lattice)</strong>, 평행이동으로 반복하면 결정 전체를 빈틈없이 채우는 기본 단위가 <mark>단위 세포(unit cell)</mark>. 예를 들어 삼각 격자에서는 두 기본 벡터 $\mathbf a_1$, $\mathbf a_2$가 만드는 평행사변형이 단위 세포다. 단위 세포의 선택은 하나가 아니어서 다른 벡터 $\mathbf a_1'$, $\mathbf a_2'$로도 만들 수 있고, 대칭이 잘 드러나도록 더 큰 직사각형을 고르기도 하는데 이것이 <strong>관례적 단위 세포(conventional unit cell)</strong>.</p>
+
+<p>염화나트륨(NaCl)은 Na⁺ 이온과 Cl⁻ 이온이 정육면체 모양으로 번갈아 놓인 입방 구조이며, 모서리 길이 $a_0$인 정육면체 단위 세포가 반복된다.</p>
+
+<h3>브래그 법칙</h3>
+
+<p>결정에 입사한 X선은 원자들에 산란되는데, 결정 속 원자들이 이루는 <mark>평행한 면들의 족(family of parallel planes)에서 반사되는 것처럼</mark> 회절된다. 이 면이 <strong>반사면(reflecting planes, 결정면)</strong>, 이웃한 면 사이 거리가 <strong>면간 거리(interplanar spacing) $d$</strong>. 이 산란이 <strong>브래그 산란(Bragg scattering)</strong>. 각 $\theta$는 광학과 달리 법선이 아니라 <mark>면에서 잰다</mark>.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <line x1="60" y1="130" x2="600" y2="130" stroke="#888"/>
+  <line x1="60" y1="210" x2="600" y2="210" stroke="#888"/>
+  <g fill="#666">
+    <circle cx="80" cy="130" r="5"/><circle cx="160" cy="130" r="5"/><circle cx="240" cy="130" r="5"/><circle cx="320" cy="130" r="5"/><circle cx="400" cy="130" r="5"/><circle cx="480" cy="130" r="5"/><circle cx="560" cy="130" r="5"/>
+    <circle cx="80" cy="210" r="5"/><circle cx="160" cy="210" r="5"/><circle cx="240" cy="210" r="5"/><circle cx="320" cy="210" r="5"/><circle cx="400" cy="210" r="5"/><circle cx="480" cy="210" r="5"/><circle cx="560" cy="210" r="5"/>
+  </g>
+  <line x1="182.4" y1="50.5" x2="320" y2="130" stroke="#111" stroke-width="2"/>
+  <line x1="320" y1="130" x2="457.6" y2="50.5" stroke="#111" stroke-width="2"/>
+  <line x1="113.9" y1="91" x2="320" y2="210" stroke="#444" stroke-width="2"/>
+  <line x1="320" y1="210" x2="526.1" y2="91" stroke="#444" stroke-width="2"/>
+  <line x1="285.4" y1="190" x2="320" y2="210" stroke="#000" stroke-width="6"/>
+  <line x1="320" y1="210" x2="354.6" y2="190" stroke="#000" stroke-width="6"/>
+  <line x1="320" y1="130" x2="285.4" y2="190" stroke="#777" stroke-dasharray="4 4"/>
+  <line x1="320" y1="130" x2="354.6" y2="190" stroke="#777" stroke-dasharray="4 4"/>
+  <text x="196" y="44" font-size="15">광선 1</text>
+  <text x="55" y="80" font-size="15">광선 2</text>
+  <path d="M 268 130 A 52 52 0 0 1 275 104" fill="none" stroke="#444"/>
+  <text x="252" y="122" font-size="15">θ</text>
+  <path d="M 372 130 A 52 52 0 0 0 365 104" fill="none" stroke="#444"/>
+  <text x="378" y="122" font-size="15">θ</text>
+  <text x="196" y="250" font-size="15">d sin θ</text>
+  <text x="372" y="250" font-size="15">d sin θ</text>
+  <line x1="244" y1="236" x2="298" y2="202" stroke="#999"/>
+  <line x1="390" y1="236" x2="342" y2="202" stroke="#999"/>
+  <line x1="40" y1="130" x2="40" y2="210" stroke="#444"/>
+  <line x1="34" y1="130" x2="46" y2="130" stroke="#444"/>
+  <line x1="34" y1="210" x2="46" y2="210" stroke="#444"/>
+  <text x="16" y="176" font-size="15">d</text>
+  <text x="440" y="285" font-size="14" fill="#555">굵은 선: 광선 2의 추가 경로</text>
+</svg>
+<figcaption>간격 $d$인 두 반사면에서 반사되는 광선. 아래 면에서 반사된 광선 2는 들어갈 때와 나올 때 각각 $d\sin\theta$를 더 지나 경로차가 $2d\sin\theta$.</figcaption>
+</figure>
+
+<p>이웃한 두 면에서 반사된 광선의 경로차가 $2d\sin\theta$이므로, 이것이 파장의 정수배일 때 산란된 세기가 극대다. 이것이 <mark>브래그 법칙(Bragg's law)</mark>.</p>
+
+$$2d\sin\theta=m\lambda,\qquad m=1,2,3,\dots$$
+
+<ul class="sym">
+<li>$d$: 반사면 사이 거리(면간 거리) (m)</li>
+<li>$\theta$: 입사 X선과 반사면 사이의 각</li>
+<li>$m$: 차수</li>
+<li>$\lambda$: X선의 파장 (m)</li>
+</ul>
+
+<p>결정에 대한 X선의 입사 방향을 바꾸면 다른 면들의 족이 X선을 반사하며, 그 족은 면간 거리 $d$가 다르다. 파장을 알면 측정한 $\theta$로 $d$를 구해 결정 구조를 알 수 있고, 반대로 $d$를 알면 X선의 파장을 구할 수 있다.</p>
+
+<h3>면간 거리</h3>
+
+<p>한 면들의 족은 원자를 지나는 평행한 면들이고, 면간 거리는 이웃한 두 면 사이의 수직 거리다. 단위 세포 그림에서 그 면들이 지나는 원자를 잇고, 단위 세포의 크기 $a_0$로부터 기하학적으로 수직 거리를 계산하면 된다. 예를 들어 한 변 $a_0$인 정사각형 배열에서 대각선 방향 면들은 $x+y=na_0$ 꼴이므로 면간 거리는 $a_0/\sqrt2$. 같은 결정이라도 면의 방향에 따라 면간 거리가 다르다.</p>
+
+<h2>예제</h2>
+
+<p><strong>1.</strong> 파장 600 nm인 빛을 폭 0.12 mm인 슬릿에 비추고 2.0 m 떨어진 스크린에서 본다. 첫째 극소의 위치와 중앙 극대의 폭은?</p>
+<p>$\sin\theta=\lambda/a=(600\times10^{-9})/(1.2\times10^{-4})=5.0\times10^{-3}$. 각이 작으므로 $y\approx D\theta=2.0\times5.0\times10^{-3}=1.0\times10^{-2}$ m $=1.0$ cm. 중앙 극대는 양쪽 첫째 극소 사이이므로 폭 2.0 cm.</p>
+
+<p><strong>2.</strong> 단일 슬릿에서 슬릿 양 끝 광선의 경로차가 $\lambda/2$인 점의 세기는 $I_m$의 몇 배인가?</p>
+<p>$a\sin\theta=\lambda/2$이므로 $\alpha=\pi a\sin\theta/\lambda=\pi/2$. $I/I_m=(\sin\alpha/\alpha)^2=(1/(\pi/2))^2=4/\pi^2\approx0.41$.</p>
+
+<p><strong>3.</strong> 동공 지름 5.0 mm, 파장 550 nm일 때 레일리 기준에 따른 최소 분해각은? 1.4 m 떨어진 두 전조등을 구별할 수 있는 최대 거리는?</p>
+<p>$\theta_R=1.22\lambda/d=1.22\times(550\times10^{-9})/(5.0\times10^{-3})=1.34\times10^{-4}$ rad. $\theta\approx s/L=\theta_R$에서 $L=1.4/(1.34\times10^{-4})\approx1.0\times10^{4}$ m, 약 10 km.</p>
+
+<p><strong>4.</strong> 눈금 10 000개가 2.0 cm에 새겨진 격자에 500 nm 빛을 비춘다. 1차 선의 각과 반폭, 관측 가능한 최대 차수, 1차에서 구별 가능한 최소 파장 차는?</p>
+<p>$d=2.0\times10^{-2}/10\,000=2.0\,\mu$m. $\sin\theta=\lambda/d=0.25$이므로 $\theta=14.5^\circ$. 반폭 $\Delta\theta_{hw}=\lambda/(Nd\cos\theta)=(500\times10^{-9})/(0.020\times0.968)=2.6\times10^{-5}$ rad. $d/\lambda=4$이지만 $m=4$이면 $\theta=90^\circ$로 스크린에 닿지 않으므로 최대 차수는 3. $R=Nm=10\,000$이므로 $\Delta\lambda=\lambda/R=0.05$ nm.</p>
+
+<p><strong>5.</strong> 면간 거리 0.28 nm인 결정에 파장 0.10 nm인 X선을 비출 때 1차 브래그 극대의 각은?</p>
+<p>$\sin\theta=m\lambda/2d=0.10/(2\times0.28)=0.179$이므로 $\theta=10.3^\circ$.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

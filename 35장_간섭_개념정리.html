@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>35장 간섭</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>35장 간섭</h1>
+
+<h2>파동으로서의 빛</h2>
+
+<h3>호이겐스 원리</h3>
+
+<p>빛을 포함한 파동이 3차원에서 어떻게 퍼져 나가는지는 <mark>호이겐스 원리(Huygens' principle)</mark>로 예측 가능. 원리는 두 가지.</p>
+
+<ul>
+<li>파면 위의 모든 점은 <mark>구면 2차 파동(secondary wavelet)의 점원</mark>이 된다.</li>
+<li>시간 $t$ 뒤의 새 파면은 이 2차 파동들에 공통으로 접하는 면.</li>
+</ul>
+
+<p>진공에서 평면파라면 각 점의 2차 파동이 $\Delta t$ 동안 반지름 $c\,\Delta t$만큼 퍼지고, 그 접면이 처음 파면과 평행한 새 평면이 된다. 즉 평면파는 평면파 그대로 $c\,\Delta t$만큼 전진.</p>
+
+<h3>굴절률과 빛의 속력</h3>
+
+<p>매질 속에서 빛은 진공보다 느리다. 그 비율이 <mark>굴절률(index of refraction)</mark>.</p>
+
+$$ n = \frac{c}{v} $$
+
+<ul class="sym">
+<li>$n$: 매질의 굴절률 (단위 없음, $n \ge 1$)</li>
+<li>$c$: 진공에서 빛의 속력 ($3.00\times10^8$ m/s)</li>
+<li>$v$: 매질 속 빛의 속력 (m/s)</li>
+</ul>
+
+<p>따라서 두께 $L$인 매질을 빛 펄스가 지나는 데 걸리는 시간은 $t = L/v = nL/c$.</p>
+
+<h3>호이겐스 원리로 본 굴절</h3>
+
+<p>파면이 경계면에 비스듬히 닿으면 먼저 유리에 들어간 부분부터 느려지기에, 파면 전체가 꺾이며 진행 방향이 바뀐다. 이것이 굴절. 호이겐스 원리로 이 꺾임의 정도, 즉 굴절 법칙을 유도 가능.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <rect x="0" y="150" width="640" height="150" fill="#ececec"/>
+  <line x1="20" y1="150" x2="620" y2="150" stroke="#222" stroke-width="1.5"/>
+  <text x="30" y="40" font-size="15" fill="#222">공기 (n₁, v₁)</text>
+  <text x="30" y="285" font-size="15" fill="#222">유리 (n₂ &gt; n₁, v₂)</text>
+  <!-- incident rays -->
+  <line x1="91" y1="20" x2="200" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="238" y1="-43" x2="400" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <!-- incident wavefront he -->
+  <line x1="200" y1="150" x2="317.4" y2="51.5" stroke="#111" stroke-width="3"/>
+  <!-- ec segment -->
+  <line x1="317.4" y1="51.5" x2="400" y2="150" stroke="#111" stroke-width="1.5"/>
+  <!-- wavelet arc around h radius 85.7 -->
+  <path d="M 114.3 150 A 85.7 85.7 0 0 0 285.7 150" fill="none" stroke="#666" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <!-- hg -->
+  <line x1="200" y1="150" x2="236.7" y2="227.4" stroke="#111" stroke-width="1.5"/>
+  <!-- refracted wavefront cg -->
+  <line x1="400" y1="150" x2="236.7" y2="227.4" stroke="#111" stroke-width="3"/>
+  <!-- refracted ray continuation -->
+  <line x1="236.7" y1="227.4" x2="262" y2="281" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <line x1="400" y1="150" x2="455" y2="266" stroke="#888" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <!-- points -->
+  <circle cx="200" cy="150" r="3.5" fill="#111"/>
+  <circle cx="400" cy="150" r="3.5" fill="#111"/>
+  <circle cx="317.4" cy="51.5" r="3.5" fill="#111"/>
+  <circle cx="236.7" cy="227.4" r="3.5" fill="#111"/>
+  <text x="180" y="142" font-size="16" fill="#111">h</text>
+  <text x="408" y="143" font-size="16" fill="#111">c</text>
+  <text x="322" y="46" font-size="16" fill="#111">e</text>
+  <text x="222" y="246" font-size="16" fill="#111">g</text>
+  <text x="365" y="92" font-size="15" fill="#111">λ₁</text>
+  <text x="196" y="200" font-size="15" fill="#111">λ₂</text>
+  <path d="M 240 150 A 40 40 0 0 0 230.6 124.3" fill="none" stroke="#111"/>
+  <text x="246" y="138" font-size="15" fill="#111">θ₁</text>
+  <path d="M 360 150 A 40 40 0 0 0 363.8 167.1" fill="none" stroke="#111"/>
+  <text x="330" y="176" font-size="15" fill="#111">θ₂</text>
+  <text x="470" y="60" font-size="14" fill="#444">굵은 선: 입사 파면 he</text>
+  <text x="470" y="80" font-size="14" fill="#444">→ 굴절 파면 gc</text>
+  <text x="470" y="100" font-size="14" fill="#444">점선 호: h에서 나온 2차 파동</text>
+</svg>
+<figcaption>같은 시간 동안 e의 2차 파동은 공기에서 λ₁, h의 2차 파동은 유리에서 λ₂만큼 퍼진다.</figcaption>
+</figure>
+
+<details><summary>굴절 법칙 유도 보기</summary><div>
+<p>입사 파면 $he$의 점 $e$에서 나온 2차 파동이 공기 속을 $\lambda_1$만큼 퍼져 경계의 점 $c$에 닿는 데 걸리는 시간은 $\lambda_1/v_1$. 같은 시간 동안 점 $h$의 2차 파동은 유리 속을 퍼져 점 $g$에 닿으므로, 그 거리는 $\lambda_2$이고 시간은 $\lambda_2/v_2$. 두 시간이 같기에</p>
+$$ \frac{\lambda_1}{v_1} = \frac{\lambda_2}{v_2} $$
+<p>새 파면 $gc$는 $h$의 2차 파동에 접하므로 $hg \perp gc$, 또 파면 $he \perp ec$. 파면과 경계면이 이루는 각이 각각 $\theta_1$, $\theta_2$(광선과 법선이 이루는 각과 같음)이므로 공통 빗변 $hc$를 가진 두 직각삼각형 $hce$, $hcg$에서</p>
+$$ \sin\theta_1 = \frac{\lambda_1}{hc}, \qquad \sin\theta_2 = \frac{\lambda_2}{hc} $$
+<p>두 식을 나누고 $v = c/n$을 대입하면</p>
+$$ \frac{\sin\theta_1}{\sin\theta_2} = \frac{\lambda_1}{\lambda_2} = \frac{v_1}{v_2} = \frac{c/n_1}{c/n_2} = \frac{n_2}{n_1} $$
+</div></details>
+
+$$ n_1\sin\theta_1 = n_2\sin\theta_2 $$
+
+<ul class="sym">
+<li>$n_1$, $n_2$: 입사 쪽, 굴절 쪽 매질의 굴절률</li>
+<li>$\theta_1$, $\theta_2$: 입사각, 굴절각 (법선 기준)</li>
+</ul>
+
+<p>이것이 <mark>스넬 법칙(Snell's law)</mark>, 즉 굴절 법칙.</p>
+
+<h3>매질 속 파장과 진동수</h3>
+
+<p>위 유도에는 숨은 가정이 하나 있다. 경계면에서 파동이 끊기지 않고 이어지려면 양쪽의 진동 주기가 같아야 하므로, <mark>굴절해도 진동수 $f$와 주기 $T$는 변하지 않는다.</mark> 변하는 것은 속력과 파장.</p>
+
+<p>진공에서 파장이 $\lambda$인 빛이 굴절률 $n$인 매질에 들어가면 속력이 $1/n$배가 되고 진동수는 그대로이므로 파장도 $1/n$배.</p>
+
+$$ \lambda_n = \frac{\lambda}{n}, \qquad f_n = \frac{v}{\lambda_n} = \frac{c/n}{\lambda/n} = \frac{c}{\lambda} = f $$
+
+<ul class="sym">
+<li>$\lambda_n$: 매질 속 파장 (m)</li>
+<li>$\lambda$: 진공에서의 파장 (m)</li>
+<li>$f_n$, $f$: 매질 속, 진공에서의 진동수 (Hz)</li>
+</ul>
+
+<p>즉 <mark>굴절률이 클수록 매질 속 파장이 짧다.</mark></p>
+
+<h3>매질이 만드는 위상차</h3>
+
+<p>파장이 매질마다 다르기에, 처음에 같은 위상이던 두 빛이 <mark>굴절률이 다른 물질을 같은 길이만큼</mark> 지나도 위상이 어긋날 수 있다. 길이 $L$ 안에 들어가는 파장의 개수는</p>
+
+$$ N = \frac{L}{\lambda_n} = \frac{Ln}{\lambda} $$
+
+<p>굴절률 $n_1$, $n_2$ ($n_2 \gt n_1$)인 물질을 같은 길이 $L$만큼 지난 두 빛의 파장 수 차이가 곧 위상차.</p>
+
+$$ N_2 - N_1 = \frac{L}{\lambda}(n_2 - n_1) $$
+
+<ul class="sym">
+<li>$N_1$, $N_2$: 각 물질 속에 들어가는 파장의 수</li>
+<li>$L$: 두 빛이 지나는 물질의 길이 (m)</li>
+<li>$\lambda$: 진공에서의 파장 (m)</li>
+</ul>
+
+<p>위상차를 라디안으로 바꾸려면 파장 수 차이에 $2\pi$를 곱한다. 두 빛이 처음부터 위상차가 있었다면 그 값에 이 위상차를 더한다. 두 빛이 한 점에서 만날 때의 밝기는 이 위상차(파장 단위)로 정해진다.</p>
+
+<ul>
+<li>정수(0, 1, 2, …): 위상이 같아 <mark>가장 밝음</mark></li>
+<li>반정수(0.5, 1.5, …): 위상이 반대라 <mark>어두움</mark></li>
+<li>그 사이 값: 중간 밝기</li>
+</ul>
+
+<p>무지개도 광학적 간섭의 예. 물방울 안을 서로 다른 경로로 지나 거의 같은 방향으로 나온 빛들이 간섭하기에, 주 무지개 안쪽에 희미한 띠가 생긴다.</p>
+
+<h2>영의 이중 슬릿 간섭</h2>
+
+<h3>회절</h3>
+
+<p>파동이 파장과 비슷한 크기의 틈을 지나면, 틈을 지난 부분이 장애물 뒤쪽 영역으로 넓게 퍼진다. 이것이 <mark>회절(diffraction)</mark>이며, 틈의 각 점이 2차 파동의 점원이 된다는 호이겐스 원리와 맞는 현상. 틈 너비가 $6\lambda$, $3\lambda$, $1.5\lambda$로 좁아질수록 퍼짐이 커진다. 즉 <mark>슬릿이 좁을수록 회절이 크다.</mark></p>
+
+<h3>파동의 중첩과 간섭</h3>
+
+<p>같은 곳을 지나는 두 파동의 변위는 더해진다: $y'(x,t) = y_1(x,t) + y_2(x,t)$. 진폭이 같은 두 파동이 만날 때 합성파는 위상차 $\phi$에 따라 달라진다.</p>
+
+<ul>
+<li>$\phi = 0$ (위상이 같음): 진폭이 두 배인 큰 파동. <strong>보강 간섭</strong>.</li>
+<li>$\phi = \pi$ (위상이 반대): 서로 지워져 변위 0. <strong>상쇄 간섭</strong>.</li>
+<li>그 사이 (예: $\phi = \tfrac{2}{3}\pi$): 중간 진폭.</li>
+</ul>
+
+<h3>영의 실험 구성</h3>
+
+<p><mark>영의 간섭 실험(Young's interference experiment)</mark>에서는 단색광이 먼저 슬릿 $S_0$에서 회절해, $S_0$가 반원형 파면을 내는 점광원이 된다. 이 빛이 화면 $B$의 두 슬릿 $S_1$, $S_2$에서 다시 회절하면 두 슬릿이 각각 점광원 역할을 한다. 두 슬릿의 빛은 같은 파면에서 나왔기에 위상이 같고, 서로 겹쳐 간섭하면서 관찰 화면 $C$에 <mark>밝고 어두운 무늬가 번갈아 나타나는 간섭무늬</mark>를 만든다.</p>
+
+<h3>경로차와 밝고 어두운 무늬</h3>
+
+<p>슬릿 간격을 $d$, 슬릿에서 화면까지 거리를 $D$라 하자. 화면 위 점 $P$의 위치는 중심축에서 잰 각 $\theta$로 나타낸다. $D \gg d$이면 $S_1$, $S_2$에서 $P$로 가는 광선 $r_1$, $r_2$를 각 $\theta$로 나란히 가는 평행선으로 볼 수 있다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <line x1="120" y1="20" x2="120" y2="110" stroke="#222" stroke-width="5"/>
+  <line x1="120" y1="122" x2="120" y2="178" stroke="#222" stroke-width="5"/>
+  <line x1="120" y1="190" x2="120" y2="280" stroke="#222" stroke-width="5"/>
+  <text x="92" y="122" font-size="15" fill="#111">S₂</text>
+  <text x="92" y="196" font-size="15" fill="#111">S₁</text>
+  <!-- parallel rays at angle theta ~ 20deg -->
+  <line x1="120" y1="116" x2="420" y2="7" stroke="#111" stroke-width="1.8"/>
+  <line x1="120" y1="184" x2="440" y2="68" stroke="#111" stroke-width="1.8"/>
+  <text x="400" y="30" font-size="15" fill="#111">r₂</text>
+  <text x="420" y="92" font-size="15" fill="#111">r₁</text>
+  <!-- central axis -->
+  <line x1="120" y1="150" x2="560" y2="150" stroke="#888" stroke-dasharray="6 4"/>
+  <text x="470" y="170" font-size="14" fill="#444">중심축</text>
+  <!-- perpendicular from S2 to r1 : direction of ray (cos20,-sin20)=(0.94,-0.342); foot b = S1 + (d sin20)*(dir) d=68 -> 23.3 -->
+  <line x1="120" y1="116" x2="141.9" y2="176.0" stroke="#111" stroke-dasharray="3 3"/>
+  <line x1="120" y1="184" x2="141.9" y2="176.0" stroke="#111" stroke-width="5" stroke-opacity="0.35"/>
+  <text x="148" y="196" font-size="14" fill="#111">b</text>
+  <text x="150" y="232" font-size="14" fill="#111">ΔL = d sin θ</text>
+  <line x1="148" y1="218" x2="133" y2="186" stroke="#666"/>
+  <text x="100" y="156" font-size="15" fill="#111">d</text>
+  <!-- theta angle at S1 between axis direction and ray -->
+  <line x1="120" y1="184" x2="200" y2="184" stroke="#888" stroke-dasharray="3 3"/>
+  <path d="M 170 184 A 50 50 0 0 0 167 166.9" fill="none" stroke="#111"/>
+  <text x="175" y="178" font-size="14" fill="#111">θ</text>
+  <!-- screen -->
+  <line x1="580" y1="10" x2="580" y2="290" stroke="#222" stroke-width="3"/>
+  <text x="590" y="285" font-size="15" fill="#111">C</text>
+  <!-- D -->
+  <line x1="120" y1="292" x2="580" y2="292" stroke="#666"/>
+  <text x="340" y="287" font-size="15" fill="#111">D</text>
+  <!-- y -->
+  <line x1="560" y1="150" x2="560" y2="30" stroke="#666"/>
+  <text x="540" y="95" font-size="15" fill="#111">y</text>
+  <circle cx="580" cy="30" r="4" fill="#111"/>
+  <text x="590" y="35" font-size="15" fill="#111">P</text>
+</svg>
+<figcaption>D ≫ d이면 r₁, r₂는 평행. S₂에서 r₁에 내린 수선의 발 b까지 r₁이 더 가는 길이 경로차 ΔL.</figcaption>
+</figure>
+
+<p>$S_2$에서 $r_1$에 수선을 내리면, 그 발 $b$부터 $P$까지는 두 광선의 길이가 같다. 따라서 두 광선의 <mark>경로차는 $\Delta L = d\sin\theta$</mark>. 두 슬릿을 떠날 때 위상이 같았으므로, $P$에서의 위상차는 경로차로만 결정된다. 경로차가 파장의 정수배이면 밝고, 반정수배이면 어둡다.</p>
+
+$$ d\sin\theta = m\lambda, \qquad m = 0, 1, 2, \dots \quad \text{(극대, 밝은 무늬)} $$
+$$ d\sin\theta = \left(m + \tfrac{1}{2}\right)\lambda, \qquad m = 0, 1, 2, \dots \quad \text{(극소, 어두운 무늬)} $$
+
+<ul class="sym">
+<li>$d$: 두 슬릿 사이 간격 (m)</li>
+<li>$\theta$: 중심축에서 잰 화면 위 점의 각</li>
+<li>$\lambda$: 빛의 파장 (m)</li>
+<li>$m$: 무늬의 차수(order)</li>
+</ul>
+
+<p>$\theta = 0$에서는 경로차가 0이기에 항상 밝다. 이것이 <strong>중앙 극대</strong>($m=0$). 그 양옆으로 대칭을 이루며 $m=1$인 <strong>첫째 옆 극대</strong>(1차 밝은 무늬), $m=2$인 둘째 옆 극대가 이어진다. 어두운 무늬도 같은 방식으로 $m=0$부터 첫째 극소, 둘째 극소처럼 부른다.</p>
+
+<p>$\sin\theta \le 1$이기에 극대의 차수는 $m \le d/\lambda$로 제한된다. 즉 <mark>무늬가 나타날 수 있는 각도의 한계는 $d/\lambda$가 정한다.</mark></p>
+
+<h3>화면 위 무늬의 위치와 간격</h3>
+
+<p>화면 위 점의 높이를 $y$라 하면 $\tan\theta = y/D$. $\theta$가 작으면(라디안 단위) $\sin\theta \approx \tan\theta \approx \theta$이기에, 극대 조건 $\sin\theta = m\lambda/d$와 $\tan\theta = y_m/D$를 같다고 놓아 $y_m$을 구한다.</p>
+
+$$ y_m = \frac{m\lambda D}{d}, \qquad \Delta y = y_{m+1} - y_m = \frac{\lambda D}{d} $$
+
+<p class="cond">조건: <mark>$\theta$가 작다</mark> ($D \gg y$, 무늬 중심 근처)</p>
+<ul class="sym">
+<li>$y_m$: 중심에서 $m$번째 밝은 무늬까지의 거리 (m)</li>
+<li>$\Delta y$: 이웃한 밝은 무늬 사이 간격 (m)</li>
+<li>$D$: 슬릿에서 화면까지 거리 (m)</li>
+</ul>
+
+<p>어두운 무늬는 $y = (m+\tfrac12)\lambda D/d$로 밝은 무늬 사이 한가운데에 있고, 간격은 같다. <mark>파장이 길수록, 슬릿 간격이 좁을수록 무늬 간격이 넓어진다.</mark> 아래에서 $\lambda$와 $d$를 바꿔 확인할 수 있다.</p>
+
+<figure>
+<svg id="ys-svg" viewBox="0 0 640 300">
+  <line x1="130" y1="250" x2="620" y2="250" stroke="#222"/>
+  <line x1="375" y1="40" x2="375" y2="255" stroke="#bbb" stroke-dasharray="3 3"/>
+  <line id="ys-l4" x1="130" x2="620" stroke="#bbb" stroke-dasharray="2 4"/>
+  <line id="ys-l2" x1="130" x2="620" stroke="#777" stroke-dasharray="7 4"/>
+  <line id="ys-l1" x1="130" x2="620" stroke="#aaa" stroke-dasharray="2 3"/>
+  <path id="ys-curve" fill="none" stroke="#111" stroke-width="2.2"/>
+  <text x="10" y="55" font-size="14" fill="#555">4I₀</text>
+  <text x="10" y="155" font-size="14" fill="#555">2I₀ 결어긋남</text>
+  <text x="10" y="205" font-size="14" fill="#555">I₀ 슬릿 하나</text>
+  <text x="371" y="272" font-size="14" fill="#111">0</text>
+  <text x="560" y="272" font-size="14" fill="#111">+10 mm</text>
+  <text x="130" y="272" font-size="14" fill="#111">−10 mm</text>
+    <text id="ys-out" x="375" y="294" font-size="15" fill="#111" text-anchor="middle"></text>
+</svg>
+<div class="controls">
+  <label>파장 λ <input type="range" id="ys-lam" min="400" max="700" step="10" value="500"> <span id="ys-lamv"></span></label>
+  <label>슬릿 간격 d <input type="range" id="ys-d" min="0.10" max="0.50" step="0.01" value="0.20"> <span id="ys-dv"></span></label>
+</div>
+<figcaption>D = 1.0 m일 때 화면 위 세기 분포(가로축: 중심에서 잰 거리 y). 결맞은 두 슬릿의 세기는 0과 4I₀ 사이를 오가고, 평균은 2I₀.</figcaption>
+</figure>
+<script>
+(() => {
+  const lam = document.getElementById('ys-lam'), dd = document.getElementById('ys-d');
+  const curve = document.getElementById('ys-curve'), out = document.getElementById('ys-out');
+  const base = 250, top = 50, unit = (base - top) / 4;
+  const setL = (id, v) => { const l = document.getElementById(id); l.setAttribute('y1', base - v * unit); l.setAttribute('y2', base - v * unit); };
+  setL('ys-l4', 4); setL('ys-l2', 2); setL('ys-l1', 1);
+  function draw() {
+    const L = +lam.value * 1e-9, d = +dd.value * 1e-3, D = 1.0;
+    let p = '';
+    for (let i = 0; i <= 490; i++) {
+      const y = (i - 245) / 245 * 0.010;
+      const th = Math.atan(y / D);
+      const phi = 2 * Math.PI * d * Math.sin(th) / L;
+      const I = 4 * Math.cos(phi / 2) ** 2;
+      p += (i ? 'L' : 'M') + (130 + i).toFixed(1) + ' ' + (base - I * unit).toFixed(1);
+    }
+    curve.setAttribute('d', p);
+    document.getElementById('ys-lamv').textContent = lam.value + ' nm';
+    document.getElementById('ys-dv').textContent = (+dd.value).toFixed(2) + ' mm';
+    out.textContent = '무늬 간격 Δy = λD/d = ' + (L * D / d * 1000).toFixed(2) + ' mm';
+  }
+  lam.addEventListener('input', draw); dd.addEventListener('input', draw); draw();
+})();
+</script>
+
+<h3>한 슬릿을 투명한 물질로 덮을 때</h3>
+
+<p>두께 $L$, 굴절률 $n$인 투명한 물질로 한 슬릿을 덮으면, 그 빛은 물질 속에서 파장이 짧아져 $\frac{L}{\lambda}(n-1)$개의 파장만큼 위상이 더 늦어진다. 그만큼 화면 위 모든 점의 위상차가 바뀌므로 <mark>무늬 전체가 덮은 슬릿 쪽으로 이동</mark>하고, 파장 하나의 차이마다 무늬 하나만큼 움직인다. 따라서 $m$번째 밝은 무늬가 중앙으로 오려면 $L(n-1) = m\lambda$.</p>
+
+<h2>간섭과 이중 슬릿의 세기</h2>
+
+<h3>결맞음</h3>
+
+<p>한 점에서 만나는 두 빛이 뚜렷하게 간섭하려면 <mark>파장이 같고, 둘 사이의 위상차가 시간에 따라 일정</mark>해야 한다. 이런 두 파동을 <mark>결맞는(coherent)</mark> 파동이라 한다. 영의 실험에서 두 슬릿의 빛은 같은 파면에서 나왔기에 결맞는다.</p>
+
+<p>위상차가 시간에 따라 무작위로 바뀌는 <strong>결어긋난(incoherent)</strong> 빛은 간섭 효과가 평균되어 사라지므로, 화면 전체가 고르게 두 세기의 합 $2I_0$로 밝다. 여기서 $I_0$은 한 슬릿을 가렸을 때 화면에 나타나는 (고른) 세기. 결맞는 빛이면 세기가 0과 최대 $4I_0$ 사이를 오가고, 무늬 전체의 평균은 여전히 $2I_0$. 즉 <mark>간섭은 에너지를 만들거나 없애지 않고 재분배한다.</mark></p>
+
+<p>세기 그래프의 가로축 위상차 $\phi$, 차수 $m$, 경로차 $\Delta L/\lambda$는 다음처럼 대응한다.</p>
+
+<table>
+<thead><tr><th></th><th>위상차 $\phi$</th><th>$\Delta L/\lambda$</th></tr></thead>
+<tbody>
+<tr><td>극대 ($m = 0, 1, 2, \dots$)</td><td>$2m\pi$</td><td>$m$</td></tr>
+<tr><td>극소 ($m = 0, 1, 2, \dots$)</td><td>$(2m+1)\pi$</td><td>$m + \tfrac12$</td></tr>
+</tbody>
+</table>
+
+<h3>두 파동의 전기장과 위상차</h3>
+
+<p>두 슬릿을 떠날 때는 위상이 같지만, 점 $P$에 도착한 두 빛의 전기장 성분은 경로차 때문에 위상이 다르며 시간에 따라 진동한다.</p>
+
+$$ E_1 = E_0\sin\omega t, \qquad E_2 = E_0\sin(\omega t + \phi) $$
+
+<p>위상차는 경로차가 파장의 몇 배인지에 $2\pi$를 곱한 값이기에</p>
+
+$$ \phi = \frac{2\pi}{\lambda}\,\Delta L = \frac{2\pi d}{\lambda}\sin\theta $$
+
+<ul class="sym">
+<li>$E_0$: 각 파동의 전기장 진폭 (V/m)</li>
+<li>$\omega$: 빛의 각진동수 (rad/s)</li>
+<li>$\phi$: 점 $P$에서 두 파동의 위상차 (rad)</li>
+</ul>
+
+<h3>위상자로 구하는 합성파</h3>
+
+<p>$E_1$과 $E_2$를 더할 때는 <mark>위상자(phasor)</mark>를 쓴다. 위상자는 길이가 진폭 $E_0$이고 원점을 중심으로 각속도 $\omega$로 도는 벡터이며, 세로축 성분이 그 순간의 전기장 값. 즉 <mark>위상자의 각속도는 파동의 각진동수 $\omega$와 같다.</mark> 두 파동의 위상자는 각 $\phi$만큼 벌어진 채로 함께 돌고, 이 둘을 벡터로 더한 위상자가 합성파를 나타낸다. 합 벡터의 길이가 합성파의 진폭 $E$, 그 각이 합성파의 위상상수 $\beta$.</p>
+
+<figure>
+<svg id="ph-svg" viewBox="0 0 640 300">
+  <defs><marker id="ph-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+  <marker id="ph-ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
+  <line x1="60" y1="250" x2="420" y2="250" stroke="#bbb"/>
+  <line x1="80" y1="290" x2="80" y2="20" stroke="#bbb"/>
+  <line id="ph-a" x1="80" y1="250" stroke="#777" stroke-width="2.5" marker-end="url(#ph-ar2)"/>
+  <line id="ph-b" stroke="#777" stroke-width="2.5" marker-end="url(#ph-ar2)"/>
+  <line id="ph-ext" stroke="#aaa" stroke-dasharray="4 3"/>
+  <line id="ph-r" x1="80" y1="250" stroke="#111" stroke-width="3.5" marker-end="url(#ph-ar)"/>
+  <text id="ph-ta" font-size="15" fill="#555">E₀</text>
+  <text id="ph-tb" font-size="15" fill="#555">E₀</text>
+  <text id="ph-tr" font-size="16" fill="#111">E</text>
+  <text id="ph-tphi" font-size="15" fill="#111">φ</text>
+  <text x="440" y="70" font-size="15" fill="#111" id="ph-o1"></text>
+  <text x="440" y="100" font-size="15" fill="#111" id="ph-o2"></text>
+  <text x="440" y="130" font-size="15" fill="#111" id="ph-o3"></text>
+  <text x="440" y="160" font-size="15" fill="#111" id="ph-o4"></text>
+</svg>
+<div class="controls">
+  <label>위상차 φ <input type="range" id="ph-phi" min="0" max="360" step="5" value="60"> <span id="ph-phiv"></span></label>
+</div>
+<figcaption>위상자 E₀ 두 개를 머리-꼬리로 이어 더한다(ωt = 0인 순간). 두 변이 같은 이등변삼각형이라 β = φ/2.</figcaption>
+</figure>
+<script>
+(() => {
+  const s = document.getElementById('ph-phi');
+  const K = 150, ox = 80, oy = 250;
+  const set = (id, a) => { const e = document.getElementById(id); for (const k in a) e.setAttribute(k, a[k]); };
+  function draw() {
+    const deg = +s.value, f = deg * Math.PI / 180;
+    const ax = ox + K, ay = oy;
+    const bx = ax + K * Math.cos(f), by = ay - K * Math.sin(f);
+    set('ph-a', { x2: ax, y2: ay });
+    set('ph-b', { x1: ax, y1: ay, x2: bx, y2: by });
+    set('ph-ext', { x1: ax, y1: ay, x2: ax + 60, y2: ay });
+    set('ph-r', { x2: bx, y2: by });
+    set('ph-ta', { x: ox + K / 2 - 8, y: oy + 22 });
+    set('ph-tb', { x: (ax + bx) / 2 + 8, y: (ay + by) / 2 + 4 });
+    set('ph-tr', { x: (ox + bx) / 2 - 22, y: (oy + by) / 2 - 6 });
+    set('ph-tphi', { x: ax + 26 * Math.cos(f / 2) + 4, y: ay - 26 * Math.sin(f / 2) - 2 });
+    const E = 2 * Math.cos(f / 2), I = 4 * Math.cos(f / 2) ** 2;
+    document.getElementById('ph-phiv').textContent = deg + '°';
+    document.getElementById('ph-o1').textContent = 'φ = ' + deg + '°,  β = φ/2 = ' + (deg / 2) + '°';
+    document.getElementById('ph-o2').textContent = 'E / E₀ = 2 cos(φ/2) = ' + Math.abs(E).toFixed(2);
+    document.getElementById('ph-o3').textContent = 'I / I₀ = 4 cos²(φ/2) = ' + I.toFixed(2);
+    document.getElementById('ph-o4').textContent = I > 3.9 ? '→ 보강 간섭 (가장 밝음)' : (I < 0.1 ? '→ 상쇄 간섭 (어두움)' : '→ 중간 밝기');
+  }
+  s.addEventListener('input', draw); draw();
+})();
+</script>
+
+<details><summary>합성 진폭 유도 보기</summary><div>
+<p>두 위상자는 길이가 $E_0$으로 같으므로, 이어 붙인 두 위상자와 합 벡터가 이등변삼각형을 이룬다. 두 번째 위상자가 첫 번째의 연장선과 이루는 각(외각)이 $\phi$이고, 외각은 이웃하지 않은 두 내각의 합이다. 두 밑각이 모두 $\beta$이기에 $\phi = 2\beta$, 즉 $\beta = \tfrac12\phi$. 꼭짓점에서 밑변에 수선을 내리면 밑변(합 벡터)의 반은 $E_0\cos\beta$이므로</p>
+$$ E = 2E_0\cos\beta = 2E_0\cos\frac{\phi}{2} $$
+<p>삼각함수 합 공식으로도 확인 가능: $E_0\sin\omega t + E_0\sin(\omega t+\phi) = 2E_0\cos\frac{\phi}{2}\,\sin\!\left(\omega t + \frac{\phi}{2}\right)$. 진폭 $2E_0\cos(\phi/2)$, 위상상수 $\phi/2$로 같다.</p>
+<p>빛의 세기는 전기장 진폭의 제곱에 비례하므로</p>
+$$ \frac{I}{I_0} = \frac{E^2}{E_0^2} = 4\cos^2\frac{\phi}{2} $$
+</div></details>
+
+<h3>이중 슬릿 간섭의 세기</h3>
+
+<p>세기가 각각 $I_0$인 두 결맞는 파동이 화면에서 만들어 내는 합성파의 세기는</p>
+
+$$ I = 4I_0\cos^2\frac{\phi}{2}, \qquad \phi = \frac{2\pi d}{\lambda}\sin\theta $$
+
+<p class="cond">조건: <mark>두 빛이 결맞고</mark> 세기가 같다</p>
+<ul class="sym">
+<li>$I$: 각 $\theta$ 방향 화면 위 점의 세기 (W/m²)</li>
+<li>$I_0$: 슬릿 하나만 열었을 때의 세기 (W/m²)</li>
+<li>$\phi$: 두 파동의 위상차 (rad)</li>
+</ul>
+
+<p>$\phi = 2m\pi$이면 $I = 4I_0$(극대), $\phi = (2m+1)\pi$이면 $I = 0$(극소). 이 조건에 $\phi = 2\pi d\sin\theta/\lambda$를 넣으면 각각 $d\sin\theta = m\lambda$, $d\sin\theta = (m+\frac12)\lambda$가 되어 앞의 무늬 조건과 같다. <mark>세기 식이 무늬의 위치뿐 아니라 그 사이의 밝기 변화까지 알려 준다.</mark> $\cos^2$의 평균이 $\frac12$이므로 평균 세기는 $2I_0$.</p>
+
+<h2>얇은 막의 간섭</h2>
+
+<h3>얇은 막에서 반사된 두 빛</h3>
+
+<p>얇고 투명한 막(thin film)에 빛이 비치면, 막의 <mark>앞면에서 반사된 빛 $r_1$과 뒷면에서 반사된 빛 $r_2$가 간섭</mark>한다. 비눗방울이나 기름막에 무지갯빛이 보이는 이유. 관찰자가 보는 밝기는 $r_1$, $r_2$의 위상차가 정한다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <rect x="300" y="20" width="90" height="250" fill="#e4e4e4" stroke="#222" stroke-width="1.5"/>
+  <text x="150" y="50" font-size="16" fill="#111">공기 (n = 1)</text>
+  <text x="420" y="50" font-size="16" fill="#111">공기 (n = 1)</text>
+  <text x="322" y="50" font-size="16" fill="#111">막 n₂</text>
+  <defs><marker id="tf-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker></defs>
+  <!-- incident -->
+  <line x1="80" y1="170" x2="300" y2="150" stroke="#111" stroke-width="2" marker-end="url(#tf-ar)"/>
+  <text x="90" y="194" font-size="15" fill="#111">입사광 i</text>
+  <!-- r1 -->
+  <line x1="300" y1="150" x2="80" y2="128" stroke="#111" stroke-width="2" marker-end="url(#tf-ar)"/>
+  <text x="58" y="126" font-size="15" fill="#111">r₁</text>
+  <!-- inside -->
+  <line x1="300" y1="150" x2="390" y2="140" stroke="#111" stroke-width="1.6"/>
+  <line x1="390" y1="140" x2="300" y2="130" stroke="#111" stroke-width="1.6"/>
+  <line x1="300" y1="130" x2="80" y2="106" stroke="#555" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#tf-ar)"/>
+  <text x="58" y="102" font-size="15" fill="#111">r₂</text>
+  <!-- L -->
+  <line x1="300" y1="285" x2="390" y2="285" stroke="#666"/>
+  <text x="340" y="281" font-size="15" fill="#111">L</text>
+  <text x="200" y="240" font-size="14" fill="#444" text-anchor="end">앞면 반사: 공기→막(높은 n)</text>
+  <text x="200" y="258" font-size="14" fill="#444" text-anchor="end">→ 반파장 이동</text>
+  <text x="410" y="200" font-size="14" fill="#444">뒷면 반사: 막→공기(낮은 n)</text>
+  <text x="410" y="218" font-size="14" fill="#444">→ 이동 없음</text>
+</svg>
+<figcaption>광선은 보기 쉽게 비스듬히 그렸지만 실제로는 막에 거의 수직(θ ≈ 0)으로 들어오고 나간다.</figcaption>
+</figure>
+
+<p>막의 굴절률을 $n_2$, 두께를 $L$, 공기 중 파장을 $\lambda$라 하자. 입사각 $\theta \approx 0$이면 $r_2$가 막을 한 번 왕복하므로 경로차는 $2L$. 위상차를 정하는 요인은 세 가지.</p>
+
+<ul>
+<li><strong>경로차</strong> $2L$</li>
+<li><strong>막 속 파장</strong> $\lambda_{n_2} = \lambda/n_2$: 경로차 $2L$이 공기가 아닌 막 속에서 생긴다.</li>
+<li><strong>반사에 의한 위상 변화</strong>: 반사가 위상을 바꿀 수 있다.</li>
+</ul>
+
+<h3>반사에 의한 위상 변화</h3>
+
+<p>굴절은 경계면에서 위상을 바꾸지 않지만, 반사는 <mark>경계 양쪽의 굴절률에 따라</mark> 위상을 바꿀 수 있다. 줄의 펄스로 비유하면, 가벼운 줄(펄스가 빠름)에서 무거운 줄(펄스가 느림)로 가던 펄스는 경계에서 뒤집혀 반사되고, 반대 방향이면 뒤집히지 않는다. 빛에서는 속력이 느린 쪽이 굴절률이 큰 쪽.</p>
+
+<table>
+<thead><tr><th>반사</th><th>반사에 의한 위상 이동</th></tr></thead>
+<tbody>
+<tr><td>낮은 굴절률 쪽에서 와서 <strong>높은 굴절률</strong> 면에서 반사</td><td>$\pi$ rad (반파장, $0.5\lambda$)</td></tr>
+<tr><td>높은 굴절률 쪽에서 와서 <strong>낮은 굴절률</strong> 면에서 반사</td><td>0</td></tr>
+</tbody>
+</table>
+
+<p>즉 <mark>굴절률이 작은 매질에서 와서 큰 매질 면에 반사될 때만 반파장 이동</mark>. 공기 중 막이면 앞면 반사($r_1$, 공기→막)는 반파장 이동하고, 뒷면 반사($r_2$, 막 안에서 공기 면에 반사)는 이동이 없다.</p>
+
+<h3>공기 중 얇은 막의 밝고 어두운 조건</h3>
+
+<p>$r_1$은 반사로 이미 반파장 어긋나 있기에, $r_1$과 $r_2$가 같은 위상이 되려면 경로차 $2L$이 막 속 파장의 반정수배여야 한다. 반대로 경로차가 막 속 파장의 정수배이면 반사로 생긴 반파장 차이만 남아 상쇄된다. 막 속 파장 $\lambda/n_2$를 써서</p>
+
+$$ 2L = \left(m + \tfrac{1}{2}\right)\frac{\lambda}{n_2}, \qquad m = 0, 1, 2, \dots \quad \text{(극대, 밝은 막)} $$
+$$ 2L = m\,\frac{\lambda}{n_2}, \qquad m = 0, 1, 2, \dots \quad \text{(극소, 어두운 막)} $$
+
+<p class="cond">조건: <mark>막이 공기 중</mark>에 있고, 빛이 <mark>거의 수직</mark>으로 들어온다</p>
+<ul class="sym">
+<li>$L$: 막의 두께 (m)</li>
+<li>$n_2$: 막의 굴절률</li>
+<li>$\lambda$: 공기 중에서의 빛의 파장 (m)</li>
+</ul>
+
+<p>막이 공기가 아닌 다른 매질 사이에 끼어 있으면 두 반사의 위상 이동이 달라질 수 있다. 두 반사가 <mark>모두 반파장 이동하거나 둘 다 이동이 없으면</mark> 반사에 의한 차이가 없어지므로 두 식이 서로 바뀐다: 밝음 $2L = m\lambda/n_2$, 어두움 $2L = (m+\frac12)\lambda/n_2$.</p>
+
+<p>아래에서 막 두께를 바꾸면 반사광의 밝기가 어떻게 달라지는지 볼 수 있다.</p>
+
+<figure>
+<svg id="tf-svg" viewBox="0 0 640 300">
+  <line x1="60" y1="240" x2="610" y2="240" stroke="#222"/>
+  <line x1="60" y1="240" x2="60" y2="40" stroke="#222"/>
+  <path id="tf-curve" fill="none" stroke="#111" stroke-width="2.2"/>
+  <line id="tf-mark" y1="40" y2="240" stroke="#777" stroke-dasharray="5 3"/>
+  <circle id="tf-dot" r="5" fill="#111"/>
+  <text x="12" y="56" font-size="14" fill="#555">밝음</text>
+  <text x="8" y="234" font-size="14" fill="#555">어두움</text>
+  <text x="560" y="262" font-size="14" fill="#111">L (nm)</text>
+  <text x="56" y="262" font-size="14" fill="#111">0</text>
+  <text x="315" y="262" font-size="14" fill="#111">300</text>
+  <text id="tf-o1" x="60" y="284" font-size="15" fill="#111"></text>
+  <text id="tf-o2" x="60" y="20" font-size="15" fill="#111"></text>
+</svg>
+<div class="controls">
+  <label>막 두께 L <input type="range" id="tf-L" min="0" max="600" step="5" value="105"> <span id="tf-Lv"></span></label>
+</div>
+<figcaption>공기 중 물막(n₂ = 1.33), λ = 560 nm. 반사광 밝기는 L이 λ/(2n₂) ≈ 211 nm 늘 때마다 한 번씩 반복된다. L ≈ 0이면 어둡다.</figcaption>
+</figure>
+<script>
+(() => {
+  const s = document.getElementById('tf-L');
+  const n = 1.33, lam = 560, x0 = 60, xs = 550 / 600, base = 240, h = 200;
+  const rel = L => Math.cos(Math.PI * 2 * L * n / lam + Math.PI / 2) ** 2;
+  let p = '';
+  for (let L = 0; L <= 600; L += 2) p += (L ? 'L' : 'M') + (x0 + L * xs).toFixed(1) + ' ' + (base - h * rel(L)).toFixed(1);
+  document.getElementById('tf-curve').setAttribute('d', p);
+  function draw() {
+    const L = +s.value, r = rel(L), x = x0 + L * xs;
+    const mk = document.getElementById('tf-mark'); mk.setAttribute('x1', x); mk.setAttribute('x2', x);
+    const dt = document.getElementById('tf-dot'); dt.setAttribute('cx', x); dt.setAttribute('cy', base - h * r);
+    document.getElementById('tf-Lv').textContent = L + ' nm';
+    const k = 2 * L * n / lam;
+    document.getElementById('tf-o1').textContent = '2L 속 파장 수 = ' + k.toFixed(2) + ',  반사 이동 포함 위상차 = ' + (k + 0.5).toFixed(2) + ' 파장';
+    document.getElementById('tf-o2').textContent = r > 0.95 ? '반사광: 밝음 (보강)' : (r < 0.05 ? '반사광: 어두움 (상쇄)' : '반사광: 중간 밝기');
+  }
+  s.addEventListener('input', draw); draw();
+})();
+</script>
+
+<h3>투과광, 아주 얇은 막, 쐐기형 막</h3>
+
+<p><strong>투과광</strong>: 막을 바로 통과한 빛과 막 안에서 두 번 반사된 뒤 나온 빛도 간섭한다. 공기 중 막이면 막 안의 두 반사는 모두 낮은 굴절률(공기) 면에서 일어나 위상 이동이 없으므로, 투과광은 $2L = m\lambda/n_2$일 때 밝고 $2L = (m+\frac12)\lambda/n_2$일 때 어둡다. 즉 <mark>반사광이 밝은 두께에서 투과광은 어둡고, 그 반대도 성립</mark>. 에너지 보존과도 맞는다.</p>
+
+<p><strong>아주 얇은 막</strong>: 두께가 가시광선 파장보다 훨씬 얇으면($L \ll \lambda$) 경로차 $2L$이 무시할 만하고 앞면 반사의 반파장 이동만 남는다. 따라서 <mark>공기 중의 아주 얇은 막은 반사광에서 항상 어둡다.</mark> 터지기 직전 비눗방울의 가장 얇은 윗부분이 검게 보이는 이유.</p>
+
+<p><strong>쐐기형 막</strong>: 두께가 한쪽 끝의 0에서 다른 끝까지 고르게 변하는 막에서는 두께마다 조건이 달라 밝은 띠와 어두운 띠가 번갈아 나타난다. 공기 중이면 두께 0인 끝은 어두운 띠($m=0$)이고, 이웃한 두 어두운 띠 사이의 두께 차는 $\lambda/(2n_2)$. 그래서 띠의 개수는 다른 끝의 두께 $L$을 $2L = m\lambda/n_2$, $2L = (m+\frac12)\lambda/n_2$에 넣어 $m$이 몇까지 가능한지로 셀 수 있다.</p>
+
+<h2>마이컬슨 간섭계</h2>
+
+<h3>간섭계의 구조</h3>
+
+<p><mark>간섭계(interferometer)</mark>는 간섭무늬를 이용해 <mark>길이나 길이 변화를 매우 정밀하게 재는</mark> 장치. 마이컬슨 간섭계는 빛을 두 갈래로 나눴다가 서로 다른 경로를 지나게 한 뒤 다시 합친다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300">
+  <defs><marker id="mi-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker></defs>
+  <circle cx="90" cy="150" r="12" fill="#999"/>
+  <text x="70" y="185" font-size="15" fill="#111">광원 S</text>
+  <line x1="102" y1="150" x2="270" y2="150" stroke="#111" stroke-width="1.8" marker-end="url(#mi-ar)"/>
+  <!-- beam splitter M -->
+  <line x1="275" y1="175" x2="325" y2="125" stroke="#111" stroke-width="4"/>
+  <text x="330" y="122" font-size="15" fill="#111">M (반거울)</text>
+  <!-- arm 1 to M1 -->
+  <line x1="300" y1="146" x2="500" y2="146" stroke="#111" stroke-width="1.5" marker-end="url(#mi-ar)"/>
+  <line x1="500" y1="154" x2="306" y2="154" stroke="#111" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mi-ar)"/>
+  <line x1="505" y1="110" x2="505" y2="190" stroke="#111" stroke-width="5"/>
+  <text x="515" y="155" font-size="15" fill="#111">M₁ (고정)</text>
+  <text x="390" y="176" font-size="15" fill="#111">팔 1: d₁</text>
+  <!-- arm 2 to M2 -->
+  <line x1="296" y1="150" x2="296" y2="45" stroke="#111" stroke-width="1.5" marker-end="url(#mi-ar)"/>
+  <line x1="304" y1="45" x2="304" y2="140" stroke="#111" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#mi-ar)"/>
+  <line x1="260" y1="38" x2="340" y2="38" stroke="#111" stroke-width="5"/>
+  <text x="350" y="43" font-size="15" fill="#111">M₂ (움직이는 거울)</text>
+  <line x1="245" y1="25" x2="245" y2="60" stroke="#666" stroke-width="1.2" marker-end="url(#mi-ar)"/>
+  <text x="200" y="100" font-size="15" fill="#111">팔 2: d₂</text>
+  <!-- to telescope -->
+  <line x1="300" y1="160" x2="300" y2="250" stroke="#111" stroke-width="1.8" marker-end="url(#mi-ar)"/>
+  <rect x="288" y="252" width="24" height="40" fill="#ccc" stroke="#222"/>
+  <text x="320" y="280" font-size="15" fill="#111">망원경 T (관찰)</text>
+</svg>
+<figcaption>M이 빛을 둘로 나누고, 거울 M₁, M₂에서 반사된 두 빛이 다시 M을 거쳐 망원경 T에서 겹친다.</figcaption>
+</figure>
+
+<p>광원 $S$의 빛은 반거울 $M$에서 둘로 나뉘어 각각 거울 $M_1$(거리 $d_1$), $M_2$(거리 $d_2$)에서 반사된 뒤 다시 $M$을 거쳐 망원경 $T$로 들어가고, 관찰자는 간섭무늬를 본다. 두 빛은 각자의 팔을 왕복하므로 경로차는 $2d_2 - 2d_1$. <mark>이 경로차를 바꾸는 것은 무엇이든 위상차를 바꿔 무늬를 움직인다.</mark> 간섭 결과는 경로차와, 경로에 넣은 물질의 굴절률로 정해진다.</p>
+
+<h3>거울 이동과 무늬 이동</h3>
+
+<p>거울 $M_2$를 $\Delta d$만큼 옮기면 빛이 그 거리를 왕복하므로 경로차가 $2\Delta d$ 바뀐다. 경로차가 한 파장 바뀔 때마다 무늬가 하나씩 지나가기에, <mark>거울을 $\lambda/2$ 옮길 때마다 무늬 하나가 이동</mark>.</p>
+
+$$ N = \frac{2\Delta d}{\lambda} $$
+
+<ul class="sym">
+<li>$N$: 지나간 무늬의 수</li>
+<li>$\Delta d$: 거울이 움직인 거리 (m)</li>
+<li>$\lambda$: 빛의 파장 (m)</li>
+</ul>
+
+<h3>투명한 물질을 넣을 때</h3>
+
+<p>한쪽 팔에 굴절률 $n$, 두께 $L$인 투명한 물질을 넣으면, 빛이 물질을 왕복하는 길이 $2L$ 안에 들어가는 파장 수가 $2Ln/\lambda$로 늘어난다. 같은 길이의 공기에서는 $2L/\lambda$였으므로, 위상차(파장 단위)는</p>
+
+$$ N_m - N_a = \frac{2Ln}{\lambda} - \frac{2L}{\lambda} = \frac{2L}{\lambda}(n - 1) $$
+
+<ul class="sym">
+<li>$N_m$, $N_a$: 길이 $2L$ 안의 파장 수 (물질, 공기)</li>
+<li>$L$: 넣은 물질의 두께 (m)</li>
+<li>$n$: 물질의 굴절률</li>
+<li>$\lambda$: 빛의 (공기 중) 파장 (m)</li>
+</ul>
+
+<p>이 값만큼 무늬가 이동하므로, 지나간 무늬 수를 세면 <mark>물질의 두께나 굴절률을 측정</mark> 가능.</p>
+
+<h2>예제</h2>
+
+<p><strong>1.</strong> 진공에서 파장 600 nm인 빛이 물($n = 1.33$)에 들어갔다. 물속 파장과 진동수는?</p>
+<p>풀이: $\lambda_n = \lambda/n = 600/1.33 \approx 451$ nm. 진동수는 변하지 않으므로 $f = c/\lambda = (3.00\times10^8)/(600\times10^{-9}) = 5.00\times10^{14}$ Hz.</p>
+
+<p><strong>2.</strong> 영의 실험에서 $\lambda = 500$ nm, $d = 0.20$ mm, $D = 1.0$ m이다. 중심 근처 밝은 무늬 사이 간격은?</p>
+<p>풀이: $\Delta y = \lambda D/d = (500\times10^{-9})(1.0)/(0.20\times10^{-3}) = 2.5\times10^{-3}$ m $= 2.5$ mm.</p>
+
+<p><strong>3.</strong> 이중 슬릿 간섭에서 두 빛의 경로차가 $\lambda/4$인 점의 세기를 $I_0$으로 나타내면?</p>
+<p>풀이: $\phi = 2\pi(\Delta L/\lambda) = \pi/2$. $I = 4I_0\cos^2(\pi/4) = 4I_0\cdot\frac12 = 2I_0$.</p>
+
+<p><strong>4.</strong> 공기 중 비누막($n_2 = 1.33$)이 파장 600 nm 빛을 수직으로 받아 반사광이 밝게 보인다. 가능한 가장 얇은 두께는?</p>
+<p>풀이: 밝은 조건에서 $m = 0$: $2L = \frac12\cdot\frac{\lambda}{n_2}$, $L = \frac{\lambda}{4n_2} = \frac{600}{4(1.33)} \approx 113$ nm.</p>
+
+<p><strong>5.</strong> 파장 600 nm 빛을 쓰는 마이컬슨 간섭계에서 거울 $M_2$를 0.30 mm 옮겼다. 지나간 무늬는 몇 개인가?</p>
+<p>풀이: $N = 2\Delta d/\lambda = 2(0.30\times10^{-3})/(600\times10^{-9}) = 1000$개.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

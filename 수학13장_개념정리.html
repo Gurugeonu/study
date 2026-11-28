@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13장 벡터장과 선적분</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>13장 벡터장과 선적분</h1>
+
+<h2>벡터장</h2>
+
+<h3>벡터장의 정의</h3>
+
+<p>$n$-공간의 부분집합 $U$의 각 점 $X$마다 그 점을 시점으로 하는 벡터 $\mathbf F(X)\in\mathbb R^n$를 하나씩 대응시킨 사상이 <mark><strong>벡터장(vector field)</strong></mark>. 성분으로 쓰면</p>
+
+$$\mathbf F(X)=(f_1(X),f_2(X),\dots,f_n(X))=\sum_{i=1}^n f_i(X)\,\mathbf e_i$$
+
+<ul class="sym">
+<li>$f_i:U\to\mathbb R$: $i$번째 성분함수</li>
+<li>$\mathbf e_i$: $i$번째 표준단위벡터</li>
+</ul>
+
+<p><mark>벡터장이 연속(미분가능, 일급, 이급, …)이라는 것은 성분함수 $f_i$가 모두 연속(미분가능, 일급, 이급, …)이라는 뜻</mark>. 일급은 1계 편도함수가 모두 존재하고 연속, 이급은 2계 편도함수까지 그렇다는 뜻.</p>
+
+<h3>여러 가지 벡터장</h3>
+
+<p><strong>위치벡터장(position vector field)</strong> $\mathbf r(x,y)=(x,y)=x\mathbf i+y\mathbf j$는 각 점에 원점에서 그 점까지의 벡터를 붙인 것이기에 원점에서 바깥으로 발산하는 모양. 그 크기를 $r:=|\mathbf r|=\sqrt{x^2+y^2}$로 쓴다. $n$-공간에서도 $\mathbf r=(x_1,\dots,x_n)$, $r=|\mathbf r|$.</p>
+
+<p>크기가 항상 1인 벡터장이 <mark><strong>단위벡터장(unit vector field)</strong></mark>. 위치벡터장을 자기 크기로 나눈</p>
+
+$$\mathbf u(x_1,\dots,x_n)=\frac{\mathbf r}{r}=\sum_i\frac{x_i}{r}\,\mathbf e_i$$
+
+<p>는 바깥을 향하는 단위벡터장이며, $r=0$이면 나눌 수 없어 원점에서는 정의되지 않음.</p>
+
+<p>원점을 뺀 평면에서 정의된 $\mathbf F(x,y)=-\dfrac{(x,y)}{x^2+y^2}=-\dfrac{\mathbf r}{r^2}$는 원점을 향하고, 크기가 $|\mathbf F|=\dfrac{r}{r^2}=\dfrac1r$이므로 <mark>원점으로부터의 거리에 반비례</mark>.</p>
+
+<p>$\mathbf r^*(x,y)=(-y,x)=-y\mathbf i+x\mathbf j$는 위치벡터장 $\mathbf r$을 시계 반대 방향으로 $90^\circ$ 회전시킨 것. $\mathbf r\cdot\mathbf r^*=0$이기에 각 점에서 원점과 잇는 선분에 수직이라 원점 둘레를 도는 모양.</p>
+
+<figure>
+<svg id="vf-svg" viewBox="0 0 640 340">
+<text id="vf-name" x="24" y="140" font-size="17" fill="#111">위치벡터장</text>
+<text id="vf-form" x="24" y="172" font-size="16" fill="#333">r = (x, y)</text>
+<text id="vf-desc" x="24" y="202" font-size="15" fill="#555">크기 r, 바깥 방향</text>
+<line x1="250" y1="170" x2="550" y2="170" stroke="#ccc" stroke-width="1"/>
+<line x1="400" y1="20" x2="400" y2="320" stroke="#ccc" stroke-width="1"/>
+<text x="556" y="175" font-size="14" fill="#777">x</text>
+<text x="406" y="30" font-size="14" fill="#777">y</text>
+<g id="vf-arrows"></g>
+</svg>
+<figcaption>범위 $-2\le x,y\le2$의 벡터장. 화살표 길이는 크기에 비례하되, 원점 근처처럼 너무 큰 곳은 일정 길이로 잘랐다.</figcaption>
+</figure>
+<div class="controls" id="vf-controls">
+<button aria-pressed="true" data-k="r">r</button>
+<button aria-pressed="false" data-k="u">u = r/r</button>
+<button aria-pressed="false" data-k="inv">−r/r²</button>
+<button aria-pressed="false" data-k="rs">r* = (−y, x)</button>
+<button aria-pressed="false" data-k="a">a = r*/r²</button>
+</div>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const g = document.getElementById('vf-arrows');
+  const F = {
+    r:   {n:'위치벡터장', f:'r = (x, y)', d:'크기 r, 바깥 방향', fn:(x,y)=>[x,y], M:2.83},
+    u:   {n:'단위벡터장', f:'u = r / r', d:'크기 1, 원점 제외', fn:(x,y)=>{const r=Math.hypot(x,y);return [x/r,y/r];}, M:1},
+    inv: {n:'−r / r²', f:'−(x, y)/(x²+y²)', d:'크기 1/r, 원점 방향', fn:(x,y)=>{const q=x*x+y*y;return [-x/q,-y/q];}, M:1},
+    rs:  {n:'r* (90° 회전)', f:'r* = (−y, x)', d:'크기 r, 원점 둘레 회전', fn:(x,y)=>[-y,x], M:2.83},
+    a:   {n:'각원소 벡터장', f:'a = (−y, x)/(x²+y²)', d:'크기 1/r, 원점 둘레 회전', fn:(x,y)=>{const q=x*x+y*y;return [-y/q,x/q];}, M:1}
+  };
+  const S = 65, CX = 400, CY = 170;
+  function line(x1,y1,x2,y2){
+    const l = document.createElementNS(NS,'line');
+    l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
+    l.setAttribute('stroke','#222');l.setAttribute('stroke-width','1.6');l.setAttribute('stroke-linecap','round');
+    g.appendChild(l);
+  }
+  function draw(k){
+    const fd = F[k];
+    while (g.firstChild) g.removeChild(g.firstChild);
+    document.getElementById('vf-name').textContent = fd.n;
+    document.getElementById('vf-form').textContent = fd.f;
+    document.getElementById('vf-desc').textContent = fd.d;
+    for (let i=-4;i<=4;i++) for (let j=-4;j<=4;j++){
+      const x=i*0.5, y=j*0.5;
+      if (i===0 && j===0) continue;
+      const v = fd.fn(x,y), m = Math.hypot(v[0],v[1]);
+      if (m===0) continue;
+      const L = Math.max(4, 26*Math.min(m/fd.M,1));
+      const ux = v[0]/m, uy = -v[1]/m;
+      const px = CX + x*S, py = CY - y*S;
+      const x1 = px-ux*L/2, y1 = py-uy*L/2, x2 = px+ux*L/2, y2 = py+uy*L/2;
+      line(x1,y1,x2,y2);
+      const h = Math.min(6, L*0.45), c = Math.cos(0.45), s = Math.sin(0.45);
+      line(x2,y2, x2-h*(ux*c-uy*s), y2-h*(uy*c+ux*s));
+      line(x2,y2, x2-h*(ux*c+uy*s), y2-h*(uy*c-ux*s));
+    }
+  }
+  const btns = document.querySelectorAll('#vf-controls button');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(o => o.setAttribute('aria-pressed', o===b ? 'true' : 'false'));
+    draw(b.dataset.k);
+  }));
+  draw('r');
+})();
+</script>
+
+<h2>선적분</h2>
+
+<h3>곡선을 따르는 벡터장</h3>
+
+<p>곡선 $X:[a,b]\to\mathbb R^n$의 각 시각 $t$마다 점 $X(t)$를 시점으로 하는 벡터 $\mathbf G(t)\in\mathbb R^n$를 하나씩 대응시킨 것이 <mark><strong>$X$를 따르는 벡터장</strong></mark>. 즉 정의역이 매개변수 구간인 사상 $\mathbf G:[a,b]\to\mathbb R^n$이고, $\mathbf G(t)$의 시점을 $X(t)$로 본다.</p>
+
+<p>대표적인 예는 속도벡터장 $X'(t)$와 가속도벡터장 $X''(t)$. 모든 $t$에서 $X'(t)\ne\mathbf 0$인 <strong>정규곡선(regular curve)</strong>이면 단위접선벡터장 $T(t)=X'(t)/|X'(t)|$도 $X$를 따르는 벡터장.</p>
+
+<p>벡터장 $\mathbf F:U(\subseteq\mathbb R^n)\to\mathbb R^n$의 정의역에 곡선 $X$의 상이 포함되면, 합성한 사상 $\mathbf F\circ X:[a,b]\to\mathbb R^n$, $t\mapsto\mathbf F(X(t))$도 $X$를 따르는 벡터장. 즉 공간의 벡터장을 곡선 위에서만 본 것.</p>
+
+<h3>선적분의 정의</h3>
+
+<p>곡선을 따라 함수를 적분하거나 벡터장을 적분하면 실수값을 얻는다. 둘 다 <mark><strong>선적분(line integral)</strong></mark>.</p>
+
+<p>일급곡선 $X:[a,b]\to\mathbb R^n$을 따라 정의된 함수 $g(t)$의 선적분은 길이 요소 $ds=|X'(t)|\,dt$로 $g$를 더한 것.</p>
+
+$$\int_X g\,ds:=\int_a^b g(t)\,|X'(t)|\,dt$$
+
+<p>$X$를 따르는 벡터장 $\mathbf G(t)$의 선적분은 $\mathbf G$와 속도의 내적을 적분한 것으로, 힘 $\mathbf G$가 곡선을 따라 움직이는 물체에 한 <mark><strong>일(work)</strong></mark>을 뜻한다.</p>
+
+$$\int_X\mathbf G\cdot d\mathbf s:=\int_a^b\mathbf G(t)\cdot X'(t)\,dt$$
+
+<p>공간의 벡터장 $\mathbf F$를 $X$를 따라 적분할 때는 $\mathbf F\circ X$를 적분한다.</p>
+
+$$\int_X\mathbf F\cdot d\mathbf s=\int_X\mathbf F\circ X\cdot d\mathbf s:=\int_a^b\mathbf F(X(t))\cdot X'(t)\,dt$$
+
+<p class="cond">조건: $X$는 일급곡선, $\mathbf F$는 $X$의 상을 포함하는 집합에서 연속</p>
+<ul class="sym">
+<li>$X'(t)$: 곡선의 속도벡터</li>
+<li>$d\mathbf s=X'(t)\,dt$: 곡선을 따른 미소 변위</li>
+</ul>
+
+<p>곡선 자신의 속도벡터장을 적분하면 $\int_X X'\cdot d\mathbf s=\int_a^b|X'(t)|^2\,dt$. 이급곡선의 가속도벡터장은 $X''\cdot X'=\frac12\frac{d}{dt}|X'|^2$이기에</p>
+
+$$\int_X X''\cdot d\mathbf s=\frac12\Big(|X'(b)|^2-|X'(a)|^2\Big)$$
+
+<p>$X$를 질량 1인 입자의 운동으로 보면, <mark>알짜힘($=X''$)이 한 일은 운동에너지의 변화량</mark>이라는 뜻.</p>
+
+<h3>접선 성분만 적분된다</h3>
+
+<p>정규곡선이면 $X'=|X'|\,T$이므로 $\mathbf F(X)\cdot X'\,dt=(\mathbf F\cdot T)\,|X'|\,dt=(\mathbf F\cdot T)\,ds$. 따라서 <mark>벡터장의 선적분은 함수 $\mathbf F\cdot T$의 선적분으로 바꿔 쓸 수 있다</mark>.</p>
+
+$$\int_X\mathbf F\cdot d\mathbf s=\int_X(\mathbf F\cdot T)\,ds$$
+
+<p class="cond">조건: $X$는 정규곡선</p>
+<ul class="sym"><li>$T=X'/|X'|$: 단위접선벡터</li></ul>
+
+<p>$\mathbf F$를 곡선에 접하는 성분 $\mathbf F_T=(\mathbf F\cdot T)\,T$와 수직인 성분 $\mathbf F_\perp=\mathbf F-\mathbf F_T$의 합으로 나누면, $\mathbf F_\perp\cdot X'=0$이기에</p>
+
+$$\int_X\mathbf F\cdot d\mathbf s=\int_X\mathbf F_T\cdot d\mathbf s$$
+
+<p>즉 <mark>벡터장을 적분할 때는 곡선에 접하는 성분만 적분하면 된다</mark>.</p>
+
+<figure>
+<svg viewBox="0 0 640 320">
+<defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker></defs>
+<path d="M60 300 C 200 140, 400 140, 580 280" fill="none" stroke="#888" stroke-width="2.5"/>
+<line x1="305" y1="179" x2="451" y2="83" stroke="#111" stroke-width="2.5" marker-end="url(#ah1)"/>
+<line x1="305" y1="179" x2="455" y2="173" stroke="#111" stroke-width="2" marker-end="url(#ah1)"/>
+<line x1="305" y1="179" x2="301" y2="89" stroke="#111" stroke-width="2" marker-end="url(#ah1)"/>
+<line x1="451" y1="83" x2="455" y2="173" stroke="#777" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="451" y1="83" x2="301" y2="89" stroke="#777" stroke-width="1.3" stroke-dasharray="5 4"/>
+<circle cx="305" cy="179" r="4.5" fill="#111"/>
+<text x="462" y="80" font-size="17" font-weight="bold">F</text>
+<text x="466" y="160" font-size="16">F<tspan baseline-shift="sub" font-size="75%">T</tspan> (접선 성분)</text>
+<text x="150" y="98" font-size="16">(수직 성분) F<tspan baseline-shift="sub" font-size="75%">⊥</tspan></text>
+<text x="282" y="212" font-size="15">X(t)</text>
+<text x="120" y="302" font-size="15" fill="#555">곡선 X</text>
+</svg>
+<figcaption>$\mathbf F=\mathbf F_T+\mathbf F_\perp$. 수직 성분은 이동 방향과 내적이 0이라 일에 기여하지 않는다.</figcaption>
+</figure>
+
+<h3>매개화와 방향</h3>
+
+<p>같은 길도 매개화는 여러 가지. 일급 전단사 $f:[\alpha,\beta]\to[a,b]$에 대해 $f'\gt0$이면 $\tilde X=X\circ f$를 $X$의 <strong>동향재매개화</strong>, $f'\lt0$이면 <strong>역향재매개화</strong>라 한다. 특히 $X_-(t)=X(a+b-t)$는 같은 길을 거꾸로 가는 <strong>역향곡선</strong>.</p>
+
+<p>함수의 선적분과 달리 <mark>벡터장의 선적분은 곡선의 향(방향)에 의존</mark>.</p>
+
+<p class="cond">조건: $\mathbf F:U\to\mathbb R^n$은 $n$-공간의 부분집합 $U$에서 정의된 벡터장, $X:[a,b]\to U$는 일급곡선</p>
+
+<p>a) 일급함수 $f:[\alpha,\beta]\to[a,b]$가 $f(\alpha)=a$, $f(\beta)=b$이면</p>
+
+$$\int_{X\circ f}\mathbf F\cdot d\mathbf s=\int_X\mathbf F\cdot d\mathbf s$$
+
+<p>b) $X_-$가 $X$의 역향곡선이면</p>
+
+$$\int_{X_-}\mathbf F\cdot d\mathbf s=-\int_X\mathbf F\cdot d\mathbf s$$
+
+<p>c) $\tilde X$가 $X$의 동향재매개화이면 $\int_{\tilde X}\mathbf F\cdot d\mathbf s=\int_X\mathbf F\cdot d\mathbf s$, 역향재매개화이면 $\int_{\tilde X}\mathbf F\cdot d\mathbf s=-\int_X\mathbf F\cdot d\mathbf s$. 즉 <mark>재매개화는 선적분의 값을 바꾸지 않고, 방향이 뒤집히면 부호만 바뀜</mark>.</p>
+
+<details><summary>증명 보기</summary><div>
+<p>a) $(X\circ f)'(s)=X'(f(s))\,f'(s)$이므로 $t=f(s)$로 치환하면</p>
+$$\int_\alpha^\beta\mathbf F(X(f(s)))\cdot X'(f(s))\,f'(s)\,ds=\int_{f(\alpha)}^{f(\beta)}\mathbf F(X(t))\cdot X'(t)\,dt=\int_a^b\mathbf F(X(t))\cdot X'(t)\,dt$$
+<p>b) $X_-'(t)=-X'(a+b-t)$이고, $u=a+b-t$로 치환하면 $t$가 $a\to b$일 때 $u$는 $b\to a$이므로</p>
+$$\int_a^b\mathbf F(X(a+b-t))\cdot\big(-X'(a+b-t)\big)\,dt=\int_b^a\mathbf F(X(u))\cdot X'(u)\,du=-\int_X\mathbf F\cdot d\mathbf s$$
+<p>c) 동향이면 $f(\alpha)=a$, $f(\beta)=b$라 a) 그대로. 역향이면 $f(\alpha)=b$, $f(\beta)=a$라 같은 치환에서 적분 구간이 $b\to a$로 뒤집혀 부호가 바뀜.</p>
+<p>함수의 선적분은 $|(X\circ f)'|=|X'(f)|\,|f'|$로 절댓값이 붙기에, 구간이 뒤집혀도 $f'\lt0$의 부호와 상쇄되어 향과 무관.</p>
+</div></details>
+
+<h3>조각적 일급인 곡선</h3>
+
+<p>정사각형처럼 꺾인 곡선은 전체로는 일급이 아니지만 일급곡선 조각들을 이은 것. 일급곡선 $X_1,\dots,X_k$를 차례로(앞 조각의 끝점이 다음 조각의 시작점) 이은 곡선 $X=X_1*\cdots*X_k$를 <mark><strong>조각적 일급(piecewise $C^1$)</strong></mark> 곡선이라 하고, 벡터장의 적분은 조각별 적분의 합으로 정의.</p>
+
+$$\int_X\mathbf F\cdot d\mathbf s:=\sum_{i=1}^k\int_{X_i}\mathbf F\cdot d\mathbf s$$
+
+<h3>각원소 벡터장과 감는 수</h3>
+
+<p>$\mathbf r^*$를 $r^2$으로 나눈 벡터장이 <mark><strong>각원소 벡터장</strong></mark>.</p>
+
+$$\mathbf a:\mathbb R^2-\{(0,0)\}\to\mathbb R^2,\qquad \mathbf a(x,y)=\frac{\mathbf r^*(x,y)}{r^2}=\left(\frac{-y}{x^2+y^2},\ \frac{x}{x^2+y^2}\right)$$
+
+<p>원점을 지나지 않는 곡선을 극좌표로 $X(t)=r(t)(\cos\theta(t),\sin\theta(t))$, $t_0\le t\le t_1$로 쓰면($r,\theta$는 일급)</p>
+
+$$X'=r'(\cos\theta,\sin\theta)+r\theta'(-\sin\theta,\cos\theta),\qquad \mathbf a(X)=\frac1r(-\sin\theta,\cos\theta)$$
+
+<p>이므로 첫 항은 $\mathbf a(X)$와 수직이라 사라지고 $\mathbf a(X)\cdot X'=\theta'$만 남음. 따라서</p>
+
+$$\int_X\mathbf a\cdot d\mathbf s=\theta(t_1)-\theta(t_0)$$
+
+<p>즉 <mark>각원소 벡터장의 선적분은 원점에서 곡선을 바라본 각도의 변화</mark>. 거리 $r(t)$는 결과에 영향이 없다.</p>
+
+<p>출발점으로 되돌아오는 곡선이면 각도 변화는 원점 둘레를 시계 반대 방향으로 감은 횟수의 $2\pi$배. 이 횟수 $\frac1{2\pi}\int_X\mathbf a\cdot d\mathbf s$가 <mark><strong>감는 수(winding number)</strong></mark>이고, 시계 방향으로 감으면 음수.</p>
+
+<ul>
+<li>$X(t)=(\cos t,\sin t)$, $0\le t\le2\pi$: 한 바퀴이므로 $\int_X\mathbf a\cdot d\mathbf s=2\pi$</li>
+<li>$Y(t)=(\cos t,\sin t)$, $0\le t\le4\pi$: 두 바퀴이므로 $4\pi$</li>
+<li>$C_n(t)=(\cos nt,\sin nt)$, $0\le t\le2\pi$, $n\in\mathbb N$: $n$바퀴이므로 $2\pi n$</li>
+<li>$C_{n,r}(t)=r(\cos nt,\sin nt)$, $r\gt0$: 반지름과 무관하게 $2\pi n$</li>
+</ul>
+
+<p>원이 아니어도 같다. 정사각형 $\max\{|x|,|y|\}=1$을 한 바퀴 도는 조각적 일급 곡선 $X=X_1*X_2*X_3*X_4$의 네 변</p>
+
+$$X_1(t)=(1,t),\quad X_2(t)=(-t,1),\quad X_3(t)=(-1,-t),\quad X_4(t)=(t,-1)\qquad(-1\le t\le1)$$
+
+<p>에서 모두 $\mathbf a(X_i)\cdot X_i'=\dfrac1{1+t^2}$이기에 각 변의 적분은 $\int_{-1}^1\frac{dt}{1+t^2}=\frac\pi2$, 합은 $2\pi$. 반대로 원점을 감싸지 않는 곡선은 각도가 늘었다 줄어 제자리로 오므로 적분값 0.</p>
+
+<figure>
+<svg id="wd-svg" viewBox="0 0 640 320">
+<line x1="20" y1="160" x2="620" y2="160" stroke="#ccc"/>
+<line x1="180" y1="20" x2="180" y2="300" stroke="#ccc"/>
+<circle id="wd-c" cx="225" cy="160" r="100" fill="none" stroke="#111" stroke-width="2.5"/>
+<path id="wd-arr" d="M0,0 L12,-7 L12,7 z" fill="#111" transform="translate(225,60)"/>
+<circle cx="180" cy="160" r="5" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="150" y="185" font-size="15">원점</text>
+<text id="wd-val" x="400" y="40" font-size="17">∮ a·ds ≈ 6.283</text>
+<text id="wd-n" x="400" y="68" font-size="16" fill="#444">감는 수 1</text>
+</svg>
+<figcaption>반지름 1인 원을 시계 반대 방향으로 한 바퀴 돌며 각원소 벡터장 $\mathbf a$를 적분. 원이 원점을 감싸면 $2\pi$, 아니면 0.</figcaption>
+</figure>
+<div class="controls">
+<label>원의 중심 $(c,0)$의 $c$ <input id="wd-s" type="range" min="0.05" max="2.45" step="0.1" value="0.45"></label>
+</div>
+<script>
+(() => {
+  const s = document.getElementById('wd-s');
+  const C = document.getElementById('wd-c'), A = document.getElementById('wd-arr');
+  const V = document.getElementById('wd-val'), W = document.getElementById('wd-n');
+  function upd(){
+    const c = parseFloat(s.value), N = 4000;
+    let sum = 0;
+    for (let k=0;k<N;k++){
+      const t = (k+0.5)*2*Math.PI/N, x = c+Math.cos(t), y = Math.sin(t);
+      sum += ((-y)*(-Math.sin(t)) + x*Math.cos(t))/(x*x+y*y);
+    }
+    sum *= 2*Math.PI/N;
+    const px = 180 + c*100;
+    C.setAttribute('cx', px);
+    A.setAttribute('transform', 'translate(' + px + ',60)');
+    const w = Math.round(sum/(2*Math.PI));
+    V.textContent = '∮ a·ds ≈ ' + sum.toFixed(3) + (w ? '  (= 2π)' : '');
+    W.textContent = '감는 수 ' + w + (c < 1 ? '  (원점을 감쌈)' : '  (원점 밖)');
+  }
+  s.addEventListener('input', upd);
+  upd();
+})();
+</script>
+
+<h2>기울기 벡터장과 잠재함수</h2>
+
+<h3>잠재함수</h3>
+
+<p>벡터장을 얻는 쉬운 방법 중 하나는 일급함수 $\varphi(x_1,\dots,x_n)$의 기울기 벡터장.</p>
+
+$$\mathbf F=\operatorname{grad}\varphi=\left(\frac{\partial\varphi}{\partial x_1},\dots,\frac{\partial\varphi}{\partial x_n}\right)$$
+
+<p>이때 $\varphi$가 $\mathbf F$의 <mark><strong>잠재함수(potential function)</strong></mark>. 정확히는, 열린 집합 $U$에서 정의된 $\mathbf F$가 잠재함수를 가진다는 것은 <mark>$U$ 전체에서 정의된 $\varphi:U\to\mathbb R$가 있어 $\mathbf F=\operatorname{grad}\varphi$</mark>라는 뜻. $U$의 일부에서만 이런 $\varphi$가 있으면 그 일부에서만 잠재함수를 가진다.</p>
+
+<p><mark>기울기 벡터장은 잠재함수의 등위면에 수직</mark>. 등위면 $\varphi=c$ 위의 곡선 $X(t)$에서는 $\varphi(X(t))=c$이므로, 미분하면 $\operatorname{grad}\varphi\cdot X'=0$이기 때문.</p>
+
+<p>예: $\mathbf F=(y,x)$는 $\varphi=xy$의 기울기. 각원소 벡터장 $\mathbf a$는 반평면 $x\gt0$에서 편각 $\theta(x,y)=\arctan\frac yx$의 기울기로, $\partial_x\theta=\frac{-y}{x^2+y^2}$, $\partial_y\theta=\frac{x}{x^2+y^2}$. 앞의 '각도 변화' 결과와 들어맞는다. 그러나 원점을 뺀 평면 전체에서 $\mathbf a$의 잠재함수가 되는 함수는 없다(닫힌 벡터장 절에서 확인).</p>
+
+<h3>선적분의 기본정리</h3>
+
+<p><mark>잠재함수를 가지는 벡터장의 선적분값은 곡선 양 끝점에서의 잠재함수값의 차</mark>. 이것이 <strong>선적분의 기본정리</strong>.</p>
+
+$$\int_X\operatorname{grad}\varphi\cdot d\mathbf s=\varphi(X(b))-\varphi(X(a))$$
+
+<p class="cond">조건: $\varphi:U\to\mathbb R$는 $n$-공간의 <mark>열린 집합</mark> $U$에서 정의된 <mark>일급함수</mark>, $X:[a,b]\to U$는 일급곡선</p>
+<ul class="sym"><li>$X(a)$, $X(b)$: 곡선의 출발점, 도착점</li></ul>
+
+<details><summary>증명 보기</summary><div>
+<p>연쇄법칙으로 $\dfrac{d}{dt}\varphi(X(t))=\operatorname{grad}\varphi(X(t))\cdot X'(t)$. 즉 피적분함수가 $\varphi(X(t))$의 도함수이므로 미적분학의 기본정리에 의해</p>
+$$\int_a^b\operatorname{grad}\varphi(X(t))\cdot X'(t)\,dt=\Big[\varphi(X(t))\Big]_a^b=\varphi(X(b))-\varphi(X(a))$$
+<p>조각적 일급 곡선이면 조각마다 적용해 더할 때 중간 끝점의 값이 상쇄되어 같은 식.</p>
+</div></details>
+
+<figure>
+<svg id="pi-svg" viewBox="0 0 640 320">
+<line x1="40" y1="212.6" x2="230" y2="212.6" stroke="#ccc"/>
+<line x1="81.4" y1="20" x2="81.4" y2="300" stroke="#ccc"/>
+<line x1="81.4" y1="212.6" x2="188.4" y2="105.6" stroke="#999" stroke-width="1.3" stroke-dasharray="5 4"/>
+<polyline id="pi-path" fill="none" stroke="#111" stroke-width="2.5" points=""/>
+<circle cx="81.4" cy="212.6" r="4.5" fill="#111"/>
+<circle cx="188.4" cy="105.6" r="4.5" fill="#111"/>
+<text x="20" y="240" font-size="15">P(0,0)</text>
+<text x="196" y="100" font-size="15">Q(1,1)</text>
+<text x="300" y="80" font-size="16">F = (y, x)  (잠재함수 xy)</text>
+<text id="pi-f" x="300" y="110" font-size="17">∫ F·ds = 1.000</text>
+<text x="300" y="180" font-size="16">G = (−y, x)  (잠재함수 없음)</text>
+<text id="pi-g" x="300" y="210" font-size="17">∫ G·ds = −0.637</text>
+</svg>
+<figcaption>$P$에서 $Q$로 가는 곡선 $X(t)=(t,\ t+k\sin\pi t)$. 점선은 $k=0$인 선분. 잠재함수가 있는 $\mathbf F$는 경로와 무관하게 $\varphi(Q)-\varphi(P)=1$.</figcaption>
+</figure>
+<div class="controls">
+<label>곡선의 휨 $k$ <input id="pi-s" type="range" min="-1" max="1" step="0.05" value="0.5"></label>
+</div>
+<script>
+(() => {
+  const s = document.getElementById('pi-s');
+  const P = document.getElementById('pi-path');
+  const tf = document.getElementById('pi-f'), tg = document.getElementById('pi-g');
+  const X = x => 60 + (x+0.2)*107, Y = y => 20 + (1.8-y)*107;
+  function upd(){
+    const k = parseFloat(s.value);
+    const pts = [];
+    for (let i=0;i<=200;i++){ const t=i/200; pts.push(X(t).toFixed(1)+','+Y(t+k*Math.sin(Math.PI*t)).toFixed(1)); }
+    P.setAttribute('points', pts.join(' '));
+    let f=0, g=0; const N=2000;
+    for (let i=0;i<N;i++){
+      const t=(i+0.5)/N, x=t, y=t+k*Math.sin(Math.PI*t), dx=1, dy=1+k*Math.PI*Math.cos(Math.PI*t);
+      f += y*dx + x*dy; g += -y*dx + x*dy;
+    }
+    tf.textContent = '∫ F·ds = ' + (f/N).toFixed(3);
+    tg.textContent = '∫ G·ds = ' + (g/N).toFixed(3);
+  }
+  s.addEventListener('input', upd);
+  upd();
+})();
+</script>
+
+<h3>입체각 벡터장</h3>
+
+$$\mathbf A:\mathbb R^3-\{(0,0,0)\}\to\mathbb R^3,\qquad\mathbf A(x,y,z)=\frac{\mathbf r}{r^3}=\frac{(x,y,z)}{(x^2+y^2+z^2)^{3/2}}$$
+
+<p>이 바깥 방향 벡터장이 <mark><strong>입체각 벡터장</strong></mark>. $|\mathbf A|=\dfrac{r}{r^3}=\dfrac1{r^2}$이므로 <mark>원점에서부터 거리의 제곱에 반비례</mark>.</p>
+
+<p>$\partial_x\!\left(-\frac1r\right)=\frac{x}{r^3}$ (다른 성분도 같은 꼴)이므로 <mark>$\mathbf A$의 잠재함수는 $\varphi(x,y,z)=-\frac1r$</mark>. 기본정리를 쓰면 다음이 경로와 무관하게 정해진다.</p>
+
+<ul>
+<li>원점에서 같은 거리에 있는 두 점 $P_0$, $P_1$을 (원점을 지나지 않고) 잇는 임의의 곡선을 따라 $\mathbf A$를 적분하면 $\varphi(P_1)-\varphi(P_0)=0$.</li>
+<li>원점 중심 반지름 1인 구면 위의 점 $P_1$에서 반지름 2인 구면 위의 점 $P_2$까지 가는 동안 $\mathbf A$가 한 일은 $\varphi(P_2)-\varphi(P_1)=-\frac12-(-1)=\frac12$.</li>
+</ul>
+
+<h3>닫힌 곡선과 순환도</h3>
+
+<p>출발점과 도착점이 같은 곡선이 <mark><strong>닫힌 곡선(closed curve)</strong></mark>. 기본정리에서 바로 다음 두 결과가 나온다.</p>
+
+<p class="cond">조건: $\mathbf F$는 $n$-공간의 열린 집합 $U$에서 정의되고 잠재함수 $\varphi$를 가진다</p>
+
+<p>a) $U$ 속의 두 곡선 $X$, $Y$의 출발점이 같고 도착점도 같으면 둘 다 $\varphi(\text{도착점})-\varphi(\text{출발점})$이므로</p>
+
+$$\int_X\mathbf F\cdot d\mathbf s=\int_Y\mathbf F\cdot d\mathbf s$$
+
+<p>즉 <mark>선적분이 경로와 무관</mark>. b) 닫힌 곡선을 따라 적분한 값은 양 끝점이 같아 0.</p>
+
+<p>닫힌 곡선 $X$를 따라 벡터장 $\mathbf F$를 적분한 값이 <mark><strong>순환도(circulation)</strong></mark>이며 $\oint_X\mathbf F\cdot d\mathbf s$로 쓴다. b)에 따라 <mark>잠재함수를 가지는 벡터장은 순환도가 0</mark>이고, 거꾸로 순환도가 0이 아닌 닫힌 곡선이 하나라도 있으면 잠재함수는 존재하지 않는다.</p>
+
+<h3>잠재함수가 없는 벡터장</h3>
+
+<p>$\mathbf F(x,y)=(-y,x)$는 잠재함수가 존재하지 않는다. 세 가지로 보일 수 있다.</p>
+
+<ul>
+<li><strong>순환도:</strong> 단위원 $X(t)=(\cos t,\sin t)$, $0\le t\le2\pi$에서 $\mathbf F(X)\cdot X'=\sin^2t+\cos^2t=1$이므로 $\oint_X\mathbf F\cdot d\mathbf s=2\pi\ne0$.</li>
+<li><strong>미분방정식:</strong> $\operatorname{grad}\varphi=\mathbf F$이면 $\varphi_x=-y$이기에 $\varphi=-xy+g(y)$. 이를 $y$로 미분하면 $-x+g'(y)=x$, 즉 $g'(y)=2x$인데 좌변은 $y$만의 함수라 모순.</li>
+<li><strong>한 번 더 미분:</strong> $\varphi_x=-y$, $\varphi_y=x$를 각각 $y$, $x$로 미분하면 $\varphi_{xy}=-1$, $\varphi_{yx}=1$. 이급함수는 두 혼합편도함수가 같아야 하므로 모순.</li>
+</ul>
+
+<h3>닫힌 벡터장</h3>
+
+<p>세 번째 방법을 일반화하면 잠재함수가 존재하기 위한 필요조건이 된다.</p>
+
+$$D_if_j=D_jf_i\qquad(1\le i,j\le n)$$
+
+<p class="cond">조건: $n$-공간의 열린 집합 $U$에서 정의된 <mark>일급</mark> 벡터장 $\mathbf F=(f_1,\dots,f_n)$이 <mark>잠재함수를 가진다</mark></p>
+<ul class="sym"><li>$D_i$: $x_i$에 대한 편미분 $\partial/\partial x_i$</li></ul>
+
+<details><summary>증명 보기</summary><div>
+<p>$\operatorname{grad}\varphi=\mathbf F$가 일급이므로 $\varphi$는 이급. 이급함수는 편미분 순서를 바꿔도 같으므로 $D_if_j=D_iD_j\varphi=D_jD_i\varphi=D_jf_i$.</p>
+</div></details>
+
+<p>예: $\mathbf F(x,y)=(x^2+y^2,\ x^2-y^2)$는 $D_2f_1=2y$, $D_1f_2=2x$로 서로 달라 잠재함수를 가지지 않음.</p>
+
+<p>조건 $D_if_j=D_jf_i$를 만족하는 일급 벡터장이 <mark><strong>닫힌 벡터장(closed vector field)</strong></mark> 또는 <strong>비회전장(irrotational field)</strong>. 위 정리는 <mark>잠재함수를 가지는 일급 벡터장은 닫힌 벡터장</mark>이라는 말.</p>
+
+<p>역은 일반적으로 거짓. 각원소 벡터장 $\mathbf a$가 반례다.</p>
+
+<ul>
+<li>$\mathbf a$는 닫혀 있다: $D_2\!\left(\dfrac{-y}{x^2+y^2}\right)=\dfrac{y^2-x^2}{(x^2+y^2)^2}=D_1\!\left(\dfrac{x}{x^2+y^2}\right)$.</li>
+<li>$\mathbb R^2-\{(0,0)\}$에서는 잠재함수가 없다: 단위원의 순환도가 $2\pi\ne0$.</li>
+<li>반평면 $U=\{(x,y)\mid x\gt0\}$에서는 $\arctan\frac yx$가 잠재함수.</li>
+</ul>
+
+<p>같은 벡터장인데 결과가 갈린 이유는 영역의 모양. 원점을 뺀 평면에는 구멍이 있어 그 둘레를 감는 닫힌 곡선이 가능하지만, 반평면에는 그런 곡선이 없다.</p>
+
+<h3>볼록집합과 푸앵카레 도움정리</h3>
+
+<p>좌표공간의 부분집합 $U$의 임의의 두 점 $P$, $Q$에 대해 둘을 잇는 선분 $(1-t)P+tQ$ ($0\le t\le1$)가 항상 $U$에 속하면 $U$가 <mark><strong>볼록집합(convex set)</strong></mark>. 좌표공간 전체, 열린 공(원판), 반평면 $\{x\gt0\}$, 직육면체는 볼록집합. 원점을 뺀 평면은 원점 대칭인 두 점을 잇는 선분이 원점을 지나므로 볼록집합이 아님.</p>
+
+<figure>
+<svg viewBox="0 0 640 260">
+<ellipse cx="160" cy="120" rx="120" ry="80" fill="#e6e6e6" stroke="#333" stroke-width="1.5"/>
+<line x1="90" y1="150" x2="230" y2="90" stroke="#111" stroke-width="2"/>
+<circle cx="90" cy="150" r="4.5" fill="#111"/><circle cx="230" cy="90" r="4.5" fill="#111"/>
+<text x="70" y="172" font-size="16">P</text><text x="238" y="86" font-size="16">Q</text>
+<text x="160" y="235" font-size="16" text-anchor="middle">볼록집합</text>
+<rect x="360" y="30" width="240" height="180" fill="#e6e6e6" stroke="#999" stroke-dasharray="6 4"/>
+<line x1="400" y1="170" x2="560" y2="70" stroke="#111" stroke-width="2" stroke-dasharray="6 4"/>
+<circle cx="480" cy="120" r="7" fill="#fff" stroke="#111" stroke-width="2"/>
+<circle cx="400" cy="170" r="4.5" fill="#111"/><circle cx="560" cy="70" r="4.5" fill="#111"/>
+<text x="380" y="192" font-size="16">P</text><text x="568" y="66" font-size="16">Q</text>
+<text x="492" y="146" font-size="15">원점(빠짐)</text>
+<text x="480" y="235" font-size="16" text-anchor="middle">원점을 뺀 평면: 볼록 아님</text>
+</svg>
+<figcaption>오른쪽의 선분 $PQ$는 빠진 원점을 지나므로 집합 안에 다 들어가지 않는다.</figcaption>
+</figure>
+
+<p>영역이 볼록이면 역이 성립. <mark>$n$-공간의 열린 볼록집합에서 정의된 닫힌 벡터장은 잠재함수를 가진다</mark>. 이것이 <strong>푸앵카레 도움정리(Poincaré lemma)</strong>. 아이디어는, 볼록집합이면 한 점 $P_0$에서 모든 점 $P$까지 선분이 집합 안에 있어 $\varphi(P)=\int_{\overline{P_0P}}\mathbf F\cdot d\mathbf s$를 만들 수 있고, 닫힌 조건 $D_if_j=D_jf_i$가 이 $\varphi$의 기울기를 $\mathbf F$로 만들어 준다는 것.</p>
+
+<p>따라서 '잠재함수 ⇒ 닫힘'의 역은 영역 전체에서(대역적으로는) 거짓일 수 있지만 <mark>국소적으로는 참</mark>. 열린 정의역의 각 점에는 그 점을 중심으로 하는 작은 열린 공(볼록집합)이 정의역 안에 있고, 그 안에서는 잠재함수가 존재하기 때문. 즉 <mark>닫힌 벡터장은 국소적으로 잠재함수를 가진다</mark>.</p>
+
+<h3>잠재함수 존재의 동치 조건</h3>
+
+<p class="cond">조건: $\mathbf F$는 $n$-공간의 열린 집합 $U$에서 정의된 연속 벡터장, 곡선은 조각적 일급</p>
+
+<p>다음 세 명제는 <mark>동치</mark>.</p>
+
+<ul>
+<li>a) $\mathbf F$가 잠재함수를 가진다.</li>
+<li>b) $U$ 속의 임의의 닫힌 곡선 $X$에 대해 $\oint_X\mathbf F\cdot d\mathbf s=0$.</li>
+<li>c) 두 곡선 $X,\tilde X:[0,1]\to U$의 출발점이 같고 도착점이 같으면 $\int_X\mathbf F\cdot d\mathbf s=\int_{\tilde X}\mathbf F\cdot d\mathbf s$.</li>
+</ul>
+
+<p>이 경우 $\mathbf F$가 일급이면 닫힌 벡터장. 더 나아가 닫힌 벡터장은 국소적으로 잠재함수를 가진다.</p>
+
+<details><summary>증명 보기</summary><div>
+<p>a ⇒ b: 닫힌 곡선과 순환도 절의 b).</p>
+<p>b ⇒ c: $X$ 다음에 $\tilde X$의 역향곡선을 이은 $X*\tilde X_-$는 닫힌 곡선이므로 $0=\int_X\mathbf F\cdot d\mathbf s-\int_{\tilde X}\mathbf F\cdot d\mathbf s$.</p>
+<p>c ⇒ a: $U$가 연결되어 있다고 하자(아니면 연결된 조각마다 따로 한다). 한 점 $P_0$를 고정하고 $\varphi(P)=\int_X\mathbf F\cdot d\mathbf s$ ($X$는 $P_0$에서 $P$까지의 곡선)로 정의하면, c)에 의해 곡선을 어떻게 골라도 값이 같다. $U$가 열려 있어 작은 $h$에 대해 선분 $P\to P+h\mathbf e_i$가 $U$ 안에 있으므로</p>
+$$\varphi(P+h\mathbf e_i)-\varphi(P)=\int_0^h f_i(P+s\mathbf e_i)\,ds$$
+<p>양변을 $h$로 나누고 $h\to0$이면 $f_i$가 연속이므로 $D_i\varphi(P)=f_i(P)$. 즉 $\operatorname{grad}\varphi=\mathbf F$.</p>
+<p>일급이면 닫힌 벡터장인 것은 앞의 필요조건 정리, 국소적 존재는 푸앵카레 도움정리.</p>
+</div></details>
+
+<h3>잠재함수의 유일성</h3>
+
+<p>존재성을 정리하면, 일급 벡터장이 잠재함수를 가지려면 닫혀 있어야 하고, 정의역이 열린 볼록집합이면 닫혀 있는 것으로 충분. 일반 열린 집합에서는 모든 닫힌 곡선의 순환도가 0인지(동치 조건)로 판정한다.</p>
+
+<p>$\varphi$가 $\mathbf F$의 잠재함수라면 상수 $C$에 대해 $\varphi+C$도 잠재함수($\operatorname{grad}C=\mathbf 0$). 정의역 $U$가 끊어지지 않은 한 덩어리, 즉 <strong>연결집합(connected set)</strong>이면 <mark>잠재함수는 $\varphi+C$ 꼴 외에 없다</mark>.</p>
+
+<details><summary>증명 보기</summary><div>
+<p>두 잠재함수 $\varphi_1,\varphi_2$에 대해 $\psi=\varphi_1-\varphi_2$이면 $\operatorname{grad}\psi=\mathbf 0$. 연결된 열린 집합의 두 점 $P$, $Q$는 $U$ 안의 조각적 일급 곡선 $X$로 이을 수 있고, 기본정리로 $\psi(Q)-\psi(P)=\int_X\mathbf 0\cdot d\mathbf s=0$. 따라서 $\psi$는 상수.</p>
+<p>$U$가 연결되어 있지 않으면 조각마다 다른 상수를 더해도 잠재함수가 되므로 $\varphi+C$ 꼴이 아닌 잠재함수가 생긴다.</p>
+</div></details>
+
+<h2>전미분과 미분형식</h2>
+
+<h3>벡터장과 미분형식의 대응</h3>
+
+<p>좌표평면의 열린 집합 $U$에서 정의된 함수 $f(x,y)$, $g(x,y)$에 대해 벡터장 $(f,g)$에 표현 $f\,dx+g\,dy$를 대응시킨 것이 <mark><strong>미분형식(differential form)</strong></mark>. 일반적으로 $n$-공간의 부분집합 $U$에서 정의된 함수 $f_1,\dots,f_n:U\to\mathbb R$에 대해</p>
+
+$$(f_1,\dots,f_n)=f_1\mathbf e_1+\dots+f_n\mathbf e_n\quad\rightsquigarrow\quad f_1\,dx_1+\dots+f_n\,dx_n$$
+
+<table>
+<thead><tr><th>벡터장</th><th>미분형식</th></tr></thead>
+<tbody>
+<tr><td>$\mathbf a=\left(\frac{-y}{x^2+y^2},\frac{x}{x^2+y^2}\right)$</td><td>$\frac{-y}{x^2+y^2}dx+\frac{x}{x^2+y^2}dy$</td></tr>
+<tr><td>$\mathbf u=\left(\frac{x}{\sqrt{x^2+y^2}},\frac{y}{\sqrt{x^2+y^2}}\right)$</td><td>$\frac{x}{\sqrt{x^2+y^2}}dx+\frac{y}{\sqrt{x^2+y^2}}dy$</td></tr>
+</tbody>
+</table>
+
+<h3>미분형식의 선적분</h3>
+
+<p>유향곡선(방향이 정해진 곡선) $X$를 따라 미분형식을 적분하는 것은 <mark>대응하는 벡터장을 적분하는 것으로 정의</mark>.</p>
+
+$$\int_X f_1\,dx_1+\dots+f_n\,dx_n:=\int_X(f_1,\dots,f_n)\cdot d\mathbf s$$
+
+<p>$X(t)=(x_1(t),\dots,x_n(t))$, $a\le t\le b$이면 $dx_i$ 자리에 $x_i'(t)\,dt$를 넣은 것과 같다.</p>
+
+$$\int_X f_1\,dx_1+\dots+f_n\,dx_n=\int_a^b\sum_{i=1}^n f_i(X(t))\,x_i'(t)\,dt$$
+
+<h3>전미분과 완전형식</h3>
+
+<p>$n$-공간의 열린 집합에서 정의된 함수 $f(x_1,\dots,x_n)$의 <mark><strong>전미분(total differential)</strong></mark>은</p>
+
+$$df:=\frac{\partial f}{\partial x_1}dx_1+\dots+\frac{\partial f}{\partial x_n}dx_n$$
+
+<p>따라서 <mark>기울기 벡터장 $\operatorname{grad}f$에 대응하는 미분형식이 전미분 $df$</mark>이고, 이때 $f$를 $df$의 잠재함수라 부른다.</p>
+
+<p>예: 각도함수 $\theta(x,y)=\arctan\frac yx$의 전미분은</p>
+
+$$d\theta=\frac{-y}{x^2+y^2}dx+\frac{x}{x^2+y^2}dy$$
+
+<p>로, 각원소 벡터장 $\mathbf a$에 대응하는 형식. 다만 $\theta$는 원점을 뺀 평면 전체에서 하나의 연속함수로 정의되지 않으므로, 그 영역 전체에서 이 형식은 어떤 함수의 전미분도 아니다.</p>
+
+<p>잠재함수를 가지는 미분형식, 즉 어떤 함수의 전미분인 형식이 <mark><strong>완전형식(exact differential form)</strong></mark>. 벡터장의 개념과 다음처럼 대응.</p>
+
+<table>
+<thead><tr><th>벡터장</th><th>미분형식</th></tr></thead>
+<tbody>
+<tr><td>벡터장이 잠재함수를 가지는가?</td><td>미분형식이 잠재함수를 가지는가?</td></tr>
+<tr><td>잠재함수를 가지는 벡터장 (일급이면 닫힌 벡터장)</td><td>완전형식</td></tr>
+<tr><td>선적분의 기본정리 $\int_X\operatorname{grad}\varphi\cdot d\mathbf s=\varphi(X(b))-\varphi(X(a))$</td><td>$\int_X df=\int_{\partial X}f$</td></tr>
+</tbody>
+</table>
+
+<p>$\partial X$는 곡선 $X$의 <strong>경계</strong>, 즉 도착점 $X(b)$(부호 $+$)와 출발점 $X(a)$(부호 $-$). 점 위의 '적분'은 함숫값을 부호대로 더한 것이라 $\int_{\partial X}f=f(X(b))-f(X(a))$. 즉 <mark>완전형식의 선적분은 곡선의 끝점만으로 정해진다</mark>.</p>
+
+<h3>미분과 경계의 대응</h3>
+
+<p>공간에서 미분은 함수 → 벡터장 → 벡터장 → 함수로 이어지고, 각 단계의 대상이 적분되는 곳은 점, 곡선, 곡면, 입체. 오른쪽 도형의 경계가 왼쪽 도형이다(입체의 경계는 곡면, 곡면의 경계는 곡선, 곡선의 경계는 양 끝점).</p>
+
+<figure>
+<svg viewBox="0 0 640 260">
+<defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<text x="80" y="75">함수</text><text x="240" y="75">벡터장</text><text x="400" y="75">벡터장</text><text x="560" y="75">함수</text>
+<text x="80" y="205">점</text><text x="240" y="205">곡선</text><text x="400" y="205">곡면</text><text x="560" y="205">입체</text>
+</g>
+<g stroke="#111" stroke-width="1.6" marker-end="url(#ah2)">
+<line x1="112" y1="69" x2="198" y2="69"/><line x1="282" y1="69" x2="358" y2="69"/><line x1="442" y1="69" x2="522" y2="69"/>
+<line x1="208" y1="199" x2="104" y2="199"/><line x1="368" y1="199" x2="272" y2="199"/><line x1="528" y1="199" x2="432" y2="199"/>
+</g>
+<g stroke="#777" stroke-width="1.4" stroke-dasharray="5 4">
+<line x1="80" y1="88" x2="80" y2="183"/><line x1="240" y1="88" x2="240" y2="183"/><line x1="400" y1="88" x2="400" y2="183"/><line x1="560" y1="88" x2="560" y2="183"/>
+</g>
+<g font-size="14" text-anchor="middle" fill="#444">
+<text x="155" y="55">미분(grad)</text><text x="320" y="55">미분(curl)</text><text x="482" y="55">미분(div)</text>
+<text x="155" y="225">경계</text><text x="320" y="225">경계</text><text x="480" y="225">경계</text>
+<text x="80" y="140" dx="30">적분</text>
+</g>
+</svg>
+<figcaption>위 줄의 대상은 아래 줄의 도형 위에서 적분된다(점선).</figcaption>
+</figure>
+
+<p>선적분의 기본정리는 이 도표의 첫 칸. <mark>함수를 미분한 벡터장(기울기)을 곡선에서 적분한 값 = 원래 함수를 곡선의 경계(양 끝점)에서 '적분'한 값</mark>.</p>
+
+<h2>예제</h2>
+
+<p><strong>1.</strong> 타원 $X(t)=(a\cos t,\ b\sin t)$, $0\le t\le2\pi$를 따라 $\mathbf F(x,y)=\frac12(-y,x)$를 적분하라.</p>
+<p>$X'=(-a\sin t,\ b\cos t)$, $\mathbf F(X)=\frac12(-b\sin t,\ a\cos t)$이므로 $\mathbf F(X)\cdot X'=\frac12(ab\sin^2t+ab\cos^2t)=\frac{ab}2$. 따라서 $\int_X\mathbf F\cdot d\mathbf s=\frac{ab}2\cdot2\pi=\pi ab$.</p>
+
+<p><strong>2.</strong> 위치벡터장 $\mathbf r=(x,y)$를 포물선 $y=x^2$을 따라 원점에서 $P=(1,1)$까지, 또 $P$에서 원점까지 적분하라.</p>
+<p>$X(t)=(t,t^2)$, $0\le t\le1$이면 $\mathbf r(X)\cdot X'=t+2t^3$이므로 $\int_0^1(t+2t^3)\,dt=\frac12+\frac12=1$. 반대 방향은 역향곡선이므로 $-1$. ($\mathbf r=\operatorname{grad}\frac{x^2+y^2}2$이므로 기본정리로도 $\frac{1+1}2-0=1$.)</p>
+
+<p><strong>3.</strong> $\mathbf F(x,y)=(y\cos xy,\ 1+x\cos xy)$의 잠재함수를 구하고, $(0,0)$에서 $(1,\frac\pi2)$까지의 임의의 곡선을 따른 적분값을 구하라.</p>
+<p>$\varphi_x=y\cos xy$에서 $\varphi=\sin xy+g(y)$. $\varphi_y=x\cos xy+g'(y)=1+x\cos xy$이므로 $g(y)=y$, 즉 $\varphi=\sin xy+y$. 적분값은 $\varphi(1,\frac\pi2)-\varphi(0,0)=1+\frac\pi2$.</p>
+
+<p><strong>4.</strong> $\mathbf F(x,y)=(2xy,\ x^2+1)$의 잠재함수를 구하라.</p>
+<p>$D_2(2xy)=2x=D_1(x^2+1)$이라 닫힌 벡터장이고, $\mathbb R^2$는 열린 볼록집합이므로 잠재함수가 존재. $\varphi_x=2xy$에서 $\varphi=x^2y+g(y)$, $\varphi_y=x^2+g'(y)=x^2+1$이므로 $\varphi=x^2y+y+C$.</p>
+
+<p><strong>5.</strong> $X(t)=(a\cos t,\ b\sin t)$, $0\le t\le\frac\pi2$에서 $\int_X x\,dx+y\,dy$를 구하라.</p>
+<p>정의대로: $dx=-a\sin t\,dt$, $dy=b\cos t\,dt$이므로 $\int_0^{\pi/2}(b^2-a^2)\sin t\cos t\,dt=\frac{b^2-a^2}2$. 완전형식으로: $x\,dx+y\,dy=d\!\left(\frac{x^2+y^2}2\right)$이고 끝점이 $(a,0)\to(0,b)$이므로 $\frac{b^2}2-\frac{a^2}2$. 두 값이 일치.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수학 18장 회전장과 스토크스 정리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>수학 18장 회전장과 스토크스 정리</h1>
+
+<h2>회전장</h2>
+
+<h3>회전장의 정의</h3>
+<p>발산(divergence) $\operatorname{div}\mathbf F$가 벡터장이 퍼져 나가는 정도라면, 벡터장이 <strong>도는 정도</strong>를 재는 양도 필요하다. 대상은 삼차원 공간의 벡터장</p>
+$$\mathbf F(x,y,z)=(f_1,f_2,f_3)=f_1\mathbf i+f_2\mathbf j+f_3\mathbf k=\sum_{i=1}^{3}f_i\,\mathbf e_i$$
+<p>각 $f_i$는 $(x,y,z)$의 함수. $D_1,D_2,D_3$를 차례로 $x,y,z$ 편미분이라 하면, 형식적인 벡터 $\nabla=(D_1,D_2,D_3)$와 $\mathbf F$의 외적이 <mark>$\mathbf F$의 회전장(curl)</mark>.</p>
+$$\begin{aligned}\operatorname{curl}\mathbf F:=\nabla\times\mathbf F&=\det\begin{pmatrix}\mathbf e_1&\mathbf e_2&\mathbf e_3\\D_1&D_2&D_3\\f_1&f_2&f_3\end{pmatrix}\\&=\det\begin{pmatrix}D_2&D_3\\f_2&f_3\end{pmatrix}\mathbf e_1-\det\begin{pmatrix}D_1&D_3\\f_1&f_3\end{pmatrix}\mathbf e_2+\det\begin{pmatrix}D_1&D_2\\f_1&f_2\end{pmatrix}\mathbf e_3\\&=(D_2f_3-D_3f_2,\;\;D_3f_1-D_1f_3,\;\;D_1f_2-D_2f_1)\end{aligned}$$
+<p class="cond">조건: <mark>$f_1,f_2,f_3$의 1계 편도함수 존재</mark></p>
+<ul class="sym"><li>$\mathbf F=(f_1,f_2,f_3)$: 삼차원 벡터장, $\mathbf e_1,\mathbf e_2,\mathbf e_3$: 표준단위벡터($=\mathbf i,\mathbf j,\mathbf k$)</li></ul>
+<p>$\operatorname{div}\mathbf F$는 스칼라이지만 $\operatorname{curl}\mathbf F$는 다시 벡터장.</p>
+
+<p>예컨대 $\mathbf F=(-y,x,0)$은 $z$축 둘레를 반시계 방향으로 도는 장이고, $\operatorname{curl}\mathbf F=(0,0,1-(-1))=(0,0,2)$. 회전장의 방향($+z$)은 도는 축이며, 도는 방향과 오른손 법칙으로 맞는다.</p>
+
+<figure>
+<svg viewBox="0 0 640 300" role="img" aria-label="벡터장 (-y, x, 0)">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker></defs>
+<line x1="170" y1="150" x2="470" y2="150" stroke="#999" marker-end="url(#ah)"/>
+<line x1="320" y1="290" x2="320" y2="12" stroke="#999" marker-end="url(#ah)"/>
+<text x="478" y="155" font-size="15">x</text><text x="330" y="20" font-size="15">y</text>
+<g id="rotfield" stroke="#222" stroke-width="1.6"></g>
+<circle cx="320" cy="150" r="5" fill="#222"/>
+<text x="500" y="120" font-size="15">F = (−y, x, 0)</text>
+<text x="500" y="145" font-size="15">curl F = (0, 0, 2)</text>
+<text x="500" y="170" font-size="15">화면 밖(+z) 방향</text>
+</svg>
+<figcaption>원점에서 멀수록 길어지며 반시계로 도는 장. 회전장은 지면에서 나오는 방향.</figcaption>
+</figure>
+<script>
+(() => {
+  const g = document.getElementById('rotfield');
+  for (const r of [50, 100]) for (let k = 0; k < (r === 50 ? 8 : 12); k++) {
+    const a = 2*Math.PI*k/(r === 50 ? 8 : 12) + 0.2, x = r*Math.cos(a), y = r*Math.sin(a), s = 0.32;
+    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    l.setAttribute('x1', 320 + x + y*s/2); l.setAttribute('y1', 150 - (y - x*s/2));
+    l.setAttribute('x2', 320 + x - y*s/2); l.setAttribute('y2', 150 - (y + x*s/2));
+    l.setAttribute('marker-end', 'url(#ah)'); g.appendChild(l);
+  }
+})();
+</script>
+
+<h3>평면벡터장의 회전장</h3>
+<p>평면벡터장 $\mathbf f=(P(x,y),Q(x,y))$는 $\mathbf F=P\,\mathbf i+Q\,\mathbf j+0\,\mathbf k$로 삼차원 장이 된다. $P,Q$는 $z$와 무관하고 셋째 성분이 0이므로 행렬식에서 셋째 성분만 남는다.</p>
+$$\operatorname{curl}\mathbf F=(\operatorname{rot}\mathbf f)\,\mathbf k,\qquad \operatorname{rot}\mathbf f=\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$$
+<p>즉 curl은 평면의 rot을 삼차원으로 확장한 것.</p>
+
+<h3>계산 법칙</h3>
+$$\operatorname{curl}(\mathbf F+\mathbf G)=\operatorname{curl}\mathbf F+\operatorname{curl}\mathbf G$$
+$$\operatorname{curl}(h\mathbf F)=(\operatorname{grad}h)\times\mathbf F+h\,\operatorname{curl}\mathbf F$$
+<p class="cond">조건: $\mathbf F,\mathbf G,h$가 미분가능</p>
+<ul class="sym"><li>$\mathbf F,\mathbf G$: 벡터장, $h$: 스칼라 함수</li></ul>
+<details><summary>증명 보기</summary><div>
+<p>첫 식은 편미분이 합을 보존해서 성립. 둘째 식은 첫째 성분에 곱의 미분법을 적용하면</p>
+$$D_2(hf_3)-D_3(hf_2)=\big[(D_2h)f_3-(D_3h)f_2\big]+h\,(D_2f_3-D_3f_2)$$
+<p>앞은 $\operatorname{grad}h\times\mathbf F$의, 뒤는 $h\,\operatorname{curl}\mathbf F$의 첫째 성분. 나머지 성분도 같다.</p>
+</div></details>
+
+<h3>중심 방향 벡터장의 회전장</h3>
+<p>위치벡터장 $\mathbf r=x\mathbf i+y\mathbf j+z\mathbf k$는 각 성분이 자기 변수만 포함하기에, 회전장에 나오는 '다른 변수 편미분'이 모두 0. 따라서 $\operatorname{curl}\mathbf r=\mathbf 0$.</p>
+<p>여기에 크기만 바꾼 $h(r)\,\mathbf r$, $r=|\mathbf r|=\sqrt{x^2+y^2+z^2}$도 곱의 법칙으로 계산된다. 연쇄법칙에서 $\operatorname{grad}h(r)=h'(r)\,\mathbf r/r$이고 $\mathbf r\times\mathbf r=\mathbf 0$이므로</p>
+$$\operatorname{curl}\big(h(r)\,\mathbf r\big)=\frac{h'(r)}{r}\,\mathbf r\times\mathbf r+h(r)\operatorname{curl}\mathbf r=\mathbf 0$$
+<p class="cond">조건: <mark>$h:(0,\infty)\to\mathbb R$ 미분가능</mark>, $r>0$</p>
+<ul class="sym"><li>$\mathbf r$: 위치벡터장, $r$: 원점까지의 거리</li></ul>
+<p>$h(r)=1/r^3$인 <strong>입체각 벡터장</strong> $\mathbf A=\mathbf r/r^3$도 따라서 $\operatorname{curl}\mathbf A=\mathbf 0$.</p>
+
+<h2>비회전장</h2>
+
+<h3>정의</h3>
+<p><mark>회전장이 항등적으로 $\mathbf 0$인 벡터장이 비회전장(irrotational field)</mark>. 성분으로 쓰면</p>
+$$D_2f_3=D_3f_2,\qquad D_3f_1=D_1f_3,\qquad D_1f_2=D_2f_1$$
+<p>즉 $D_if_j=D_jf_i$이므로 <mark>비회전장 = 닫힌 벡터장(closed field)</mark>. 위의 $h(r)\,\mathbf r$이 비회전장이고, $\mathbf F=(yz,zx,xy)$도 세 성분이 $(x-x,\;y-y,\;z-z)=\mathbf 0$이라 비회전장이다.</p>
+
+<h3>보존장과의 관계</h3>
+<p>$\mathbf F=\operatorname{grad}\varphi$인 함수 $\varphi$가 <strong>잠재함수(potential function)</strong>이고, 잠재함수를 가진 장이 <strong>보존장(conservative field)</strong>. 예컨대 $(yz,zx,xy)$는 $\varphi=xyz$를 가진다.</p>
+<p><strong>정리.</strong> 삼차원 공간의 열린 집합에서 정의된 일급($C^1$) 벡터장이 잠재함수를 가지면 비회전장이다. 같은 말로,</p>
+$$\operatorname{curl}(\operatorname{grad}f)=\mathbf 0$$
+<p class="cond">조건: <mark>$f$가 이급($C^2$) 함수</mark></p>
+<ul class="sym"><li>$f$: 열린 집합에서 정의된 스칼라 함수</li></ul>
+<p>증명. $\mathbf F=\operatorname{grad}\varphi$가 일급이면 $\varphi$는 이급이다.</p>
+$$\operatorname{curl}\mathbf F=\det\begin{pmatrix}\mathbf e_1&\mathbf e_2&\mathbf e_3\\D_1&D_2&D_3\\D_1\varphi&D_2\varphi&D_3\varphi\end{pmatrix}=(D_2D_3\varphi-D_3D_2\varphi,\;D_3D_1\varphi-D_1D_3\varphi,\;D_1D_2\varphi-D_2D_1\varphi)=\mathbf 0$$
+<p>이급이면 편미분 순서를 바꿔도 같기에(클레로 정리) 모든 성분이 0.</p>
+<p>거꾸로, <mark>일급 비회전장은 국소적으로 보존장</mark>. 즉 정의역의 각 점 주변의 작은 영역에서는 잠재함수를 가진다. 열린 볼록집합 위의 닫힌 벡터장은 잠재함수를 가진다는 <strong>푸앵카레 도움정리(Poincaré lemma)</strong>의 결과로, 각 점 주변에 볼록한 작은 공을 잡을 수 있기 때문. 정의역 전체에서 하나의 잠재함수가 있다는 보장은 이것만으로는 없다.</p>
+
+<h2>스토크스 정리</h2>
+
+<h3>기본정리의 확장</h3>
+<p><strong>미적분학의 기본정리</strong>는 구간 내부의 도함수 적분을 경계(양 끝점)의 값으로 바꾼다.</p>
+$$\int_{[a,b]}f'(t)\,dt=f(b)-f(a)=\int_{\partial[a,b]}f$$
+<p>$\partial$는 경계이고, $\int_{\partial[a,b]}f$는 끝점 $b$에 $+$, $a$에 $-$를 붙인 합. 구간을 곡선 $X:[a,b]\to U$($U$: 공간의 열린 집합)로 바꾸면 <strong>선적분의 기본정리</strong>.</p>
+$$\int_X\operatorname{grad}f\cdot d\mathbf s=f(X(b))-f(X(a))=\int_{\partial X}f$$
+<p>평면 영역 $D$에서는 <strong>그린 정리</strong>가 같은 구조다.</p>
+$$\iint_D\operatorname{rot}\mathbf f\,dxdy=\iint_D\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)dxdy=\int_{\partial D}\mathbf f\cdot d\mathbf s=\int_{\partial D}P\,dx+Q\,dy$$
+<p class="cond">조건: $\mathbf f=(P,Q)$ 일급, $\partial D$는 $D$를 왼쪽에 두는 양의 향</p>
+<p>이 <mark>평평한 영역 $D$를 공간의 곡면 $X:D\to\mathbb R^3$로 바꾼 것이 스토크스 정리(Stokes' theorem)</mark>.</p>
+
+<h3>곡면의 경계와 향</h3>
+<p>매개곡면 $X:D\to\mathbb R^3$의 <strong>경계</strong> $\partial X:\partial D\to\mathbb R^3$는 <mark>$X$의 정의역을 $D$의 경계 $\partial D$로 제한해 얻은 곡선</mark>. 향은 $\partial D$의 양의 향(반시계)에서 물려받고, 곡면의 법선은 $X_u\times X_v$ ($X_u,X_v$: 매개변수 $u,v$의 편미분).</p>
+<p><strong>유향곡면(oriented surface)</strong> $S$는 법선 방향 $\mathbf n$을 연속적으로 정한 곡면. 경계 $\partial S$의 향은 오른손 법칙을 따른다. 오른손 엄지를 $\mathbf n$에 맞추면 감기는 방향이며, 즉 $\mathbf n$ 쪽에 서서 경계를 걸을 때 곡면이 왼쪽에 놓인다.</p>
+
+<figure>
+<svg viewBox="0 0 640 270" role="img" aria-label="매개변수 영역과 곡면의 경계 향">
+<defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#222"/></marker></defs>
+<ellipse cx="130" cy="140" rx="90" ry="80" fill="#eee" stroke="#222" stroke-width="2"/>
+<path d="M220 140 A90 80 0 0 0 130 60" fill="none" stroke="#222" stroke-width="3" marker-end="url(#ah2)"/>
+<path d="M40 140 A90 80 0 0 0 130 220" fill="none" stroke="#222" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="122" y="146" font-size="18">D</text><text x="213" y="80" font-size="15">∂D</text>
+<line x1="250" y1="140" x2="340" y2="140" stroke="#222" marker-end="url(#ah2)"/><text x="288" y="128" font-size="16">X</text>
+<path d="M380 195 C390 40 560 40 600 195 C550 235 430 235 380 195Z" fill="#eee" stroke="none"/>
+<path d="M380 195 C390 40 560 40 600 195" fill="none" stroke="#888"/>
+<path d="M380 195 C430 235 550 235 600 195" fill="none" stroke="#222" stroke-width="2.5"/>
+<path d="M380 195 C430 155 550 155 600 195" fill="none" stroke="#222" stroke-width="2" stroke-dasharray="6 5"/>
+<path d="M440 220 C465 226 495 227 520 223" fill="none" stroke="#222" stroke-width="3" marker-end="url(#ah2)"/>
+<line x1="488" y1="105" x2="488" y2="32" stroke="#222" stroke-width="2" marker-end="url(#ah2)"/>
+<text x="498" y="42" font-size="16">n</text><text x="455" y="140" font-size="18">S</text><text x="540" y="250" font-size="15">∂S = ∂X</text>
+</svg>
+<figcaption>$D$의 반시계 경계가 곡면의 경계 향이 된다. 위쪽 법선이면 위에서 볼 때 반시계.</figcaption>
+</figure>
+
+<h3>정리</h3>
+<p>좌변의 면적분은 $\operatorname{curl}\mathbf F$가 곡면을 법선 방향으로 통과하는 양(플럭스), 우변의 선적분은 $\mathbf F$가 경계를 따라 도는 양(순환, circulation).</p>
+<p><strong>스토크스 정리 I (매개곡면).</strong></p>
+$$\iint_X\operatorname{curl}\mathbf F\cdot d\mathbf S=\int_{\partial X}\mathbf F\cdot d\mathbf s$$
+<p class="cond">조건: <mark>$D\subset\mathbb R^2$는 그린 정리를 쓸 수 있는 영역(경계가 조각마다 매끄러움)</mark>, $X$는 이급, $\mathbf F$는 곡면을 포함하는 열린 집합에서 일급</p>
+<p><strong>스토크스 정리 II (유향곡면).</strong></p>
+$$\iint_S\operatorname{curl}\mathbf F\cdot d\mathbf S=\int_{\partial S}\mathbf F\cdot d\mathbf s$$
+<p class="cond">조건: <mark>$S$는 조각마다 매끄러운 유향곡면, $\partial S$의 향은 $\mathbf n$과 오른손 법칙</mark>, $\mathbf F$는 $S$ 위(주변)에서 일급</p>
+<ul class="sym"><li>$d\mathbf S=\mathbf n\,dS$: 방향 면적소. 매개곡면이면 $\iint_D\operatorname{curl}\mathbf F(X(u,v))\cdot(X_u\times X_v)\,du\,dv$</li><li>$\partial S$: 경계 전체. 곡선이 여러 개면 각각의 선적분을 합함</li></ul>
+<p>즉 <mark>회전장의 면적분은 경계의 순환만으로 결정</mark>. 평면 $z=0$의 영역에서 $\mathbf n=\mathbf k$이면 $\operatorname{curl}\mathbf F\cdot\mathbf k=\operatorname{rot}\mathbf f$이므로 그린 정리가 된다.</p>
+
+<p>직관: 곡면을 작은 조각으로 나눠 각 조각의 경계를 같은 향으로 돌면, 이웃한 조각이 공유하는 변은 반대 방향으로 두 번 지나 상쇄되고 바깥 경계만 남는다. 조각 하나의 순환은 약 $(\operatorname{curl}\mathbf F\cdot\mathbf n)\times$넓이. 그래서 <mark>$\operatorname{curl}\mathbf F\cdot\mathbf n$은 $\mathbf n$ 둘레의 단위넓이당 순환</mark>이다.</p>
+
+<figure>
+<svg id="cells" viewBox="0 0 640 270" role="img" aria-label="내부 변의 순환 상쇄"></svg>
+<figcaption>작은 순환을 모두 더하면 내부 변(점선)은 상쇄, 굵은 바깥 경계만 남음.</figcaption>
+<div class="controls"><label>분할 수 <input type="range" id="cellN" min="1" max="6" value="3"></label></div>
+</figure>
+<script>
+(() => {
+  const svg = document.getElementById('cells'), sl = document.getElementById('cellN');
+  const draw = () => {
+    const n = +sl.value, x0 = 200, y0 = 15, W = 240, c = W/n;
+    let s = '';
+    for (let i = 1; i < n; i++) s += `<path d="M${x0+i*c} ${y0}v${W}M${x0} ${y0+i*c}h${W}" stroke="#777" stroke-dasharray="5 4" fill="none"/>`;
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+      const cx = x0+(i+.5)*c, cy = y0+(j+.5)*c, r = c*.3;
+      s += `<path d="M${cx+r} ${cy} A${r} ${r} 0 1 0 ${cx} ${cy+r}" fill="none" stroke="#333" stroke-width="1.6"/>`;
+      s += `<path d="M${cx+7} ${cy+r}L${cx-2} ${cy+r-5}L${cx-2} ${cy+r+5}z" fill="#333"/>`;
+    }
+    s += `<rect x="${x0}" y="${y0}" width="${W}" height="${W}" fill="none" stroke="#111" stroke-width="3.5"/>`;
+    s += `<text x="20" y="140" font-size="15">조각 ${n*n}개</text><text x="465" y="140" font-size="15">바깥 경계 ∂S</text>`;
+    svg.innerHTML = s;
+  };
+  sl.addEventListener('input', draw); draw();
+})();
+</script>
+
+<details><summary>증명 보기 (매개곡면, 그린 정리 이용)</summary><div>
+<p>생각: 경계 선적분을 $uv$평면의 선적분으로 옮긴 뒤 그린 정리를 쓴다. $\partial D$에서 $d\mathbf s=X_u\,du+X_v\,dv$이므로</p>
+$$\int_{\partial X}\mathbf F\cdot d\mathbf s=\int_{\partial D}(\mathbf F(X)\cdot X_u)\,du+(\mathbf F(X)\cdot X_v)\,dv$$
+<p>그린 정리를 적용하면 피적분함수는 $\partial_u(\mathbf F\cdot X_v)-\partial_v(\mathbf F\cdot X_u)$. 곱의 미분에서 $\mathbf F\cdot X_{uv}$ 항은 $X$가 이급이라 $X_{uv}=X_{vu}$여서 상쇄된다. $J$를 $\mathbf F$의 야코비 행렬이라 하면 연쇄법칙에 의해 남는 것은</p>
+$$(JX_u)\cdot X_v-(JX_v)\cdot X_u$$
+<p>$\mathbf a=X_u$, $\mathbf b=X_v$로 두고 성분을 전개해 $D_if_j$끼리 묶으면</p>
+$$\sum_{i,j}D_if_j\,(a_ib_j-b_ia_j)=\operatorname{curl}\mathbf F\cdot(\mathbf a\times\mathbf b)$$
+<p>예컨대 $(i,j)=(1,2),(2,1)$의 합이 $(D_1f_2-D_2f_1)(a_1b_2-a_2b_1)$. 따라서</p>
+$$\int_{\partial X}\mathbf F\cdot d\mathbf s=\iint_D\operatorname{curl}\mathbf F\cdot(X_u\times X_v)\,du\,dv=\iint_X\operatorname{curl}\mathbf F\cdot d\mathbf S\qquad\blacksquare$$
+</div></details>
+
+<h3>선적분과 면적분의 교환</h3>
+<p>정리는 양방향으로 쓰인다. 닫힌 곡선 $C$의 선적분은 $C$를 경계로 갖는 곡면 $S$를 잡아 면적분으로 바꾼다. $C$의 향은 $S$의 법선과 오른손 법칙으로 맞아야 한다.</p>
+$$\int_C P\,dx+Q\,dy+R\,dz=\iint_S\operatorname{curl}(P,Q,R)\cdot d\mathbf S,\qquad C=\partial S$$
+<p>예를 들어 $C$가 원기둥 $x^2+y^2=1$과 평면의 교선이면, $S$는 그 평면에서 $C$가 두른 부분이고 $D=\{x^2+y^2\le1\}$로 매개화된다.</p>
+<p>반대로 $\mathbf F=\operatorname{grad}f$ ($f$ 이급)처럼 $S$에서 비회전장이면 좌변이 0이므로 <mark>경계의 순환 $\int_{\partial S}\mathbf F\cdot d\mathbf s=0$</mark>. 경계가 어떤 모양의 폐곡선이든 같다.</p>
+
+<h3>경계가 같은 두 곡면</h3>
+<p>우변이 경계에만 의존하므로 곡면의 모양은 바꿔도 된다. 열린 영역 $U$ 속의 유향곡면 $S_1,S_2$가 같은 경계를 가지고, $\mathbf F$가 $U$에서 일급이면</p>
+$$\iint_{S_1}\operatorname{curl}\mathbf F\cdot d\mathbf S=\pm\iint_{S_2}\operatorname{curl}\mathbf F\cdot d\mathbf S$$
+<p class="cond">조건: <mark>$S_1,S_2\subset U$, 두 곡면의 경계 곡선이 같음</mark>. $\partial S_1,\partial S_2$가 <mark>같은 향이면 $+$, 반대 향이면 $-$</mark></p>
+<p>두 면적분이 각각 $\int_{\partial S_1}\mathbf F\cdot d\mathbf s$, $\int_{\partial S_2}\mathbf F\cdot d\mathbf s$이고, 선적분은 향을 뒤집으면 부호가 바뀌기 때문.</p>
+
+<figure>
+<svg id="cap" viewBox="0 0 640 270" role="img" aria-label="같은 경계를 가진 곡면의 단면">
+</svg>
+<figcaption>$\mathbf F=(-y,x,0)$, 곡면 $z=h(1-x^2-y^2)$, $z$성분이 양인 법선의 $xz$ 단면. $h$를 바꿔도 경계가 단위원이라 플럭스는 $2\pi$.</figcaption>
+<div class="controls"><label>높이 h <input type="range" id="capH" min="-1" max="1.6" step="0.1" value="1"></label></div>
+</figure>
+<script>
+(() => {
+  const svg = document.getElementById('cap'), sl = document.getElementById('capH');
+  const X = x => 250 + 150*x, Z = z => 170 - 85*z;
+  const draw = () => {
+    const h = +sl.value;
+    let d = '', a = '';
+    for (let i = 0; i <= 60; i++) { const x = -1 + i/30; d += (i ? 'L' : 'M') + X(x) + ' ' + Z(h*(1-x*x)); }
+    for (const x of [-0.6, 0, 0.6]) {
+      const z = h*(1-x*x);
+      let nx = 2*h*x*85/150, nz = 1;
+      const sx = 2*h*x*85/150, L = Math.hypot(sx, 1);
+      const x1 = X(x), y1 = Z(z), x2 = x1 + 34*sx/L, y2 = y1 - 34/L;
+      const ang = Math.atan2(y2-y1, x2-x1)*180/Math.PI;
+      a += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#333" stroke-width="1.6"/><path d="M4 0L-6 -5L-6 5z" fill="#333" transform="translate(${x2} ${y2}) rotate(${ang})"/>`;
+    }
+    svg.innerHTML = `<line x1="60" y1="170" x2="440" y2="170" stroke="#999" stroke-dasharray="5 4"/>
+      <path d="${d}" fill="none" stroke="#111" stroke-width="3"/>${a}
+      <circle cx="${X(-1)}" cy="170" r="5" fill="#111"/><circle cx="${X(1)}" cy="170" r="5" fill="#111"/>
+      <text x="60" y="195" font-size="15">경계 x=−1</text><text x="340" y="195" font-size="15">경계 x=1</text>
+      <text x="470" y="100" font-size="15">h = ${h.toFixed(1)}</text><text x="470" y="128" font-size="15">∬ curl F · dS = 2π</text>
+      <text x="470" y="156" font-size="15">점선: 평평한 원판(h=0)</text>`;
+  };
+  sl.addEventListener('input', draw); draw();
+})();
+</script>
+
+<h3>닫힌 곡면</h3>
+$$\iint_S\operatorname{curl}\mathbf F\cdot d\mathbf S=0$$
+<p class="cond">조건: <mark>$S$는 닫힌 유향곡면</mark>(경계 없음), $\mathbf F$는 $S$ 위(주변)에서 일급</p>
+<p>$S$를 폐곡선을 따라 두 조각 $S_1,S_2$로 자르면, 법선을 그대로 둔 두 조각의 경계는 같은 곡선에 향이 반대. 따라서 두 선적분이 상쇄돼 합이 0. 곡면 안쪽에서 $\mathbf F$가 정의되지 않아도 성립한다. 쓰이는 것은 $S$ 위의 값뿐이기 때문.</p>
+
+<h2>비압축장과 회전장</h2>
+
+<h3>회전장은 비압축장</h3>
+<p><mark>$\operatorname{div}\mathbf F=0$인 벡터장이 비압축장(incompressible field)</mark>. 비압축장을 얻는 한 방법이 다른 벡터장의 회전장이다.</p>
+<p><strong>정리.</strong> 삼차원 벡터장 $\mathbf F$가 다른 벡터장의 회전장이면 $\mathbf F$는 비압축장.</p>
+$$\operatorname{div}(\operatorname{curl}\mathbf G)=0$$
+<p class="cond">조건: <mark>$\mathbf G$가 이급($C^2$) 벡터장</mark></p>
+<ul class="sym"><li>$\mathbf G=(g_1,g_2,g_3)$: $\mathbf F=\operatorname{curl}\mathbf G$를 만드는 벡터장</li></ul>
+<p>증명. $\mathbf F=(f_1,f_2,f_3)=\operatorname{curl}\mathbf G=(D_2g_3-D_3g_2,\;D_3g_1-D_1g_3,\;D_1g_2-D_2g_1)$이므로</p>
+$$\operatorname{div}\mathbf F=D_1(D_2g_3-D_3g_2)+D_2(D_3g_1-D_1g_3)+D_3(D_1g_2-D_2g_1)=0$$
+<p>이급이라 편미분 순서를 바꿀 수 있어 같은 항이 반대 부호로 두 개씩 짝지어 사라진다.</p>
+<p>두 항등식은 순서가 있는 연산 $\operatorname{grad}\to\operatorname{curl}\to\operatorname{div}$에서 연속한 두 연산을 이으면 0이라는 짝이다.</p>
+
+<table>
+<thead><tr><th>항등식</th><th>의미</th><th>역</th></tr></thead>
+<tbody>
+<tr><td>$\operatorname{curl}(\operatorname{grad}f)=\mathbf 0$</td><td>보존장은 비회전장</td><td>국소적으로 성립 (볼록집합에서 성립)</td></tr>
+<tr><td>$\operatorname{div}(\operatorname{curl}\mathbf G)=0$</td><td>회전장은 비압축장</td><td>일반적으로 불성립</td></tr>
+</tbody>
+</table>
+
+<h3>역의 반례: 입체각 벡터장</h3>
+<p><mark>비압축장이라고 해서 반드시 어떤 장의 회전장인 것은 아니다</mark>. 반례는 $\mathbf R^3-\{\mathbf 0\}$에서 정의된 $\mathbf A=\mathbf r/r^3=(x,y,z)/r^3$. (열린 볼록집합, 예컨대 $\mathbf R^3$ 전체에서는 일급 비압축장이 회전장이 되지만, 이 정의역은 원점이 빠져 볼록이 아니다.)</p>
+<p><strong>① 비압축장.</strong> $D_1(x/r^3)=1/r^3-3x^2/r^5$이고 $y,z$도 같은 꼴이므로</p>
+$$\operatorname{div}\mathbf A=\frac{3}{r^3}-\frac{3(x^2+y^2+z^2)}{r^5}=0$$
+<p><strong>② 구면 플럭스.</strong> 단위구면 $S:x^2+y^2+z^2=1$의 바깥 단위법선은 $\mathbf n=\mathbf r$이고 $r=1$이므로 $\mathbf A\cdot\mathbf n=1$.</p>
+$$\iint_S\mathbf A\cdot d\mathbf S=\iint_S 1\,dS=4\pi$$
+<p><strong>③ 모순.</strong> $\mathbf A=\operatorname{curl}\mathbf G$인 $\mathbf G$가 $\mathbf R^3-\{\mathbf 0\}$에 있다고 가정하자(스토크스 정리를 쓰도록 $\mathbf G$는 일급). $S$는 이 정의역에 있는 닫힌 곡면이므로</p>
+$$\iint_S\mathbf A\cdot d\mathbf S=\iint_S\operatorname{curl}\mathbf G\cdot d\mathbf S=0$$
+<p>②의 $4\pi$와 모순이므로 그런 $\mathbf G$는 없다. 즉 $\mathbf A$는 비압축장이지만 회전장이 아니다.</p>
+<p>발산 정리로 $\iint_S\mathbf A\cdot d\mathbf S=\iiint\operatorname{div}\mathbf A\,dV=0$이라 할 수는 없다. 구 내부의 원점에서 $\mathbf A$가 정의되지 않기 때문.</p>
+
+<h2>예제</h2>
+
+<p><strong>예제 1.</strong> $\mathbf F=(xy,\,yz,\,zx)$의 회전장.</p>
+<p>풀이: 성분 공식에서 $(0-y,\;0-z,\;0-x)$. 즉 $\operatorname{curl}\mathbf F=(-y,-z,-x)$.</p>
+
+<p><strong>예제 2.</strong> $\mathbf F=(2xy,\,x^2,\,1)$이 비회전장인지 확인.</p>
+<p>풀이: $(0-0,\;0-0,\;2x-2x)=\mathbf 0$이므로 비회전장. 잠재함수는 $\varphi=x^2y+z$.</p>
+
+<p><strong>예제 3.</strong> $S$: 반구면 $x^2+y^2+z^2=4$, $z\ge0$, 위쪽 법선. $\mathbf F=(-y,x,z)$일 때 $\iint_S\operatorname{curl}\mathbf F\cdot d\mathbf S$.</p>
+<p>풀이: 경계는 $(2\cos t,2\sin t,0)$, $0\le t\le2\pi$. 스토크스 정리에서</p>
+$$\int_0^{2\pi}(-2\sin t,\,2\cos t,\,0)\cdot(-2\sin t,\,2\cos t,\,0)\,dt=\int_0^{2\pi}4\,dt=8\pi$$
+
+<p><strong>예제 4.</strong> $S$: 구면 $x^2+y^2+z^2=9$, $\mathbf F=(e^{yz},\,\sin x,\,z^2)$일 때 $\iint_S\operatorname{curl}\mathbf F\cdot d\mathbf S$.</p>
+<p>풀이: $S$는 닫힌 곡면, $\mathbf F$는 일급이므로 $0$.</p>
+
+<p><strong>예제 5.</strong> $\mathbf G=(0,0,xy)$일 때 $\operatorname{curl}\mathbf G$가 비압축장인지 확인.</p>
+<p>풀이: $\operatorname{curl}\mathbf G=(x,-y,0)$이고 $\operatorname{div}=1-1+0=0$이므로 비압축장.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

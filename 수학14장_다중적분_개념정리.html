@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14장 다중적분 개념정리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>14장 다중적분 개념정리</h1>
+
+<h2>14.1 넓이와 부피</h2>
+
+<h3>바나흐의 측도 문제</h3>
+
+<p>$\mathbb{R}^n$의 유계인 부분집합 $A$마다 <strong>부피</strong> $\mu(A)$라는 실수를 정하고 싶다. 부피라면 다음 네 성질을 가져야 한다.</p>
+
+<ul>
+<li>a) 모든 유계 부분집합 $A$에 대해 $\mu(A)$가 정의되고 $\mu(A)\ge 0$.</li>
+<li>b) $A\cap B=\varnothing$이면 $\mu(A\cup B)=\mu(A)+\mu(B)$.</li>
+<li>c) 거리를 보존하는 모든 변환 $T:\mathbb{R}^n\to\mathbb{R}^n$에 대해 $\mu(T(A))=\mu(A)$.</li>
+<li>d) 정상자 $[0,1]^n:=[0,1]\times\cdots\times[0,1]$에 대해 $\mu([0,1]^n)=1$.</li>
+</ul>
+
+<p>이런 $\mu$가 존재하느냐는 것이 바나흐(Banach)의 질문. $n=1,2$이면 존재하지만(바나흐), $n\ge3$이면 존재하지 않는다(하우스도르프, Hausdorff). 이 역설을 피하려고 모든 유계 집합의 부피를 구하지 않고, <mark><strong>부피를 가지는 집합</strong>만 다룬다</mark>.</p>
+
+<h3>넓이를 가지는 집합</h3>
+
+<p>유계인 $A\subset\mathbb{R}^2$를 직사각형 $[a_1,b_1]\times[a_2,b_2]$ 안에 넣고, 이 직사각형을 다음처럼 <strong>분할(partition)</strong> $P$한다.</p>
+
+$$ a_1=x_0\lt x_1\lt\cdots\lt x_n=b_1,\qquad a_2=y_0\lt y_1\lt\cdots\lt y_m=b_2 $$
+
+<p>그러면 작은 상자 $P_{ij}:=[x_{i-1},x_i]\times[y_{j-1},y_j]$ $(1\le i\le n,\ 1\le j\le m)$들이 생긴다. 이 상자들로 $A$를 안쪽과 바깥쪽에서 근사한다.</p>
+
+<ul>
+<li>$L(P,A)$: $A$에 포함되는 상자들의 넓이의 합 (안에서 근사)</li>
+<li>$U(P,A)$: $A$와 만나는 상자들의 넓이의 합 (밖에서 근사)</li>
+</ul>
+
+<p>$A$에 포함되는 상자는 $A$와 만나기도 하므로 항상 $L(P,A)\le U(P,A)$. 분할을 잘게 할수록 $L$은 커지고 $U$는 작아진다. $\sup_P L(P,A)$를 <mark><strong>안넓이</strong></mark>, $\inf_P U(P,A)$를 <mark><strong>겉넓이</strong></mark>라 하고,</p>
+
+$$ \sup_P L(P,A)=\inf_P U(P,A) $$
+
+<p>이면 이 값을 <mark>$A$의 <strong>넓이</strong></mark>, $A$를 <mark><strong>넓이를 가지는 집합</strong></mark>이라 한다.</p>
+
+<figure>
+<svg id="area-svg" viewBox="0 0 640 320">
+<g id="area-cells"></g>
+<circle cx="170" cy="160" r="126" fill="none" stroke="#000" stroke-width="2"/>
+<text x="170" y="165" font-size="16" text-anchor="middle" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">A</text>
+<rect x="350" y="40" width="18" height="18" fill="#444"/>
+<text x="376" y="54" font-size="15">A에 포함되는 상자</text>
+<rect x="350" y="70" width="18" height="18" fill="#c8c8c8"/>
+<text x="376" y="84" font-size="15">A와 만나기만 하는 상자</text>
+<text id="area-n-txt" x="350" y="140" font-size="16">분할: 8 × 8</text>
+<text id="area-L" x="350" y="175" font-size="16">L(P,A) = </text>
+<text id="area-U" x="350" y="205" font-size="16">U(P,A) = </text>
+<text x="350" y="240" font-size="16">실제 넓이 = 0.554</text>
+</svg>
+<figcaption>원판 $A$의 안넓이·겉넓이 근사. 진한 상자만 더한 것이 $L(P,A)$, 진한 상자와 연한 상자를 모두 더한 것이 $U(P,A)$. 분할이 잘수록 둘이 실제 넓이로 모인다.</figcaption>
+</figure>
+<div class="controls">
+<label>분할 수 <input type="range" id="area-n" min="2" max="40" step="1" value="8"></label>
+</div>
+<script>
+(() => {
+  const g = document.getElementById('area-cells');
+  const sl = document.getElementById('area-n');
+  const X0 = 20, Y0 = 10, S = 300, C = 0.5, R = 0.42;
+  function draw() {
+    const n = +sl.value;
+    let inC = 0, meetC = 0, html = '';
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        const x0 = i / n, x1 = (i + 1) / n, y0 = j / n, y1 = (j + 1) / n;
+        const fx = Math.max(Math.abs(x0 - C), Math.abs(x1 - C));
+        const fy = Math.max(Math.abs(y0 - C), Math.abs(y1 - C));
+        const nx = Math.max(x0 - C, 0, C - x1);
+        const ny = Math.max(y0 - C, 0, C - y1);
+        const inside = fx * fx + fy * fy <= R * R;
+        const meet = nx * nx + ny * ny <= R * R;
+        let fill = '#fff';
+        if (inside) { inC++; meetC++; fill = '#444'; }
+        else if (meet) { meetC++; fill = '#c8c8c8'; }
+        html += '<rect x="' + (X0 + S * x0) + '" y="' + (Y0 + S * y0) + '" width="' + (S / n) + '" height="' + (S / n) + '" fill="' + fill + '" stroke="#999" stroke-width="0.5"/>';
+      }
+    }
+    g.innerHTML = html;
+    const a = 1 / (n * n);
+    document.getElementById('area-n-txt').textContent = '분할: ' + n + ' × ' + n;
+    document.getElementById('area-L').textContent = 'L(P,A) = ' + (inC * a).toFixed(3);
+    document.getElementById('area-U').textContent = 'U(P,A) = ' + (meetC * a).toFixed(3);
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<p>넓이를 가지지 않는 집합의 예는 $A:=\{(x,y)\mid 0\le x,y\le 1,\ x,y\in\mathbb{Q}\}$. 어떤 상자에도 무리수 좌표의 점이 있기에 $A$에 포함되는 상자가 없어서 안넓이는 $0$. 반면 $A$와 만나는 상자들은 $[0,1]\times[0,1]$을 덮기 때문에 겉넓이는 $1$. 둘이 다르므로 넓이가 없다.</p>
+
+<h3>부피를 가지는 집합</h3>
+
+<p>3차원도 같다. 유계인 $A\subset\mathbb{R}^3$를 $[a_1,b_1]\times[a_2,b_2]\times[a_3,b_3]$ 안에 넣고, 각 축을 분할</p>
+
+$$ a_1=x_0\lt\cdots\lt x_n=b_1,\quad a_2=y_0\lt\cdots\lt y_m=b_2,\quad a_3=z_0\lt\cdots\lt z_\ell=b_3 $$
+
+<p>해서 상자 $P_{ijk}:=[x_{i-1},x_i]\times[y_{j-1},y_j]\times[z_{k-1},z_k]$를 만든다. $A$에 포함되는 상자들의 부피 합 $L(P,A)$와 $A$와 만나는 상자들의 부피 합 $U(P,A)$에 대해 <mark>$\sup_P L(P,A)=\inf_P U(P,A)$이면 이 값이 $A$의 <strong>부피</strong></mark>, $A$는 <strong>부피를 가지는 집합</strong>.</p>
+
+<p>같은 방법으로 $n$차원 부피를 가지는 유계 집합을 정의하고, 그 $n$차원 부피를 $\mathrm{Vol}_n(A)$ 또는 $\mathrm{Vol}(A)$로 쓴다.</p>
+
+<h2>14.2 다중적분</h2>
+
+<p>목표는 유계인 영역에서 정의된 유계인 함수의 정적분.</p>
+
+<h3>일변수 적분 상기</h3>
+
+<p>구간 $[a,b]$의 분할 $P: a=x_0\lt x_1\lt\cdots\lt x_n=b$에서 $\Delta x_i=x_i-x_{i-1}$, <strong>분할의 크기</strong> $|P|=\max\{\Delta x_i\mid 1\le i\le n\}$.</p>
+
+<p>연속함수 $f:[a,b]\to\mathbb{R}$의 정적분은 리만 합의 극한.</p>
+
+$$ \int_a^b f(x)\,dx=\lim_{|P|\to0}\sum_{i=1}^n f(t_i)\,\Delta x_i \qquad (t_i\in[x_{i-1},x_i]) $$
+
+<p>유계인 함수 $f:[a,b]\to\mathbb{R}$는 연속이 아닐 수 있기에, 작은 구간마다 최솟값·최댓값 대신 하한·상한을 써서 아래합과 위합을 만든다.</p>
+
+$$ L(P,f):=\sum_{i=1}^n m_i\,\Delta x_i,\qquad U(P,f):=\sum_{i=1}^n M_i\,\Delta x_i $$
+
+<ul class="sym">
+<li>$m_i=\inf\{f(x)\mid x\in[x_{i-1},x_i]\}$, $M_i=\sup\{f(x)\mid x\in[x_{i-1},x_i]\}$</li>
+</ul>
+
+<p><mark>$\sup_P L(P,f)=\inf_P U(P,f)$이면 $f$는 <strong>적분가능(integrable)</strong></mark>하고, 이 값이 $\int_a^b f$.</p>
+
+<p>적분과 넓이는 다음처럼 연결된다.</p>
+
+<p><strong>정리 2.0.1</strong> 유계인 함수 $f:[a,b]\to\mathbb{R}$가 적분가능할 필요충분조건은</p>
+
+$$ G_+(f):=\{(x,y)\in\mathbb{R}^2\mid x\in[a,b],\ 0\le y\le f(x)\},\qquad G_-(f):=\{(x,y)\in\mathbb{R}^2\mid x\in[a,b],\ f(x)\le y\le 0\} $$
+
+<p>이 모두 넓이를 가지는 것. 이때</p>
+
+$$ \int_a^b f(x)\,dx=\mathrm{Vol}_2(G_+(f))-\mathrm{Vol}_2(G_-(f)) $$
+
+<ul class="sym">
+<li>$G_+(f)$: 그래프와 $x$축 사이에서 $x$축 위쪽 부분, $G_-(f)$: 아래쪽 부분</li>
+</ul>
+
+<p>직관: 아래합의 각 직사각형은 그래프 아래(안쪽)에, 위합의 직사각형은 그래프를 덮도록(바깥쪽) 놓이므로, 아래합·위합이 곧 $G_\pm(f)$의 안넓이·겉넓이 근사가 된다.</p>
+
+<h3>이중적분</h3>
+
+<p>평면 영역 $A\subseteq[a,b]\times[c,d]$에서 정의된 유계 함수 $f(x,y)$의 적분을 정의하려고, $[a,b]\times[c,d]$의 분할</p>
+
+$$ P:\ a=x_0\lt x_1\lt\cdots\lt x_n=b,\qquad c=y_0\lt y_1\lt\cdots\lt y_m=d $$
+
+<p>로 상자 $P_{ij}:=[x_{i-1},x_i]\times[y_{j-1},y_j]$를 만든다.</p>
+
+<ul>
+<li>분할의 크기: $|P|=\max\{\mathrm{diam}(P_{ij})\}$. $\mathrm{diam}(P_{ij})$(<strong>지름</strong>)는 상자 안 두 점 사이 거리의 최댓값, 즉 대각선 길이.</li>
+<li>상자의 넓이: $\mathrm{Vol}(P_{ij}):=(x_i-x_{i-1})(y_j-y_{j-1})=\Delta x_i\,\Delta y_j$</li>
+</ul>
+
+<p>$f$를 직사각형 전체에서 다루려고 <mark>$(x,y)\notin A$이면 $f(x,y)=0$으로 둔다</mark>. 그러면 아래합과 위합은</p>
+
+$$ L(P,f):=\sum_{i,j} m_{ij}\,\mathrm{Vol}(P_{ij}),\qquad U(P,f):=\sum_{i,j} M_{ij}\,\mathrm{Vol}(P_{ij}) $$
+
+<ul class="sym">
+<li>$m_{ij}$, $M_{ij}$: 상자 $P_{ij}$에서 $f$의 하한, 상한</li>
+</ul>
+
+<p>$L(f):=\sup_P L(P,f)$, $U(f):=\inf_P U(P,f)$로 두고, <mark>$L(f)=U(f)$이면 $f$는 <strong>적분가능</strong></mark>. 이 공통값이 이중적분이며</p>
+
+$$ \int_A f,\quad \iint_A f,\quad \iint_A f\,dV_2,\quad \iint_A f(x,y)\,dx\,dy,\quad \iint_A f(x,y)\,dV_2(x,y) $$
+
+<p>등으로 쓴다.</p>
+
+<p>일변수와 마찬가지로, 유계 함수 $f$가 영역 $A$에서 적분가능할 필요충분조건은</p>
+
+$$ G_+(f):=\{(x,y,z)\in\mathbb{R}^3\mid (x,y)\in A,\ 0\le z\le f(x,y)\},\qquad G_-(f):=\{(x,y,z)\in\mathbb{R}^3\mid (x,y)\in A,\ f(x,y)\le z\le 0\} $$
+
+<p>이 모두 부피를 가지는 것. 이때</p>
+
+$$ \iint_A f\,dV_2=\mathrm{Vol}_3(G_+(f))-\mathrm{Vol}_3(G_-(f)) $$
+
+<p>즉 <mark>$f\ge0$이면 이중적분은 그래프 아래 입체의 부피</mark>.</p>
+
+<h3>삼중적분과 다중적분</h3>
+
+<p>높은 차원에서도 이중적분과 똑같이, 상자 분할의 아래합·위합으로 적분가능성과 정적분을 정의한다. 삼차원 부분집합 $A$에서 적분가능한 $f:A\to\mathbb{R}$의 정적분은</p>
+
+$$ \int_A f,\quad \iiint_A f,\quad \iiint_A f\,dV_3,\quad \iiint_A f(x,y,z)\,dx\,dy\,dz $$
+
+<p>등으로, $n$차원 부분집합 $A$에서는</p>
+
+$$ \int_A f,\quad \int_A f\,dV,\quad \int_A f(x_1,\dots,x_n)\,dV(x_1,\dots,x_n) $$
+
+<p>등으로 쓴다. 이를 통틀어 <mark><strong>다중적분(multiple integral)</strong></mark>.</p>
+
+<h3>자명한 확장과 특성함수</h3>
+
+<p>적분을 정의할 때 $A$ 밖에서 $f=0$으로 둔 것을 일반화한 것이 자명한 확장. $f:A\to\mathbb{R}$이고 $A\subseteq\widetilde A\ (\subseteq\mathbb{R}^n)$일 때, $f$의 정의역을 $\widetilde A$로 <mark><strong>자명하게 확장한 함수(trivial extension)</strong></mark>는</p>
+
+$$ \widetilde f(X):=\begin{cases} f(X) &amp; X\in A \\ 0 &amp; X\in\widetilde A\setminus A \end{cases} $$
+
+<p class="cond">조건: $A$가 부피를 가지는 영역이고 $f:A\to\mathbb{R}$가 적분가능</p>
+
+<p>이면 $\widetilde f:\widetilde A\to\mathbb{R}$도 적분가능하고 <mark>$\int_{\widetilde A}\widetilde f=\int_A f$</mark>. 덧붙인 부분의 값이 0이라 적분값에 기여하지 않기 때문.</p>
+
+<p>부분집합 $A\subseteq\mathbb{R}^n$의 <mark><strong>특성함수(characteristic function)</strong></mark> $\chi_A:\mathbb{R}^n\to\mathbb{R}$는</p>
+
+$$ \chi_A(X):=\begin{cases} 1 &amp; X\in A \\ 0 &amp; X\notin A \end{cases} $$
+
+<p>즉 "점 $X$가 $A$의 원소인가"에 1(예)/0(아니오)로 답하는 함수. $\chi_A$의 위합·아래합은 각각 $A$와 만나는 상자, $A$에 포함되는 상자의 부피 합과 같기에, $A$가 유계이면</p>
+
+$$ \chi_A\text{가 적분가능} \iff A\text{가 부피를 가짐},\qquad \mathrm{Vol}(A)=\int\chi_A=\int_A 1 $$
+
+<p>특히 <mark>평면 영역의 넓이는 $\iint_A 1\,dx\,dy$</mark>.</p>
+
+<h3>적분가능한 함수의 성질</h3>
+
+<p>부피를 가지고 부피가 0이 아닌 집합을 <mark><strong>영역(region)</strong></mark>이라 한다.</p>
+
+<p><strong>정리 2.4.1</strong> $n$차원 영역에서 정의된 <mark>유계이고 연속인 함수는 그 영역에서 적분가능</mark>.</p>
+
+<p>아이디어: 연속이면 작은 상자 안에서 상한과 하한의 차가 작아지고, 영역이 부피를 가지기에 경계와 만나는 상자들의 부피 합도 작아져서 $U(P,f)-L(P,f)$를 얼마든지 작게 만들 수 있다.</p>
+
+<p><strong>정리 2.4.2</strong> $n$차원 영역 $A$에서 적분가능한 $f,g$와 실수 $c$에 대해</p>
+
+<ul>
+<li>a) 선형성: $\displaystyle\int_A(f+g)=\int_A f+\int_A g,\qquad \int_A cf=c\int_A f$</li>
+<li>b) 단조성: $f\le g$이면 $\displaystyle\int_A f\le\int_A g$</li>
+<li>c) 영역 $A$가 영역 $A_1$과 $A_2$의 합집합이면</li>
+</ul>
+
+$$ \int_{A_1\cup A_2}f+\int_{A_1\cap A_2}f=\int_{A_1}f+\int_{A_2}f $$
+
+<p>c)는 $\chi_{A_1\cup A_2}+\chi_{A_1\cap A_2}=\chi_{A_1}+\chi_{A_2}$(겹친 부분을 두 번 세는 만큼 보정)에 $f$를 곱해 a)를 적용한 것. $A_1\cap A_2$의 부피가 0이면 $\int_{A_1\cup A_2}f=\int_{A_1}f+\int_{A_2}f$.</p>
+
+<p><strong>따름정리 2.4.3</strong> $n$차원 영역 $A$에서 적분가능한 $f$에 대해</p>
+
+$$ \left|\int_A f\right|\le\int_A|f| $$
+
+<details><summary>증명 보기</summary><div>
+<p>각 상자에서 $|f|$의 상한과 하한의 차는 $f$의 상한과 하한의 차 이하이므로 $|f|$도 적분가능. $-|f|\le f\le|f|$에 b)와 a)를 적용하면 $-\int_A|f|\le\int_A f\le\int_A|f|$이기에 성립.</p>
+</div></details>
+
+<h3>질량과 질량중심</h3>
+
+<p>$n$차원 영역 $A$에 <strong>밀도함수(density)</strong> $\mu:A\to\mathbb{R}$가 주어져 있을 때, 작은 조각의 질량은 밀도×부피이므로 <mark>전체 질량은 밀도의 적분</mark>.</p>
+
+$$ M(A):=\int_A\mu $$
+
+<ul class="sym">
+<li>$M(A)$: $A$의 <strong>질량(mass)</strong>, $\mu$: 단위 부피당 질량</li>
+</ul>
+
+<p>$(A,\mu)$의 <mark><strong>질량중심(center of mass)</strong></mark> $C(A):=C(A,\mu):=(\bar x_1,\dots,\bar x_n)$은 <mark>각 좌표를 밀도로 가중평균한 점</mark>.</p>
+
+$$ \bar x_i=\frac{1}{M(A)}\int_A x_i\,\mu(X)\,dV(X)\quad(1\le i\le n)\iff \int_A(x_i-\bar x_i)\,\mu(X)\,dV(X)=0\quad(1\le i\le n) $$
+
+<ul class="sym">
+<li>$x_i$: 점 $X=(x_1,\dots,x_n)$의 $i$번째 좌표</li>
+</ul>
+
+<p>오른쪽 식은 질량중심을 기준으로 한 좌표의 가중 합이 0, 즉 각 방향으로 균형이 맞는 점이라는 뜻.</p>
+
+<p>밀도가 $\mu=1$로 균일하면 질량은 부피와 같고, 이때의 질량중심을 <mark><strong>(기하학적) 중심(centroid)</strong></mark>이라 한다: $\bar x_i=\frac{1}{\mathrm{Vol}(A)}\int_A x_i$. 또 질량을 부피로 나눈 $\bar\mu=M(A)/\mathrm{Vol}(A)$가 <mark><strong>평균밀도</strong></mark>.</p>
+
+<h2>14.3 푸비니 정리</h2>
+
+<p>정의대로 다중적분을 구하기는 어렵다. <strong>푸비니 정리(Fubini's theorem)</strong>는 <mark>다중적분이 일변수 적분의 반복, 즉 <strong>반복적분(iterated integral)</strong>으로 계산됨</mark>을 알려준다.</p>
+
+<h3>푸비니 정리</h3>
+
+<p><strong>정리 3.0.1 (푸비니 정리)</strong> 직사각형 $\mathcal R=[a,b]\times[c,d]$에서 적분가능한 $f(x,y)$에 대해, 모든 $x\in[a,b]$에서 함수</p>
+
+$$ f_x:[c,d]\to\mathbb{R},\qquad y\mapsto f(x,y) $$
+
+<p>가 $[c,d]$에서 적분가능하면, 함수 $x\mapsto\int_c^d f(x,y)\,dy$가 $[a,b]$에서 적분가능하고</p>
+
+$$ \iint_{\mathcal R}f=\int_a^b\left(\int_c^d f(x,y)\,dy\right)dx $$
+
+<p>마찬가지로 모든 $y\in[c,d]$에서 $f_y:[a,b]\to\mathbb{R}$, $x\mapsto f(x,y)$가 적분가능하면, $y\mapsto\int_a^b f(x,y)\,dx$가 $[c,d]$에서 적분가능하고</p>
+
+$$ \iint_{\mathcal R}f=\int_c^d\left(\int_a^b f(x,y)\,dx\right)dy $$
+
+<details><summary>증명 보기</summary><div>
+<p>$F(x)=\int_c^d f(x,y)\,dy$로 두고, 분할 $P$의 $x$방향 부분을 $P_1$이라 하자. $x\in[x_{i-1},x_i]$이면 각 $[y_{j-1},y_j]$에서 $m_{ij}\le f(x,y)\le M_{ij}$이므로 $y$로 적분해 더하면</p>
+$$ \sum_j m_{ij}\Delta y_j\le F(x)\le\sum_j M_{ij}\Delta y_j $$
+<p>양변에 $\Delta x_i$를 곱해 $i$에 대해 더하면 $L(P,f)\le L(P_1,F)\le U(P_1,F)\le U(P,f)$. $f$가 적분가능하기에 양 끝이 같은 값 $\iint_{\mathcal R}f$로 모이므로, 사이에 낀 $F$도 적분가능하고 적분값이 같다.</p>
+</div></details>
+
+<p><mark>$f$가 $\mathcal R$에서 연속이면 적분 순서와 무관하게 반복적분으로 계산 가능</mark>. 정리 2.4.1에 의해 모든 조건이 성립하기 때문.</p>
+
+<h3>일반 영역에서의 반복적분</h3>
+
+<p>$A$가 직사각형이 아니어도, <mark>$A$를 감싸는 직사각형으로 $f$를 자명하게 확장한 뒤 푸비니 정리를 적용</mark>하면 된다. 확장된 함수는 $A$ 밖에서 0이므로 안쪽 적분 구간이 $A$의 단면으로 줄어든다.</p>
+
+<p>연속함수 $g,h:[a,b]\to\mathbb{R}$, $g(x)\le h(x)$로 주어진 영역 $A:\ a\le x\le b,\ g(x)\le y\le h(x)$에서 연속함수 $f$를 적분하면</p>
+
+$$ \iint_A f=\int_a^b\left(\int_{g(x)}^{h(x)}f(x,y)\,dy\right)dx $$
+
+<p>연속함수 $\bar g,\bar h:[c,d]\to\mathbb{R}$, $\bar g(y)\le\bar h(y)$로 주어진 영역 $\bar A:\ \bar g(y)\le x\le\bar h(y),\ c\le y\le d$에서는</p>
+
+$$ \iint_{\bar A} f=\int_c^d\left(\int_{\bar g(y)}^{\bar h(y)}f(x,y)\,dx\right)dy $$
+
+<figure>
+<svg id="fub-svg" viewBox="0 0 640 320">
+<line x1="80" y1="290" x2="370" y2="290" stroke="#000" stroke-width="1.5"/>
+<line x1="80" y1="290" x2="80" y2="15" stroke="#000" stroke-width="1.5"/>
+<text x="376" y="295" font-size="15">x</text>
+<text x="76" y="12" font-size="15" text-anchor="end">y</text>
+<text x="340" y="310" font-size="14" text-anchor="middle">1</text>
+<text x="70" y="35" font-size="14" text-anchor="end">1</text>
+<line x1="340" y1="290" x2="340" y2="295" stroke="#000"/>
+<line x1="75" y1="30" x2="80" y2="30" stroke="#000"/>
+<path id="fub-region" fill="#e2e2e2" stroke="none"/>
+<path id="fub-upper" fill="none" stroke="#000" stroke-width="2"/>
+<path id="fub-lower" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="250" y="80" font-size="15">y = x</text>
+<text x="330" y="125" font-size="15">y = x²</text>
+<line id="fub-slice" stroke="#000" stroke-width="4"/>
+<line id="fub-guide" stroke="#777" stroke-width="1" stroke-dasharray="3 3"/>
+<text id="fub-t1" x="410" y="90" font-size="16"></text>
+<text id="fub-t2" x="410" y="125" font-size="16"></text>
+<text id="fub-t3" x="410" y="160" font-size="16"></text>
+<text id="fub-t4" x="410" y="205" font-size="16"></text>
+</svg>
+<figcaption>영역 $A=\{0\le x\le1,\ x^2\le y\le x\}$. 한 변수를 고정한 단면(굵은 선)이 안쪽 적분 구간이고, 단면을 훑으며 쌓는 것이 바깥 적분. 세로로 자르든 가로로 자르든 값은 같다.</figcaption>
+</figure>
+<div class="controls">
+<label>고정한 값 <input type="range" id="fub-t" min="0.02" max="0.98" step="0.01" value="0.6"></label>
+<button id="fub-mode" aria-pressed="false">가로로 자르기</button>
+</div>
+<script>
+(() => {
+  const OX = 80, OY = 290, S = 260;
+  const px = x => OX + S * x, py = y => OY - S * y;
+  let up = '', lo = '';
+  for (let k = 0; k <= 50; k++) {
+    const x = k / 50;
+    up += (k ? 'L' : 'M') + px(x).toFixed(1) + ' ' + py(x).toFixed(1);
+    lo += (k ? 'L' : 'M') + px(x).toFixed(1) + ' ' + py(x * x).toFixed(1);
+  }
+  let reg = up;
+  for (let k = 50; k >= 0; k--) { const x = k / 50; reg += 'L' + px(x).toFixed(1) + ' ' + py(x * x).toFixed(1); }
+  document.getElementById('fub-region').setAttribute('d', reg + 'Z');
+  document.getElementById('fub-upper').setAttribute('d', up);
+  document.getElementById('fub-lower').setAttribute('d', lo);
+  const sl = document.getElementById('fub-t');
+  const btn = document.getElementById('fub-mode');
+  const line = document.getElementById('fub-slice');
+  const guide = document.getElementById('fub-guide');
+  const T = i => document.getElementById('fub-t' + i);
+  function set(el, a) { for (const k in a) el.setAttribute(k, a[k]); }
+  function draw() {
+    const t = +sl.value, horiz = btn.getAttribute('aria-pressed') === 'true';
+    if (!horiz) {
+      set(line, { x1: px(t), y1: py(t * t), x2: px(t), y2: py(t) });
+      set(guide, { x1: px(t), y1: OY, x2: px(t), y2: py(t * t) });
+      T(1).textContent = 'x를 고정 (0 ≤ x ≤ 1)';
+      T(2).textContent = '단면: x² ≤ y ≤ x';
+      T(3).textContent = 'x = ' + t.toFixed(2) + ':  ' + (t * t).toFixed(2) + ' ≤ y ≤ ' + t.toFixed(2);
+      T(4).textContent = '∫₀¹ ( ∫ f dy ) dx';
+    } else {
+      const s = Math.sqrt(t);
+      set(line, { x1: px(t), y1: py(t), x2: px(s), y2: py(t) });
+      set(guide, { x1: OX, y1: py(t), x2: px(t), y2: py(t) });
+      T(1).textContent = 'y를 고정 (0 ≤ y ≤ 1)';
+      T(2).textContent = '단면: y ≤ x ≤ √y';
+      T(3).textContent = 'y = ' + t.toFixed(2) + ':  ' + t.toFixed(2) + ' ≤ x ≤ ' + s.toFixed(2);
+      T(4).textContent = '∫₀¹ ( ∫ f dx ) dy';
+    }
+  }
+  sl.addEventListener('input', draw);
+  btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? '세로로 자르기' : '가로로 자르기';
+    draw();
+  });
+  draw();
+})();
+</script>
+
+<p>한 영역을 두 방식으로 모두 나타낼 수 있으면 두 반복적분의 값이 같다. 그래서 한쪽 순서로 안쪽 적분이 계산되지 않을 때 영역을 다른 방식으로 다시 써서 <mark><strong>적분 순서를 바꿀</strong> 수 있다</mark>. 예를 들어 $\{0\le x\le1,\ \sqrt x\le y\le1\}=\{0\le y\le1,\ 0\le x\le y^2\}$이기에 $\int_0^1\int_{\sqrt x}^1\sqrt{1+y^3}\,dy\,dx=\int_0^1\int_0^{y^2}\sqrt{1+y^3}\,dx\,dy$.</p>
+
+<h3>높은 차원에서의 푸비니 정리</h3>
+
+<p><mark>푸비니 정리는 일반적인 차원에서 성립</mark>한다. 예를 들어 삼차원 상자 $[a_1,b_1]\times[a_2,b_2]\times[a_3,b_3]$에서 연속인 $f(x,y,z)$에 대해</p>
+
+$$ \iiint_{[a_1,b_1]\times[a_2,b_2]\times[a_3,b_3]}f(x,y,z)\,dV(x,y,z)=\int_{a_1}^{b_1}\int_{a_2}^{b_2}\int_{a_3}^{b_3}f(x,y,z)\,dz\,dy\,dx $$
+
+<p>이고 적분 순서는 바꿔도 된다. 일반 영역도 같아서, 예를 들어 영역이 $a\le x\le b,\ g(x)\le y\le h(x),\ \varphi(x,y)\le z\le\psi(x,y)$ 꼴이면 $\int_a^b\int_{g(x)}^{h(x)}\int_{\varphi(x,y)}^{\psi(x,y)}f\,dz\,dy\,dx$. 꼭짓점이 $(0,0,0),(1,0,0),(0,1,0),(0,0,1)$인 사면체는 $0\le x\le1,\ 0\le y\le1-x,\ 0\le z\le1-x-y$로 나타난다.</p>
+
+<h2>14.4 치환적분법</h2>
+
+<h3>일변수 치환적분</h3>
+
+<p>일대일 대응인 <strong>일급함수(C¹ 함수, 도함수가 연속인 함수)</strong> $g:[\alpha,\beta]\to[a,b]$와 $g$의 치역에서 정의된 연속함수 $f$에 대해 <mark><strong>치환적분법</strong></mark></p>
+
+$$ \int_{[a,b]}f(y)\,dy=\int_{[\alpha,\beta]}f(g(x))\,|g'(x)|\,dx $$
+
+<ul class="sym">
+<li>$[a,b]$, $[\alpha,\beta]$: 방향 없는 구간 위의 적분 (항상 작은 끝에서 큰 끝으로)</li>
+</ul>
+
+<p>$g$가 일대일이고 연속이기에 증가하거나 감소한다.</p>
+
+<ul>
+<li>a) $g'(x)\ge0$, $g(\alpha)=a$, $g(\beta)=b$: $|g'|=g'$이므로 $\displaystyle\int_a^b f(y)\,dy=\int_\alpha^\beta f(g(x))\,g'(x)\,dx$</li>
+<li>b) $g'(x)\le0$, $g(\alpha)=b$, $g(\beta)=a$: $|g'|=-g'$이므로 $\displaystyle\int_a^b f(y)\,dy=\int_\alpha^\beta f(g(x))\,(-g'(x))\,dx=\int_\beta^\alpha f(g(x))\,g'(x)\,dx$</li>
+</ul>
+
+<p>두 경우 모두 익숙한 식 $\int_{g(\alpha)}^{g(\beta)}f(y)\,dy=\int_\alpha^\beta f(g(x))g'(x)\,dx$와 같다. 적분 방향을 따지는 대신 $|g'|$를 곱하는 형태가 다변수로 일반화된다. <mark>$|g'(x)|$는 $g$가 $x$ 근처의 짧은 구간을 늘리는 배율</mark>.</p>
+
+<h3>이변수 치환: 선형사상</h3>
+
+<p>선형사상</p>
+
+$$ T:\mathbb{R}^2\to\mathbb{R}^2,\qquad (x,y)\mapsto(u,v)=(ax+by,\ cx+dy),\qquad ad-bc\ne0 $$
+
+<p>은 단위정사각형 $[0,1]^2$를 두 변이 $(a,c)$, $(b,d)$인 평행사변형으로 보내고, <mark>그 넓이는 $|ad-bc|$</mark>. 모든 작은 정사각형이 같은 배율로 늘어나므로 넓이를 가지는 모든 $A$에 대해</p>
+
+$$ \mathrm{Vol}(T(A))=|ad-bc|\,\mathrm{Vol}(A),\qquad \iint_{T(A)}f(u,v)\,du\,dv=\iint_A f(T(x,y))\,|ad-bc|\,dx\,dy $$
+
+<p class="cond">조건: <mark>$ad-bc\ne0$</mark> ($T$가 일대일)</p>
+<ul class="sym">
+<li>$|ad-bc|$: $T$의 행렬의 행렬식의 절댓값 = 넓이 배율</li>
+</ul>
+
+<figure>
+<svg id="lin-svg" viewBox="0 0 640 340">
+<text id="lin-area" x="20" y="30" font-size="16">넓이 = |ad − bc| = 2.50</text>
+<line x1="70" y1="230" x2="210" y2="230" stroke="#bbb"/>
+<line x1="100" y1="290" x2="100" y2="120" stroke="#bbb"/>
+<polygon points="100,230 180,230 180,150 100,150" fill="#e2e2e2" stroke="#000" stroke-width="2"/>
+<text x="140" y="196" font-size="15" text-anchor="middle">넓이 1</text>
+<text x="180" y="252" font-size="14" text-anchor="middle">(1, 0)</text>
+<text x="92" y="146" font-size="14" text-anchor="end">(0, 1)</text>
+<text x="250" y="190" font-size="18" text-anchor="middle">T →</text>
+<line x1="300" y1="175" x2="620" y2="175" stroke="#bbb"/>
+<line x1="460" y1="20" x2="460" y2="330" stroke="#bbb"/>
+<polygon id="lin-poly" fill="#e2e2e2" stroke="#000" stroke-width="2"/>
+<text id="lin-va" font-size="14">(a, c)</text>
+<text id="lin-vb" font-size="14">(b, d)</text>
+</svg>
+<figcaption>선형사상 $T$는 단위정사각형을 $(a,c)$, $(b,d)$로 만든 평행사변형으로 보낸다. 넓이 배율은 어디서나 $|ad-bc|$이고, $ad-bc=0$이면 평행사변형이 선분으로 납작해진다.</figcaption>
+</figure>
+<div class="controls">
+<label>a <input type="range" id="lin-a" min="-2" max="2" step="0.1" value="2"></label>
+<label>b <input type="range" id="lin-b" min="-2" max="2" step="0.1" value="1"></label>
+<label>c <input type="range" id="lin-c" min="-2" max="2" step="0.1" value="0.5"></label>
+<label>d <input type="range" id="lin-d" min="-2" max="2" step="0.1" value="1.5"></label>
+</div>
+<script>
+(() => {
+  const OX = 460, OY = 175, S = 36;
+  const ids = ['a', 'b', 'c', 'd'];
+  const el = k => document.getElementById('lin-' + k);
+  const P = (x, y) => [OX + S * x, OY - S * y];
+  function draw() {
+    const [a, b, c, d] = ids.map(k => +el(k).value);
+    const pts = [P(0, 0), P(a, c), P(a + b, c + d), P(b, d)];
+    el('poly').setAttribute('points', pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
+    const cx = (pts[0][0] + pts[2][0]) / 2, cy = (pts[0][1] + pts[2][1]) / 2;
+    [['va', pts[1]], ['vb', pts[3]]].forEach(([k, q]) => {
+      let dx = q[0] - cx, dy = q[1] - cy;
+      const L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L;
+      const t = el(k);
+      t.setAttribute('x', (q[0] + 12 * dx).toFixed(1));
+      t.setAttribute('y', (q[1] + 12 * dy + 5).toFixed(1));
+      t.setAttribute('text-anchor', dx > 0.3 ? 'start' : (dx < -0.3 ? 'end' : 'middle'));
+    });
+    const det = a * d - b * c;
+    el('area').textContent = Math.abs(det) < 1e-9
+      ? '넓이 = |ad − bc| = 0 (일대일 아님)'
+      : '넓이 = |ad − bc| = ' + Math.abs(det).toFixed(2);
+  }
+  ids.forEach(k => el(k).addEventListener('input', draw));
+  draw();
+})();
+</script>
+
+<p><mark>선형사상이 아니면 넓이 배율이 점마다 다르다</mark>. 예를 들어 $G(x,y)=(s,t)=(-x^2+4x,\ y)$는 $x$방향 길이를 점 $(x,y)$ 근처에서 $|4-2x|$배로 늘리므로 넓이 배율도 $|4-2x|$로 점에 따라 변한다. 이 배율은 $G$의 도함수 행렬의 행렬식의 절댓값: $\det G'(x,y)=\det\begin{pmatrix}4-2x&amp;0\\0&amp;1\end{pmatrix}=4-2x$.</p>
+
+<h3>일급가역함수와 치환적분법</h3>
+
+<p>$G:U\to W$가 일대일 대응이고, $G$와 역함수 $G^{-1}$이 모두 일급(모든 편도함수가 연속)이면 $G$를 <mark><strong>일급가역함수</strong></mark>라 한다. 이때 연쇄법칙에서 $G'(X)\,(G^{-1})'(G(X))=I$이기에 항상 $\det G'(X)\ne0$.</p>
+
+<p><strong>정리 4.1.1 (치환적분법)</strong> $n$차원 영역 $U,W$와 일급가역함수 $G:U\to W$, $Y=G(X)$, 그리고 $W$에서 적분가능한 함수 $f$에 대해</p>
+
+$$ \int_W f(Y)\,dV(Y)=\int_U f(G(X))\,\left|\det G'(X)\right|\,dV(X) $$
+
+<p class="cond">조건: <mark>$G$가 일급가역함수</mark>, $f$가 $W$에서 적분가능</p>
+<ul class="sym">
+<li>$G'(X)$: $G$의 도함수, 즉 편도함수 $\partial G_i/\partial x_j$를 늘어놓은 $n\times n$ 행렬(야코비 행렬)</li>
+<li>$|\det G'(X)|$: $G$가 $X$ 근처의 부피를 늘리는 배율</li>
+</ul>
+
+<details><summary>대략적인 증명 보기</summary><div>
+<p>$U$를 작은 상자들로 분할한다. 점 $X_0$ 근처에서 $G(X)\approx G(X_0)+G'(X_0)(X-X_0)$로 일차근사되기에, $X_0$를 포함한 부피 $\Delta V$의 작은 상자는 선형사상 $G'(X_0)$에 의해 부피 약 $|\det G'(X_0)|\,\Delta V$인 평행체로 옮겨진다(선형사상은 부피를 행렬식의 절댓값만큼 늘림). 이 상들이 $W$를 분할하므로</p>
+$$ \int_W f\,dV(Y)\approx\sum f(G(X_0))\,|\det G'(X_0)|\,\Delta V $$
+<p>이고, 오른쪽은 $f(G(X))\,|\det G'(X)|$의 $U$ 위 리만 합이다. 분할을 한없이 잘게 하면 양변이 정리의 두 적분으로 수렴.</p>
+</div></details>
+
+<p>예를 들어 $G(x,y)=(u,v)=(e^x\cos y,\ e^x\sin y)$는 직사각형 $\{1\lt x\lt 2,\ -\pi/2\lt y\lt \pi/2\}$를 반원 고리 모양의 영역 $\{e\lt (u^2+v^2)^{1/2}\lt e^2,\ u\gt 0\}$로 일대일로 보내는 일급가역함수이고, $\det G'=\det\begin{pmatrix}e^x\cos y&amp;-e^x\sin y\\e^x\sin y&amp;e^x\cos y\end{pmatrix}=e^{2x}$.</p>
+
+<h3>타원판과 타원공: 선형변환의 경우</h3>
+
+<p>$a,b,c\gt 0$일 때 타원판 $A=\{(u,v)\mid \frac{u^2}{a^2}+\frac{v^2}{b^2}\le1\}$은 단위원판 $B=\{(x,y)\mid x^2+y^2\le1\}$을 $x$축 방향으로 $a$배, $y$축 방향으로 $b$배 늘리는 선형사상 $(x,y)\mapsto(ax,by)$로 보낸 상. 행렬식이 $ab$이므로</p>
+
+$$ \mathrm{Vol}_2(A)=ab\,\mathrm{Vol}_2(B)=\pi ab $$
+
+<p>타원공 $A=\{(u,v,w)\mid \frac{u^2}{a^2}+\frac{v^2}{b^2}+\frac{w^2}{c^2}\le1\}$은 단위공 $B=\{(x,y,z)\mid x^2+y^2+z^2\le1\}$을 각 축 방향으로 $a,b,c$배 늘리는 선형사상의 상이므로 <mark>$\mathrm{Vol}_3(A)=abc\,\mathrm{Vol}_3(B)$</mark>.</p>
+
+<h3>극좌표 치환</h3>
+
+<p>직교좌표 $(x,y)$를 <mark><strong>극좌표(polar coordinates)</strong></mark> $(r,\theta)$로 치환한다.</p>
+
+$$ G:\ x=r\cos\theta,\quad y=r\sin\theta $$
+
+$$ \det G'(r,\theta)=\det\begin{pmatrix}\cos\theta&amp;-r\sin\theta\\ \sin\theta&amp;r\cos\theta\end{pmatrix}=r $$
+
+<p>이므로 <mark>$dx\,dy=r\,dr\,d\theta$</mark>.</p>
+
+$$ \iint_W f(x,y)\,dx\,dy=\iint_U f(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta $$
+
+<p class="cond">조건: $G$는 <mark>$r\gt 0$, $0\lt \theta\lt 2\pi$에서 일급가역</mark>. 빠지는 원점과 양의 $x$축 반직선은 넓이가 0이라 적분값에 영향이 없다.</p>
+<ul class="sym">
+<li>$r$: 원점까지의 거리, $\theta$: 양의 $x$축에서 잰 각</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 640 330">
+<line x1="60" y1="300" x2="330" y2="300" stroke="#000" stroke-width="1.5"/>
+<line x1="60" y1="300" x2="60" y2="40" stroke="#000" stroke-width="1.5"/>
+<line x1="60" y1="300" x2="304.3" y2="211.1" stroke="#777" stroke-dasharray="5 4"/>
+<line x1="60" y1="300" x2="243.8" y2="116.2" stroke="#777" stroke-dasharray="5 4"/>
+<path d="M248 231.6 L304.3 211.1 A260 260 0 0 0 243.8 116.2 L201.4 158.6 A200 200 0 0 1 248 231.6 Z" fill="#d6d6d6" stroke="#000" stroke-width="2"/>
+<path d="M107 282.9 A50 50 0 0 0 95.4 264.6" fill="none" stroke="#000"/>
+<text x="112" y="272" font-size="15">Δθ</text>
+<text x="50" y="318" font-size="15">O</text>
+<text x="290" y="240" font-size="15">Δr</text>
+<text x="232" y="190" font-size="15">r Δθ</text>
+<text x="380" y="140" font-size="16">반지름 r ~ r + Δr,</text>
+<text x="380" y="165" font-size="16">각 θ ~ θ + Δθ인 조각</text>
+<text x="380" y="205" font-size="16">넓이 ≈ (r Δθ) × Δr</text>
+<text x="380" y="230" font-size="16">= r Δr Δθ</text>
+</svg>
+<figcaption>$(r,\theta)$의 작은 상자 $\Delta r\times\Delta\theta$는 거의 직사각형인 조각으로 옮겨지고, 그 넓이가 약 $r\,\Delta r\,\Delta\theta$. 그래서 넓이 배율이 $r$.</figcaption>
+</figure>
+
+<h3>가우스 적분</h3>
+
+$$ \int_{-\infty}^{\infty}e^{-x^2}\,dx=\sqrt\pi $$
+
+<p>$e^{-x^2}$의 부정적분은 초등함수로 나타나지 않기에, 이중적분과 극좌표로 계산한다.</p>
+
+<figure>
+<svg viewBox="0 0 640 330">
+<circle cx="320" cy="165" r="113.1" fill="none" stroke="#000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<rect x="240" y="85" width="160" height="160" fill="#e8e8e8" stroke="#000" stroke-width="2"/>
+<circle cx="320" cy="165" r="80" fill="#c4c4c4" stroke="#000" stroke-width="2"/>
+<line x1="320" y1="165" x2="400" y2="165" stroke="#000"/>
+<text x="360" y="158" font-size="15" text-anchor="middle">a</text>
+<line x1="376.5" y1="67.1" x2="470" y2="60" stroke="#777"/>
+<text x="476" y="65" font-size="15">D(√2 a)</text>
+<line x1="400" y1="125" x2="470" y2="125" stroke="#777"/>
+<text x="476" y="130" font-size="15">R(a)</text>
+<line x1="395.2" y1="192.4" x2="470" y2="200" stroke="#777"/>
+<text x="476" y="205" font-size="15">D(a)</text>
+</svg>
+<figcaption>원판 $D(a)$ ⊂ 정사각형 $R(a)$ ⊂ 원판 $D(\sqrt2a)$. 정사각형의 꼭짓점이 바깥 원 위에 있다.</figcaption>
+</figure>
+
+<details><summary>증명 보기</summary><div>
+<p>원판 $D(a)=\{x^2+y^2\le a^2\}$, 정사각형 $R(a)=[-a,a]\times[-a,a]$로 두면 $D(a)\subset R(a)\subset D(\sqrt2a)$. 피적분함수 $e^{-(x^2+y^2)}$가 양수이기에 넓은 영역의 적분이 더 크다.</p>
+<p>원판 위의 적분은 극좌표로</p>
+$$ \iint_{D(a)}e^{-(x^2+y^2)}\,dx\,dy=\int_0^{2\pi}\int_0^a e^{-r^2}\,r\,dr\,d\theta=2\pi\left[-\tfrac12e^{-r^2}\right]_0^a=\pi(1-e^{-a^2}) $$
+<p>정사각형 위의 적분은 피적분함수가 $e^{-x^2}e^{-y^2}$로 분리되기에 푸비니 정리로 $I(a):=\int_{-a}^a e^{-x^2}dx$의 제곱. 따라서</p>
+$$ \pi(1-e^{-a^2})\le I(a)^2\le\pi(1-e^{-2a^2}) $$
+<p>$a\to\infty$이면 양 끝이 $\pi$로 가므로 $I(a)^2\to\pi$, 즉 $\int_{-\infty}^\infty e^{-x^2}dx=\sqrt\pi$.</p>
+</div></details>
+
+<p>핵심은 정사각형 위 적분은 $I(a)^2$, 원판 위 적분은 극좌표로 계산 가능하고, 두 원판 사이에 정사각형을 끼워 <mark>$I(a)^2\to\pi$</mark>를 얻는다는 것.</p>
+
+<h3>원기둥좌표</h3>
+
+<p>공간의 직교좌표 $(x,y,z)$를 <mark><strong>원기둥좌표(cylindrical coordinates)</strong></mark> $(r,\theta,z)$로 치환한다. <mark>$xy$평면에서는 극좌표, $z$는 그대로</mark>.</p>
+
+$$ G:\ x=r\cos\theta,\quad y=r\sin\theta,\quad z=z $$
+
+$$ \det G'=\det\begin{pmatrix}\cos\theta&amp;-r\sin\theta&amp;0\\ \sin\theta&amp;r\cos\theta&amp;0\\0&amp;0&amp;1\end{pmatrix}=r,\qquad dx\,dy\,dz=r\,dr\,d\theta\,dz $$
+
+<p class="cond">조건: $r\gt 0$, $0\lt \theta\lt 2\pi$ (빠지는 부분은 부피 0)</p>
+
+<p>예를 들어 원기둥 $\{x^2+y^2\le1,\ z_0\le z\le z_1\}$은 원기둥좌표로 $0\le r\le1,\ 0\le\theta\le2\pi,\ z_0\le z\le z_1$이라는 상자가 되어 적분이 쉬워진다.</p>
+
+<p><strong>회전체의 부피.</strong> $0\le a\lt b$인 구간 $[a,b]$에서 정의된 $f\ge0$의 그래프와 $x$축으로 둘러싸인 영역 $\{(x,y)\mid a\le x\le b,\ 0\le y\le f(x)\}$을 $y$축 둘레로 회전시켜 얻은 입체의 부피는</p>
+
+$$ V=2\pi\int_a^b x\,f(x)\,dx $$
+
+<details><summary>유도 보기</summary><div>
+<p>회전축인 $y$축을 원기둥좌표의 축으로 삼으면, 축까지의 거리 $r$가 원래 그림의 $x$ 역할을 하므로 입체는 $a\le r\le b,\ 0\le\theta\le2\pi,\ 0\le y\le f(r)$. 따라서</p>
+$$ V=\int_0^{2\pi}\int_a^b\int_0^{f(r)}r\,dy\,dr\,d\theta=2\pi\int_a^b r\,f(r)\,dr $$
+</div></details>
+
+<p><strong>공의 부피.</strong> 반지름 $R$인 공 $x^2+y^2+z^2\le R^2$은 원기둥좌표로 $0\le r\le R,\ 0\le\theta\le2\pi,\ -\sqrt{R^2-r^2}\le z\le\sqrt{R^2-r^2}$이므로</p>
+
+$$ V=\int_0^{2\pi}\int_0^R2\sqrt{R^2-r^2}\,r\,dr\,d\theta=2\pi\left[-\tfrac23(R^2-r^2)^{3/2}\right]_0^R=\frac43\pi R^3 $$
+
+<p>따라서 앞의 <mark>타원공의 부피는 $\frac43\pi abc$</mark>.</p>
+
+<h3>구면좌표</h3>
+
+<p>공간의 직교좌표 $(x,y,z)$를 <mark><strong>구면좌표(spherical coordinates)</strong></mark> $(\rho,\varphi,\theta)$로 치환한다.</p>
+
+$$ G:\ x=\rho\sin\varphi\cos\theta,\quad y=\rho\sin\varphi\sin\theta,\quad z=\rho\cos\varphi $$
+
+<ul class="sym">
+<li>$\rho\ge0$: 원점까지의 거리</li>
+<li>$0\le\varphi\le\pi$: 양의 $z$축과 이루는 각</li>
+<li>$0\le\theta\le2\pi$: $xy$평면에 내린 정사영이 양의 $x$축과 이루는 각 (원기둥좌표의 $\theta$와 같음)</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 640 340">
+<line x1="300" y1="220" x2="300" y2="40" stroke="#000" stroke-width="1.5"/>
+<line x1="300" y1="220" x2="560" y2="220" stroke="#000" stroke-width="1.5"/>
+<line x1="300" y1="220" x2="160" y2="325" stroke="#000" stroke-width="1.5"/>
+<text x="308" y="45" font-size="15">z</text>
+<text x="566" y="225" font-size="15">y</text>
+<text x="146" y="330" font-size="15">x</text>
+<line x1="300" y1="220" x2="378" y2="135" stroke="#000" stroke-width="2.5"/>
+<line x1="378" y1="135" x2="378" y2="251" stroke="#777" stroke-dasharray="5 4"/>
+<line x1="300" y1="220" x2="378" y2="251" stroke="#777" stroke-dasharray="5 4"/>
+<circle cx="378" cy="135" r="4" fill="#000"/>
+<text x="388" y="128" font-size="15">P(x, y, z)</text>
+<text x="348" y="192" font-size="16">ρ</text>
+<path d="M300 175 A45 45 0 0 1 330.5 186.7" fill="none" stroke="#000"/>
+<text x="309" y="168" font-size="15">φ</text>
+<path d="M268 244 A40 40 0 0 0 337 234.8" fill="none" stroke="#000"/>
+<text x="296" y="278" font-size="15">θ</text>
+</svg>
+<figcaption>점 $P$의 구면좌표. $\rho$는 원점에서의 거리, $\varphi$는 $z$축에서 내려온 각, $\theta$는 $P$를 $xy$평면에 내린 점(점선)이 $x$축과 이루는 각.</figcaption>
+</figure>
+
+$$ \det G'=\det\begin{pmatrix}\sin\varphi\cos\theta&amp;\rho\cos\varphi\cos\theta&amp;-\rho\sin\varphi\sin\theta\\ \sin\varphi\sin\theta&amp;\rho\cos\varphi\sin\theta&amp;\rho\sin\varphi\cos\theta\\ \cos\varphi&amp;-\rho\sin\varphi&amp;0\end{pmatrix} $$
+
+<p>셋째 행으로 전개하면 $\cos\varphi\cdot\rho^2\sin\varphi\cos\varphi+\rho\sin\varphi\cdot\rho\sin^2\varphi=\rho^2\sin\varphi(\cos^2\varphi+\sin^2\varphi)=\rho^2\sin\varphi$. $0\le\varphi\le\pi$에서 $\sin\varphi\ge0$이므로 <mark>$dx\,dy\,dz=\rho^2\sin\varphi\,d\rho\,d\varphi\,d\theta$</mark>.</p>
+
+<p><mark>공 모양 영역은 구면좌표로 상자가 된다</mark>. 반지름 $R$인 반 공 $H:\ x^2+y^2+z^2\le R^2,\ z\ge0$은 $0\le\rho\le R,\ 0\le\varphi\le\pi/2,\ 0\le\theta\le2\pi$이므로</p>
+
+$$ \mathrm{Vol}(H)=\int_0^{2\pi}\int_0^{\pi/2}\int_0^R\rho^2\sin\varphi\,d\rho\,d\varphi\,d\theta=2\pi\cdot1\cdot\frac{R^3}{3}=\frac23\pi R^3 $$
+
+<p>원뿔 $x^2+y^2\le z^2$ ($z\ge0$)은 $\sin^2\varphi\le\cos^2\varphi$, 즉 $\varphi\le\pi/4$가 되는 것처럼, 원점을 꼭짓점으로 하는 원뿔이나 원점을 지나는 구면도 구면좌표로 간단히 나타난다(구면 $x^2+y^2+z^2=z$는 $\rho=\cos\varphi$).</p>
+
+<h2>예제</h2>
+
+<p><strong>예제 1 (푸비니 정리).</strong> $\mathcal R=[0,1]\times[0,2]$에서 $\iint_{\mathcal R}xy\,dA$를 구하시오.</p>
+<p>$\int_0^1\left(\int_0^2xy\,dy\right)dx=\int_0^1 2x\,dx=1$.</p>
+
+<p><strong>예제 2 (일반 영역).</strong> $A:\ 0\le x\le1,\ 0\le y\le x$에서 $\iint_A y\,dA$를 구하시오.</p>
+<p>$\int_0^1\int_0^x y\,dy\,dx=\int_0^1\frac{x^2}{2}\,dx=\frac16$.</p>
+
+<p><strong>예제 3 (선형사상).</strong> 타원판 $\frac{x^2}{4}+\frac{y^2}{9}\le1$의 넓이를 구하시오.</p>
+<p>$a=2$, $b=3$이므로 $\pi ab=6\pi$.</p>
+
+<p><strong>예제 4 (극좌표).</strong> $D:\ x^2+y^2\le4$에서 $\iint_D(x^2+y^2)\,dA$를 구하시오.</p>
+<p>$\int_0^{2\pi}\int_0^2 r^2\cdot r\,dr\,d\theta=2\pi\cdot\frac{2^4}{4}=8\pi$.</p>
+
+<p><strong>예제 5 (구면좌표).</strong> 단위공 $x^2+y^2+z^2\le1$의 밀도가 $\mu=x^2+y^2+z^2$일 때 질량을 구하시오.</p>
+<p>$\mu=\rho^2$이므로 $M=\int_0^{2\pi}\int_0^\pi\int_0^1\rho^2\cdot\rho^2\sin\varphi\,d\rho\,d\varphi\,d\theta=2\pi\cdot2\cdot\frac15=\frac{4\pi}{5}$.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>

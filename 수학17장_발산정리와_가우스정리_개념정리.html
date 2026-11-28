@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17장 발산 정리와 가우스 정리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root { --ink:#1a1a1a; --sub:#5c5c5c; --line:#d6d6d6; --mark:#fff0a3; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;
+  font-size:17px; line-height:1.8; word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:64px 24px 120px; }
+h1 { font-size:2.8rem; line-height:1.3; margin:0 0 56px; letter-spacing:-.02em; }
+h2 { font-size:2.18rem; line-height:1.35; margin:104px 0 28px; padding-top:56px; border-top:1px solid var(--line); letter-spacing:-.01em; }
+h3 { font-size:1.68rem; line-height:1.4; margin:72px 0 16px; letter-spacing:-.01em; }
+h2 + h3 { margin-top:36px; }
+p { margin:0 0 16px; }
+ul,ol { margin:0 0 16px; padding-left:22px; }
+li { margin:4px 0; }
+strong { font-weight:700; }
+mark { background:linear-gradient(transparent 12%,var(--mark) 12% 92%,transparent 92%); color:inherit; padding:0 2px; }
+hr { border:0; border-top:1px solid var(--line); margin:40px 0; }
+.katex { font-size:1.07em; }
+.katex-display { margin:20px 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.sym { margin:-4px 0 20px; color:var(--sub); font-size:.95rem; list-style:none; padding-left:0; }
+.cond { color:var(--sub); font-size:.95rem; }
+table { width:100%; border-collapse:collapse; margin:8px 0 24px; font-size:.95rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+thead th { border-bottom:1.5px solid var(--ink); }
+figure { margin:28px 0 32px; }
+figure svg { display:block; width:100%; height:auto; max-height:420px; }
+figcaption { color:var(--sub); font-size:.9rem; text-align:center; margin-top:8px; }
+details { margin:12px 0 28px; border:1px solid var(--line); border-radius:6px; padding:12px 18px; }
+details > :last-child { margin-bottom:0; }
+summary { cursor:pointer; color:var(--sub); }
+details > summary + * { margin-top:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; justify-content:center; font-size:.95rem; margin-top:10px; }
+input[type=range] { accent-color:#333; width:220px; max-width:60vw; }
+button { font:inherit; font-size:.92rem; background:none; border:0; border-bottom:1.5px solid var(--line); color:var(--sub); padding:2px 4px; cursor:pointer; }
+button[aria-pressed=true] { border-bottom-color:var(--ink); color:var(--ink); font-weight:600; }
+@media print {
+  body { font-size:11pt; line-height:1.7; }
+  main { max-width:none; padding:0; }
+  h2 { margin-top:48px; padding-top:28px; }
+  h3 { margin-top:36px; }
+  h2,h3 { break-after:avoid; }
+  figure,table,.katex-display,tr { break-inside:avoid; }
+  .controls, .screen-only { display:none; }
+  summary { list-style:none; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>17장. 발산 정리와 가우스 정리</h1>
+
+<h2>17.1 발산 정리</h2>
+
+<h3>플럭스와 발산</h3>
+
+<p>벡터장 $\mathbf F=(F_1,F_2,F_3)$를 유체의 속도로 보면, 방향이 정해진 곡면 $S$를 단위 시간에 통과하는 양이 <mark>플럭스(flux)</mark>. 단위법벡터 $\mathbf n$ 방향 성분만 곡면을 통과하므로 다음 면적분으로 계산한다.</p>
+$$\iint_S \mathbf F\cdot d\mathbf S=\iint_S \mathbf F\cdot\mathbf n\,dS$$
+
+<p>$\mathbf n$ 방향으로 나가면 양, 반대로 지나가면 음. 따라서 곡면의 향 $\mathbf n$을 뒤집으면 플럭스의 부호도 바뀐다.</p>
+
+<p><strong>발산(divergence)</strong>은 <mark>각 점에서 단위 부피당 흘러나가는 비율</mark>이다.</p>
+$$\operatorname{div}\mathbf F=\frac{\partial F_1}{\partial x}+\frac{\partial F_2}{\partial y}+\frac{\partial F_3}{\partial z}$$
+
+<p>$\operatorname{div}\mathbf F=0$인 벡터장은 부피를 늘리거나 줄이지 않으므로 <mark>비압축장(incompressible field)</mark>.</p>
+
+<h3>발산 정리</h3>
+
+<p>점마다의 발산을 영역 전체에서 모으면 경계로 빠져나가는 총량이 된다. 이것이 <mark>발산 정리(divergence theorem)</mark>.</p>
+$$\iint_{\partial R}\mathbf F\cdot d\mathbf S=\iiint_R \operatorname{div}\mathbf F\,dV$$
+<p class="cond">조건: $R$은 <mark>유계인 닫힌 영역</mark>, 경계 $\partial R$은 조각적으로 매끄러운 곡면, 향은 <mark>$R$의 바깥쪽</mark>. $\mathbf F$는 <mark>$R$ 전체에서 일급</mark>(성분의 편도함수가 모두 존재하고 연속).</p>
+<ul class="sym">
+<li>$R$, $\partial R$: 공간의 영역과 그 경계 곡면</li>
+<li>$\mathbf F$: 벡터장, $dV$: 부피 요소</li>
+</ul>
+
+<p>즉 <mark>경계의 바깥 방향 플럭스 = 내부 발산의 삼중적분</mark>.</p>
+
+<p>부피로도 읽힌다. $R$의 모든 점이 속도 $\mathbf F$를 따라 흐르면 영역의 모양과 부피가 변한다. 짧은 시간 $\Delta t$ 동안 경계의 작은 조각 $dS$가 쓸고 가는 부피는 약 $(\mathbf F\cdot\mathbf n)\,dS\,\Delta t$이므로, 시각 $t$에 흘러간 영역을 $R_t$라 하면</p>
+$$\left.\frac{d}{dt}\operatorname{vol}(R_t)\right|_{t=0}=\iint_{\partial R}\mathbf F\cdot d\mathbf S$$
+
+<p>따라서 <mark>경계의 플럭스 = 영역의 순간 부피 변화율</mark>.</p>
+
+<figure>
+<svg viewBox="0 0 640 260" font-family="inherit" font-size="15">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#111"/></marker></defs>
+<path d="M190 70C250 35 350 50 380 105C410 165 340 205 260 195C180 190 140 100 190 70Z" fill="none" stroke="#111" stroke-width="2"/>
+<path d="M180 52C255 10 377 26 413 95C451 175 362 232 258 222C157 214 105 88 180 52Z" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6 5"/>
+<g stroke="#111" stroke-width="1.5" marker-end="url(#ah)">
+<line x1="281" y1="51" x2="283" y2="23"/><line x1="383" y1="112" x2="422" y2="106"/><line x1="348" y1="183" x2="370" y2="208"/><line x1="226" y1="188" x2="216" y2="213"/><line x1="171" y1="108" x2="138" y2="114"/>
+</g>
+<text x="260" y="130">R</text><text x="308" y="150">∂R</text>
+<text x="475" y="90">실선: 처음 영역 R</text>
+<text x="475" y="118">점선: Δt 뒤의 영역</text>
+<text x="475" y="146">화살표: F</text>
+</svg>
+<figcaption>경계가 F를 따라 움직이며 늘어난 얇은 껍질의 부피가 플럭스 × Δt.</figcaption>
+</figure>
+
+<h3>직육면체에서의 증명</h3>
+
+<p>$R$이 $x_0\le x\le x_1,\; y_0\le y\le y_1,\; z_0\le z\le z_1$인 직육면체인 경우를 증명한다. 경계는 여섯 면.</p>
+$$\begin{aligned}
+S_1^-&=\{x_0\}\times[y_0,y_1]\times[z_0,z_1], & S_1^+&=\{x_1\}\times[y_0,y_1]\times[z_0,z_1]\\
+S_2^-&=[x_0,x_1]\times\{y_0\}\times[z_0,z_1], & S_2^+&=[x_0,x_1]\times\{y_1\}\times[z_0,z_1]\\
+S_3^-&=[x_0,x_1]\times[y_0,y_1]\times\{z_0\}, & S_3^+&=[x_0,x_1]\times[y_0,y_1]\times\{z_1\}
+\end{aligned}$$
+
+<figure>
+<svg viewBox="0 0 640 270" font-family="inherit" font-size="15">
+<g fill="none" stroke="#111" stroke-width="1.8">
+<path d="M220 100H380V210H220Z"/><path d="M220 100L280 60H440L380 100M440 60V170L380 210"/>
+<path d="M220 210L280 170H440M280 170V60" stroke-dasharray="5 5" stroke="#777"/>
+</g>
+<g stroke="#111" stroke-width="2" marker-end="url(#ah)">
+<line x1="410" y1="135" x2="500" y2="135"/><line x1="250" y1="135" x2="160" y2="135" />
+<line x1="330" y1="80" x2="330" y2="22"/><line x1="300" y1="190" x2="300" y2="252"/>
+</g>
+<text x="508" y="140">S₁⁺ : n = i</text><text x="55" y="140">S₁⁻ : n = −i</text>
+<text x="342" y="30">S₃⁺ : n = k</text><text x="312" y="255">S₃⁻ : n = −k</text>
+</svg>
+<figcaption>바깥 방향 법벡터. 마주 보는 두 면은 법벡터가 반대(S₂ 면은 ±j).</figcaption>
+</figure>
+
+<p>생각은 <strong>마주 보는 두 면을 짝지어</strong> 미적분학의 기본정리를 거꾸로 적용하는 것. $S_1^+$에서는 $\mathbf F\cdot\mathbf n=F_1$, $S_1^-$에서는 $\mathbf F\cdot\mathbf n=-F_1$이다. $D=[y_0,y_1]\times[z_0,z_1]$라 하면</p>
+$$\begin{aligned}
+\iint_{S_1^+}\mathbf F\cdot d\mathbf S+\iint_{S_1^-}\mathbf F\cdot d\mathbf S
+&=\iint_D \big[F_1(x_1,y,z)-F_1(x_0,y,z)\big]\,dy\,dz\\
+&=\iint_D\int_{x_0}^{x_1}\frac{\partial F_1}{\partial x}\,dx\,dy\,dz\\
+&=\iiint_R\frac{\partial F_1}{\partial x}\,dV
+\end{aligned}$$
+
+<p>$F_1$이 일급이라 기본정리를 쓸 수 있고, 연속함수의 반복적분이므로 푸비니 정리에 의해 삼중적분이 된다. 같은 방법으로 나머지 두 짝도 계산된다.</p>
+$$\iint_{S_2^+\cup S_2^-}\mathbf F\cdot d\mathbf S=\iiint_R\frac{\partial F_2}{\partial y}\,dV,\qquad
+\iint_{S_3^+\cup S_3^-}\mathbf F\cdot d\mathbf S=\iiint_R\frac{\partial F_3}{\partial z}\,dV$$
+
+<p>세 식을 더하면 좌변은 $\partial R$ 전체의 플럭스, 우변은 $\operatorname{div}\mathbf F$의 삼중적분. $\qquad\blacksquare$</p>
+
+<p>일반 영역의 엄밀한 증명은 여기서 다루지 않는다. 직관은 영역을 작은 조각으로 나누는 것. 이웃한 두 조각의 공유면은 법벡터가 서로 반대라 플럭스가 상쇄되고, <mark>바깥 경계의 플럭스만 남는다</mark>.</p>
+
+<h3>발산 정리와 영역의 부피</h3>
+
+<p>발산이 $1$인 벡터장을 넣으면 우변이 $\iiint_R 1\,dV$, 즉 부피가 된다. $x\mathbf i,\;y\mathbf j,\;z\mathbf k$는 모두 발산이 $1$이고, 위치벡터장 $x\mathbf i+y\mathbf j+z\mathbf k$는 발산이 $3$이다.</p>
+$$\begin{aligned}
+\operatorname{vol}(R)&=\iint_{\partial R}x\mathbf i\cdot d\mathbf S=\iint_{\partial R}y\mathbf j\cdot d\mathbf S=\iint_{\partial R}z\mathbf k\cdot d\mathbf S\\
+&=\frac13\iint_{\partial R}(x\mathbf i+y\mathbf j+z\mathbf k)\cdot d\mathbf S
+\end{aligned}$$
+<p class="cond">조건: $R$과 $\partial R$의 향은 발산 정리와 같다.</p>
+<ul class="sym"><li>$\operatorname{vol}(R)$: 영역 $R$의 부피</li></ul>
+
+<p>즉 <mark>경계 곡면의 면적분만으로 부피가 정해진다</mark>.</p>
+
+<h2>17.2 가우스 정리</h2>
+
+<h3>입체각 벡터장</h3>
+
+<p>한 점에서 사방으로 뻗어 나가며 거리의 제곱에 반비례해 약해지는 벡터장이 있다. 위치벡터 $\mathbf r=(x,y,z)$, $r=|\mathbf r|=\sqrt{x^2+y^2+z^2}$일 때 이것이 3차원 <mark>입체각 벡터장(solid angle vector field)</mark>.</p>
+$$\mathbf A=\frac{\mathbf r}{|\mathbf r|^3}=\frac{x\mathbf i+y\mathbf j+z\mathbf k}{(x^2+y^2+z^2)^{3/2}}=\frac1{r^3}(x,y,z)$$
+<p class="cond">조건: <mark>$\mathbf r\ne\mathbf 0$</mark>.</p>
+<ul class="sym"><li>$\mathbf r$: 원점에서 점 $(x,y,z)$까지의 위치벡터, $r$: 그 길이</li></ul>
+
+<p>방향은 원점에서 바깥쪽, 크기는 $|\mathbf A|=1/r^2$. 원점에서는 정의되지 않지만, 그 밖의 모든 점에서 <mark>발산이 $0$인 비압축장</mark>이다.</p>
+
+<p>$\dfrac{\partial r}{\partial x}=\dfrac xr$이므로</p>
+$$\frac{\partial}{\partial x}\left(\frac{x}{r^3}\right)=\frac1{r^3}-\frac{3x}{r^4}\cdot\frac xr=\frac1{r^3}-\frac{3x^2}{r^5}$$
+<p>$y,z$ 항도 같은 꼴이라, 셋을 더하면</p>
+$$\operatorname{div}\mathbf A=\frac3{r^3}-\frac{3(x^2+y^2+z^2)}{r^5}=\frac3{r^3}-\frac{3}{r^3}=0$$
+
+<h3>원점 기준의 닫힌 곡면 플럭스</h3>
+
+<p>발산이 $0$이어도 원점에서 정의되지 않으므로, 플럭스는 원점이 영역 안에 있는지에 따라 갈린다. $\mathbf 0\in\operatorname{int}\partial R$은 원점이 $\partial R$의 안쪽, $\mathbf 0\in\operatorname{ext}\partial R$은 바깥쪽에 있다는 표기.</p>
+$$\iint_{\partial R}\mathbf A\cdot d\mathbf S=\begin{cases}4\pi & (\mathbf 0\in\operatorname{int}\partial R)\\ 0 & (\mathbf 0\in\operatorname{ext}\partial R)\end{cases}$$
+<p class="cond">조건: $R$은 유계인 닫힌 영역, $\partial R$의 향은 바깥쪽, <mark>원점은 $\partial R$ 위에 없다</mark>.</p>
+<ul class="sym"><li>$\mathbf A$: 원점 중심 입체각 벡터장</li></ul>
+
+<p>즉 <mark>원점을 둘러싸면 모양·크기와 무관하게 $4\pi$, 아니면 $0$</mark>. $4\pi$는 모든 방향을 다 덮는 <strong>온입체각</strong>이며 단위구의 겉넓이와 같다.</p>
+
+<p><strong>증명 1: $\mathbf 0\in\operatorname{ext}\partial R$.</strong> $R$ 전체에서 $\mathbf A$가 잘 정의되고 $\operatorname{div}\mathbf A=0$이므로 발산 정리에 의해</p>
+$$\iint_{\partial R}\mathbf A\cdot d\mathbf S=\iiint_R\operatorname{div}\mathbf A\,dV=0$$
+
+<p><strong>증명 2: $\mathbf 0\in\operatorname{int}\partial R$.</strong> $R$ 안에 원점이 있어 발산 정리를 바로 쓸 수 없기에, 원점 주변을 파낸다. 원점 중심의 아주 작은 공 $B=\{(x,y,z):x^2+y^2+z^2\lt\varepsilon^2\}$을 $R$ 내부에 들어가도록 잡는다.</p>
+
+<p>$\mathbf 0\notin R-B$이므로 $R-B$에서는 $\mathbf A$가 잘 정의된다. $R-B$의 경계는 바깥 곡면 $\partial R$과 안쪽 구면 $\partial B$이다. 안쪽 구면에서 "$R-B$의 바깥"은 원점 쪽이라, $\partial B$를 공 $B$의 바깥 방향으로 두면 부호가 $-$가 된다.</p>
+$$0=\iiint_{R-B}\operatorname{div}\mathbf A\,dV=\iint_{\partial R}\mathbf A\cdot d\mathbf S-\iint_{\partial B}\mathbf A\cdot d\mathbf S$$
+
+<figure>
+<svg viewBox="0 0 640 270" font-family="inherit" font-size="15">
+<path d="M170 60C260 15 420 40 440 125C460 220 330 250 240 232C130 215 90 100 170 60Z" fill="none" stroke="#111" stroke-width="2"/>
+<circle cx="275" cy="140" r="38" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="6 4"/>
+<circle cx="275" cy="140" r="3.5" fill="#111"/><text x="282" y="153">0</text>
+<g stroke="#111" stroke-width="1.7" marker-end="url(#ah)">
+<line x1="313" y1="140" x2="283" y2="140"/><line x1="275" y1="102" x2="275" y2="130"/><line x1="237" y1="140" x2="265" y2="140"/><line x1="275" y1="178" x2="275" y2="162"/>
+<line x1="440" y1="125" x2="485" y2="120"/><line x1="130" y1="140" x2="85" y2="142"/><line x1="300" y1="39" x2="298" y2="8"/>
+</g>
+<text x="360" y="150">R − B</text><text x="305" y="105">∂B</text><text x="425" y="72">∂R</text>
+</svg>
+<figcaption>R − B의 바깥 방향: 바깥 경계에서는 밖으로, 안쪽 구면에서는 구멍(원점) 쪽으로.</figcaption>
+</figure>
+
+<p>따라서 $\partial R$의 플럭스는 작은 구면의 플럭스와 같다. 구면에서는 $\mathbf n=\mathbf r/\varepsilon$이라 $\mathbf A\cdot\mathbf n=\dfrac{\mathbf r\cdot\mathbf r}{\varepsilon^4}=\dfrac1{\varepsilon^2}$로 일정하고, 겉넓이는 $4\pi\varepsilon^2$이다.</p>
+$$\iint_{\partial R}\mathbf A\cdot d\mathbf S=\iint_{\partial B}\mathbf A\cdot d\mathbf S=\frac1{\varepsilon^2}\cdot4\pi\varepsilon^2=4\pi\qquad\blacksquare$$
+
+<h3>중심이 $P$인 입체각 벡터장</h3>
+
+<p>중심을 원점에서 임의의 점 $P$로 평행이동해도 편미분 계산은 같아 $\operatorname{div}\mathbf A_P=0$.</p>
+$$\mathbf A_P(X)=\frac{X-P}{|X-P|^3}$$
+<p class="cond">조건: <mark>$X\ne P$</mark>.</p>
+<ul class="sym"><li>$P$: 벡터장의 중심, $X$: 값을 재는 점</li></ul>
+
+<p>원점일 때와 똑같이 $P$ 주변의 작은 공을 파내면 다음 정리를 얻는다. <strong>닫힌 곡면(closed surface)</strong>은 구면처럼 가장자리 없이 안과 밖을 나누는 곡면이다.</p>
+$$\iint_S\mathbf A_P\cdot d\mathbf S=\begin{cases}4\pi&(P\in\operatorname{int}S)\\0&(P\in\operatorname{ext}S)\end{cases}$$
+<p class="cond">조건: $S$는 조각적으로 매끄러운 닫힌 곡면, 향은 바깥쪽, <mark>$P\notin S$</mark>.</p>
+<ul class="sym"><li>$S$: 닫힌 곡면, $\operatorname{int}S$, $\operatorname{ext}S$: $S$의 안쪽과 바깥쪽</li></ul>
+
+<p>즉 <mark>플럭스는 중심 $P$가 곡면 안에 있는지만으로 결정</mark>된다.</p>
+
+<h3>입체각</h3>
+
+<p>평면의 각이 단위원의 호 길이이듯, 점 $P$에서 곡면 $S$를 볼 때의 <mark>입체각(solid angle)</mark> $\Omega$는 $S$를 $P$ 중심 단위구면에 방사형으로 비춘 그림자의 넓이다. 모든 방향이면 $4\pi$, 반쪽이면 $2\pi$.</p>
+
+<p>부호는 곡면의 향으로 정한다. $\mathbf n$이 $P$에서 멀어지는 쪽이면, 즉 $(X-P)\cdot\mathbf n\gt0$이면 양, $P$ 쪽을 향하면 음.</p>
+$$\iint_S\mathbf A_P\cdot d\mathbf S=\Omega$$
+<p class="cond">조건: $P\notin S$. $\Omega$는 향에 따른 부호를 포함한다.</p>
+<ul class="sym"><li>$\Omega$: $P$에서 본 $S$의 부호 있는 입체각</li></ul>
+
+<p>즉 <mark>입체각 벡터장이 곡면을 빠져나가는 양 = 그 곡면의 입체각</mark>. 이름이 '입체각 벡터장'인 이유다.</p>
+
+<details><summary>이유 보기: 방사선이 한 번씩만 만나는 곡면</summary><div>
+<p>$\mathbf n$이 $P$에서 멀어지는 쪽이고, $P$에서 나간 반직선이 $S$와 많아야 한 번 만난다고 하자. $P$와 $S$의 점들을 이은 뿔에서, $P$ 중심의 작은 반지름 $\varepsilon$ 구면 안쪽을 잘라 낸다.</p>
+<p>남은 영역의 경계는 $S$, 뿔의 옆면, 작은 구면 조각 $S_\varepsilon$. 옆면은 방사선으로 이루어져 $\mathbf A_P$가 면에 접하므로 플럭스가 $0$이다. $S_\varepsilon$의 바깥 방향은 $P$ 쪽이고 $\mathbf A_P$의 크기는 $1/\varepsilon^2$, 넓이는 $\Omega\varepsilon^2$이라 플럭스는 $-\Omega$.</p>
+<p>영역 안에서 $\operatorname{div}\mathbf A_P=0$이므로 발산 정리에 의해 $0=\iint_S\mathbf A_P\cdot d\mathbf S-\Omega$. 반직선이 여러 번 만나는 곡면은 이런 조각으로 나누어 부호를 포함해 더한다. $\qquad\blacksquare$</p>
+</div></details>
+
+<ul>
+<li><strong>모양과 거리에 무관:</strong> $P$에서 같은 방향들을 같은 부호로 덮는 곡면은 구면 조각이든 원뿔면이든 플럭스가 같다.</li>
+<li><strong>향 반전:</strong> $\mathbf n$을 뒤집으면 $\Omega$의 부호가 바뀐다.</li>
+<li><strong>닫힌 곡면:</strong> $P$가 안이면 모든 방향을 덮어 $4\pi$. 밖이면 들어가는 면($-$)과 나오는 면($+$)의 그림자가 겹쳐 상쇄되므로 $0$.</li>
+</ul>
+
+<figure>
+<svg id="sa" viewBox="0 0 640 290" font-family="inherit" font-size="15"></svg>
+<div class="controls">
+<label>점 P의 위치 <input type="range" id="sa-p" min="-200" max="200" value="-190" step="1"></label>
+</div>
+<figcaption>단면도. 실선 원은 닫힌 곡면 S, 점선 원은 P 중심 단위구면. P에서 나간 반직선이 S를 나오며 만나면 +, 들어가며 만나면 −.</figcaption>
+</figure>
+<script>
+(() => {
+const svg=document.getElementById('sa'), sl=document.getElementById('sa-p');
+const cx=360, cy=145, R=100, cyP=145;
+function draw(){
+  const px=cx+Number(sl.value), d=cx-px, ad=Math.abs(d);
+  let h=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#111" stroke-width="2"/><text x="${cx+72}" y="${cy-82}">S</text>`;
+  h+=`<circle cx="${px}" cy="${cyP}" r="30" fill="none" stroke="#777" stroke-width="1.3" stroke-dasharray="4 4"/>`;
+  for(let k=0;k<16;k++){
+    const t=(k+0.5)*Math.PI/8, ux=Math.cos(t), uy=Math.sin(t);
+    const b=(px-cx)*ux, c=(px-cx)*(px-cx)-R*R, disc=b*b-c;
+    h+=`<line x1="${px}" y1="${cyP}" x2="${px+ux*700}" y2="${cyP+uy*700}" stroke="#bbb" stroke-width="1"/>`;
+    if(disc>0){
+      [[-b-Math.sqrt(disc),'−'],[-b+Math.sqrt(disc),'+']].forEach(([s,m])=>{
+        if(s>0){const X=px+ux*s,Y=cyP+uy*s;
+          h+=`<circle cx="${X}" cy="${Y}" r="8" fill="${m==='+'?'#111':'#fff'}" stroke="#111" stroke-width="1.3"/><text x="${X}" y="${Y+5}" text-anchor="middle" fill="${m==='+'?'#fff':'#111'}">${m}</text>`;}
+      });
+    }
+  }
+  h+=`<circle cx="${px}" cy="${cyP}" r="4.5" fill="#111"/><text x="${px-6}" y="${cyP-9}" font-weight="700">P</text>`;
+  const msg = Math.abs(ad-R)<3 ? 'P가 S 위: 정리의 조건 밖' : (ad<R ? 'P가 안: 방향마다 + 한 번 → 4π' : 'P가 밖: + 와 − 가 상쇄 → 0');
+  h+=`<rect x="8" y="8" width="268" height="28" fill="#fff"/><text x="14" y="27" font-weight="700">${msg}</text>`;
+  svg.innerHTML=h;
+}
+sl.addEventListener('input',draw); draw();
+})();
+</script>
+
+<h3>점전하의 전기장</h3>
+
+<p>입체각 벡터장은 점전하가 만드는 전기장의 꼴이다. 서로 다른 점 $P_1,\dots,P_n$에 전하 $q_1,\dots,q_n$인 입자가 있고, 각각이 만드는 전기장을 $\mathbf E_1,\dots,\mathbf E_n$이라 하자. 쿨롱의 법칙은 유전율 $\varepsilon_0=1$인 단위계에서 이 꼴.</p>
+$$\mathbf E_i(X)=\frac{q_i}{4\pi}\mathbf A_{P_i}(X)\qquad(i=1,\dots,n)$$
+<p class="cond">조건: $X\ne P_i$, $\varepsilon_0=1$인 단위계.</p>
+<ul class="sym"><li>$q_i$: 점 $P_i$의 전하, $\mathbf E_i$: 그 전하의 전기장, $X$: 전기장을 재는 점</li></ul>
+
+<p>$q_i\gt0$이면 $\mathbf E_i$는 $P_i$에서 밀어내는 방향(척력), $q_i\lt0$이면 끌어당기는 방향(인력). 이는 양의 시험 전하가 받는 힘의 방향이다.</p>
+
+<p>$\mathbf E_i$는 $\mathbf A_{P_i}$의 상수배이므로 $\mathbb R^3-\{P_i\}$에서 비압축장. 발산은 합에 대해 선형이라, 전체 전기장</p>
+$$\mathbf E=\mathbf E_1+\cdots+\mathbf E_n$$
+<p>도 $\mathbb R^3-\{P_1,\dots,P_n\}$에서 비압축장이다.</p>
+
+<h3>가우스 정리</h3>
+
+<p>전하 하나의 플럭스는 곡면 안에 있으면 $\dfrac{q_i}{4\pi}\cdot4\pi=q_i$, 밖이면 $0$. 이를 모두 더한 것이 <mark>가우스 정리(Gauss' theorem)</mark>.</p>
+$$Q=\iint_S\mathbf E\cdot d\mathbf S$$
+<p class="cond">조건: $S\subset\mathbb R^3-\{P_1,\dots,P_n\}$인 닫힌 곡면(<mark>전하가 곡면 위에 없음</mark>), 향은 바깥쪽, $\varepsilon_0=1$.</p>
+<ul class="sym">
+<li>$Q$: $S$ <strong>안쪽</strong>에 있는 전하의 총합</li>
+<li>$\mathbf E$: <strong>모든</strong> 전하가 만드는 전체 전기장</li>
+</ul>
+
+<p>즉 <mark>닫힌 곡면의 전기장 플럭스 = 내부 총전하</mark>. 바깥 전하는 곡면 위의 $\mathbf E$ 값은 바꾸지만 총 플럭스에는 기여하지 않는다. SI 단위계에서는 우변이 $Q/\varepsilon_0$가 된다.</p>
+
+<p>단, 안쪽에 전하가 있으면 다음 마지막 식으로는 바꿀 수 없다.</p>
+$$Q=\iint_S\mathbf E\cdot d\mathbf S=\iint_S\mathbf E\cdot\mathbf n\,dS\ne\iiint_{\operatorname{int}S}\operatorname{div}\mathbf E\,dV$$
+
+<p>$\mathbf E$가 전하의 위치에서 정의되지 않아 <mark>$\operatorname{int}S$ 전체에 발산 정리를 적용할 수 없기</mark> 때문이다. 정의되는 점에서는 모두 $\operatorname{div}\mathbf E=0$이라 우변을 그대로 계산하면 $0$이 나오지만, 좌변 $Q$는 $0$이 아닐 수 있다.</p>
+
+<p><strong>증명.</strong> 편의상 $P_1,\dots,P_m$은 $S$의 안쪽, $P_{m+1},\dots,P_n$은 바깥쪽에 있다고 하자. 각 $i$에 대해 작은 공과 그 경계를 잡는다.</p>
+$$B_i=B_i(P_i,r_i)=\{X\in\mathbb R^3:|X-P_i|\lt r_i\},\qquad\partial B_i=S_i$$
+<p>반지름 $r_i$를 충분히 작게 해, 공끼리 겹치지 않고 $S$와도 만나지 않게 한다. 그러면 $B_1,\dots,B_m$은 $S$ 안쪽에 들어간다.</p>
+
+<figure>
+<svg viewBox="0 0 640 270" font-family="inherit" font-size="15">
+<path d="M170 55C260 15 420 35 440 120C460 215 330 250 240 232C130 215 90 95 170 55Z" fill="none" stroke="#111" stroke-width="2"/>
+<g fill="none" stroke="#111" stroke-width="1.6" stroke-dasharray="5 4"><circle cx="220" cy="110" r="30"/><circle cx="355" cy="105" r="30"/><circle cx="280" cy="185" r="30"/><circle cx="530" cy="180" r="30"/></g>
+<g fill="#111"><circle cx="220" cy="110" r="3.5"/><circle cx="355" cy="105" r="3.5"/><circle cx="280" cy="185" r="3.5"/><circle cx="530" cy="180" r="3.5"/></g>
+<text x="227" y="114">P₁</text><text x="362" y="109">P₂</text><text x="287" y="189">P₃</text><text x="537" y="184">P₄</text>
+<text x="253" y="95">S₁</text><text x="318" y="70">S₂</text><text x="316" y="215">S₃</text><text x="565" y="150">S₄</text>
+<text x="430" y="65">S</text>
+</svg>
+<figcaption>m = 3인 경우. S 안쪽의 공만 파낸다.</figcaption>
+</figure>
+
+<p>$V=\operatorname{int}S$와 $S$를 합친 닫힌 영역에서 $B_1,\dots,B_m$을 뺀 $V'$에는 전하가 없다. 따라서 $\operatorname{div}\mathbf E=0$이고 발산 정리를 쓸 수 있다. 입체각 정리의 증명처럼 안쪽 구면 $S_i$는 $B_i$의 바깥 방향으로 두면 부호가 $-$.</p>
+$$0=\iiint_{V'}\operatorname{div}\mathbf E\,dV=\iint_S\mathbf E\cdot d\mathbf S-\sum_{i=1}^m\iint_{S_i}\mathbf E\cdot d\mathbf S$$
+
+<p>각 $S_i$ 안에는 전하가 $P_i$ 하나뿐이므로, $\mathbf A_{P_j}$의 플럭스는 $j=i$일 때만 $4\pi$이고 나머지는 $0$이다.</p>
+$$\iint_{S_i}\mathbf E\cdot d\mathbf S=\sum_{j=1}^n\frac{q_j}{4\pi}\iint_{S_i}\mathbf A_{P_j}\cdot d\mathbf S=\frac{q_i}{4\pi}\cdot4\pi=q_i$$
+<p>따라서</p>
+$$\iint_S\mathbf E\cdot d\mathbf S=\sum_{i=1}^m q_i=Q\qquad\blacksquare$$
+
+<h2>예제</h2>
+
+<h3>1. 발산 정리</h3>
+<p>$\mathbf F=(2x,\,3y,\,-z)$가 원점 중심, 반지름 $1$인 구면을 바깥으로 빠져나가는 플럭스를 구하시오.</p>
+<p><strong>풀이.</strong> $\operatorname{div}\mathbf F=2+3-1=4$이므로 플럭스는 $4\times\dfrac{4\pi}{3}=\dfrac{16\pi}{3}$.</p>
+
+<h3>2. 영역의 부피</h3>
+<p>부피가 $5$인 영역 $R$에서 $\displaystyle\iint_{\partial R}(x\mathbf i+y\mathbf j+z\mathbf k)\cdot d\mathbf S$를 구하시오(향은 바깥쪽).</p>
+<p><strong>풀이.</strong> 위 적분은 부피의 $3$배이므로 $15$.</p>
+
+<h3>3. 닫힌 곡면과 중심의 위치</h3>
+<p>$S$가 원점 중심, 반지름 $2$인 구면(바깥 향)일 때, $P=(1,0,0)$과 $P=(3,0,0)$ 각각에서 $\mathbf A_P$의 플럭스를 구하시오.</p>
+<p><strong>풀이.</strong> $(1,0,0)$은 구 안쪽이라 $4\pi$, $(3,0,0)$은 바깥쪽이라 $0$.</p>
+
+<h3>4. 입체각</h3>
+<p>$\mathbf A$가 반구면 $x^2+y^2+z^2=25,\;x\ge0$을 원점 쪽 향으로 빠져나가는 양을 구하시오.</p>
+<p><strong>풀이.</strong> 원점에서 모든 방향의 절반을 덮으므로 크기는 $2\pi$. $\mathbf n$이 원점 쪽이라 $-2\pi$.</p>
+
+<h3>5. 가우스 정리</h3>
+<p>$\varepsilon_0=1$인 단위계에서 전하 $2,\,-5,\,3$이 차례로 $(0,0,0),\,(1,0,0),\,(4,0,0)$에 있다. 원점 중심, 반지름 $2$인 구면의 바깥 방향 전기장 플럭스를 구하시오.</p>
+<p><strong>풀이.</strong> 안쪽 전하는 앞의 둘이므로 $Q=2+(-5)=-3$. 플럭스는 $-3$.</p>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+if (window.renderMathInElement) renderMathInElement(document.body, {
+  delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  throwOnError: false
+});
+window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+</script>
+</body>
+</html>
